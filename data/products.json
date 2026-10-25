@@ -1,0 +1,153 @@
+[
+  {
+    "_id": "prod_1792911172300",
+    "name": "Indian Celebrition ",
+    "price": 400,
+    "oldPrice": 749,
+    "category": "patake",
+    "description": "Happy Diwali 🪔🪔🪔 \r\nLight up your celebration 💥💥",
+    "imageUrl": "/uploads/img_1792911172286.jpg",
+    "additionalImages": []
+  },
+  {
+    "_id": "prod_1792911010974",
+    "name": "SKY SHOT (Fireworks)",
+    "price": 250,
+    "oldPrice": 499,
+    "category": "patake",
+    "description": "High quality long lasting \r\n",
+    "imageUrl": "/uploads/img_1792911010877.jpg",
+    "additionalImages": []
+  },
+  {
+    "_id": "prod_1792845991147",
+    "name": "Tendy&Comfy",
+    "price": 499,
+    "oldPrice": 1099,
+    "category": "clothes",
+    "description": "Women's Cardigan Top& shirt set\r\nKintwear+shirts",
+    "imageUrl": "/uploads/img_1792846146628.jpg",
+    "additionalImages": [
+      "/uploads/img_1792845991134.jpg"
+    ]
+  },
+  {
+    "_id": "prod_1792845863102",
+    "name": "New Arrival ",
+    "price": 750,
+    "oldPrice": 1256,
+    "category": "clothes",
+    "description": "Women's Tracksuit set \r\n\r\nJacket+pants \r\nComfortable looks Good on you \r\n",
+    "imageUrl": "/uploads/img_1792849777473.jpg",
+    "additionalImages": [
+      "/uploads/img_1792845863020.jpg"
+    ]
+  },
+  {
+    "_id": "prod_1792826448848",
+    "name": "Girl power Fashion wear",
+    "price": 850,
+    "oldPrice": 1199,
+    "category": "clothes",
+    "description": "Women's Tracksuit set \r\nJacket! Pant! Crop top!\r\n\r\nPerfect for\r\nGYM\r\nDaily wear \r\nCollege \r\nTravel ",
+    "imageUrl": "/uploads/img_1792849790032.jpg",
+    "additionalImages": [
+      "/uploads/img_1792826448818.jpg"
+    ]
+  },
+  {
+    "_id": "prod_1792826322658",
+    "name": "New Arrival ",
+    "price": 1250,
+    "oldPrice": 2099,
+    "category": "clothes",
+    "description": "Women's Tracksuit set \r\n\r\nStay stylish \r\nStay comfortable \r\nGYM✓\r\nDaily wear ✓\r\nCollege ✓",
+    "imageUrl": "/uploads/img_1792826322643.jpg",
+    "additionalImages": []
+  },
+  {
+    "_id": "prod_1792826178070",
+    "name": "Premium fashion wear",
+    "price": 1200,
+    "oldPrice": 2299,
+    "category": "clothes",
+    "description": "Pink Evening Dress long Gown ",
+    "imageUrl": "/uploads/img_1792826178035.jpg",
+    "additionalImages": []
+  },
+  {
+    "_id": "prod_1792825836666",
+    "name": "Women's Tracksuit set ",
+    "price": 550,
+    "oldPrice": 1125,
+    "category": "clothes",
+    "description": "Comfortable looks Good on you\r\n\r\nPerfect you\r\n✓GYM\r\n✓College\r\n✓Travel\r\n✓Daily wear\r\n",
+    "imageUrl": "/uploads/img_1792825836645.jpg",
+    "additionalImages": []
+  },
+  {
+    "_id": "prod_1792825310237",
+    "name": "Lengha ",
+    "price": 2199,
+    "oldPrice": 3240,
+    "category": "clothes",
+    "description": "Indian EHTIC Bridal lehenga ",
+    "imageUrl": "/uploads/img_1792846177134.jpg",
+    "additionalImages": [
+      "/uploads/img_1792825346607.jpg",
+      "/uploads/img_1792825310217.jpg"
+    ]
+  },
+  {
+    "_id": "prod_1792825224664",
+    "name": "Lengha ",
+    "price": 1500,
+    "oldPrice": 2500,
+    "category": "clothes",
+    "description": "Luxury Bridal lengha ",
+    "imageUrl": "/uploads/img_1792825224651.jpg",
+    "additionalImages": []
+  },
+  {
+    "_id": "prod_1792825165187",
+    "name": "Premium Party wear ",
+    "price": 1999,
+    "oldPrice": 3150,
+    "category": "clothes",
+    "description": "Minimalist ELEGANT Formal Evening dress",
+    "imageUrl": "/uploads/img_1792825165157.jpg",
+    "additionalImages": []
+  },
+  {
+    "_id": "prod_1792824985762",
+    "name": "Premium lengha ",
+    "price": 1800,
+    "oldPrice": 2339,
+    "category": "clothes",
+    "description": "Luxury Evening Gouwn",
+    "imageUrl": "/uploads/img_1792824985719.jpg",
+    "additionalImages": []
+  },
+  {
+    "_id": "prod_1792824454907",
+    "name": "Divyan creation ",
+    "price": 1199,
+    "oldPrice": 2149,
+    "category": "clothes",
+    "description": "Lengha ",
+    "imageUrl": "/uploads/img_1792824454842.jpg",
+    "additionalImages": []
+  },
+  {
+    "_id": "prod_1792821970874",
+    "name": "Divyan creation ",
+    "price": 150,
+    "oldPrice": 349,
+    "category": "patake",
+    "description": "Dewali specialist sky sound pataka ",
+    "imageUrl": "/uploads/img_1792821979298.jpg",
+    "additionalImages": [
+      "/uploads/img_1792821970843.jpg"
+    ]
+  }
+]

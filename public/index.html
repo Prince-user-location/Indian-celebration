@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Diwali Celebration</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        :root { --primary-blue: #0b2240; --accent-gold: #ffb300; --bg-color: #f8f9fa; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); overflow-x: hidden; padding-bottom: 70px; }
+        
+        /* Header */
+        .header { background: linear-gradient(135deg, #0b2240 0%, #1a3b66 100%); position: sticky; top: 0; z-index: 100; padding: 15px 15px 20px 15px; display: flex; flex-direction: column; gap: 12px; border-bottom: 2px solid var(--accent-gold); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; }
+        .logo-text { font-size: 22px; font-weight: 700; font-style: italic; color: white; letter-spacing: -0.5px; }
+        .logo-sub { font-size: 11px; color: var(--accent-gold); font-style: italic; margin-top: 4px; }
+        .header-icons { display: flex; gap: 18px; color: white; cursor: pointer; }
+        .location-bar { display: flex; align-items: center; color: #ddd; font-size: 12px; gap: 5px; }
+        .location-bar span { color: var(--accent-gold); margin-left: 5px; }
+        .search-container { background: white; border-radius: 8px; display: flex; align-items: center; padding: 10px 15px; gap: 10px; }
+        .search-container input { border: none; outline: none; width: 100%; font-size: 14px; }
+        
+        /* Top Tabs */
+        .top-tabs { display: flex; justify-content: space-between; padding: 15px 10px; gap: 10px; overflow-x: auto; }
+        .tab-box { background: white; border-radius: 12px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; min-width: 80px; box-shadow: 0 3px 8px rgba(0,0,0,0.06); cursor: pointer; }
+        .tab-box img { width: 38px; height: 38px; object-fit: contain; margin-bottom: 8px; }
+        .tab-box span { font-size: 11px; font-weight: 600; }
+        
+        /* Banner */
+        .banner-container { position: relative; width: 100%; height: 220px; overflow: hidden; margin-bottom: 10px; background: #111; }
+        .banner-slider { display: flex; height: 100%; transition: transform 0.5s ease-in-out; }
+        .banner-slider img { min-width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Products Grid */
+        .section-title { background: white; padding: 15px; font-size: 18px; font-weight: 700; color: var(--primary-blue); }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; }
+        .card { background: white; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .card-img { width: 100%; height: 160px; object-fit: contain; margin-bottom: 12px; }
+        .card-title { font-size: 13px; margin-bottom: 8px; font-weight: 500; }
+        .card-price { font-size: 16px; font-weight: 700; color: var(--primary-blue); }
+        .card-old { font-size: 12px; color: #999; text-decoration: line-through; margin-left: 5px; }
+        
+        /* BUTTONS (Side by Side) */
+        .card-btn-group { display: flex; gap: 6px; margin-top: auto; padding-top: 10px; }
+        .btn-add-small { flex: 1; background: #ff9f00; color: white; border: none; padding: 8px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; }
+        .btn-buy-small { flex: 1; background: var(--primary-blue); color: white; border: none; padding: 8px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; }
+
+        /* ================= FULL PAGES ================= */
+        .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f1f3f6; z-index: 200; overflow-y: auto; flex-direction: column; }
+        .page-header { display: flex; align-items: center; padding: 15px; background: white; gap: 15px; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .page-header span { font-weight: 600; font-size: 16px; color: #333; }
+        .page-content { padding: 20px; flex: 1; }
+
+        /* Checkout Form */
+        .form-group-full { margin-bottom: 15px; background: white; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
+        .form-group-full label { display: block; font-size: 12px; font-weight: 600; color: #666; margin-bottom: 5px; }
+        .form-group-full input { width: 100%; border: none; outline: none; font-size: 15px; font-weight: 500; color: #333; background: transparent; }
+        .btn-submit-full { width: 100%; padding: 16px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer; }
+
+        /* ================= AUTH (LOGIN/REGISTER) PAGE ================= */
+        #auth-page { background: white; padding-bottom: 100px; /* FIX: Extra space niche taaki button na chhipe */ }
+        .auth-container { padding: 30px 20px; }
+        .auth-header { text-align: center; margin-bottom: 30px; }
+        .auth-header h2 { color: var(--primary-blue); font-size: 24px; margin-bottom: 5px; }
+        .auth-header p { color: #666; font-size: 14px; }
+        .auth-tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 20px; }
+        .auth-tab { flex: 1; text-align: center; padding: 10px; font-weight: 600; color: #888; cursor: pointer; }
+        .auth-tab.active { color: var(--primary-blue); border-bottom: 2px solid var(--primary-blue); margin-bottom: -2px; }
+        .auth-form-group { margin-bottom: 15px; }
+        .auth-form-group label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 5px; }
+        .auth-form-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; outline: none; font-size: 14px; }
+        .auth-form-group input:focus { border-color: var(--primary-blue); }
+        .btn-auth { width: 100%; padding: 14px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; margin-bottom: 20px;}
+
+        /* ================= USER PROFILE PAGE ================= */
+        #profile-page { background: #f1f3f6; padding-bottom: 80px; }
+        .prof-header { background: linear-gradient(135deg, #0b2240, #1a3b66); padding: 30px 20px 50px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; position: relative; }
+        .prof-user { display: flex; align-items: center; gap: 18px; position: relative; z-index: 2; }
+        .prof-avatar { width: 65px; height: 65px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 28px; color: var(--primary-blue); font-weight: bold; border: 3px solid var(--accent-gold); }
+        .prof-info h3 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+        .prof-info p { font-size: 13px; color: #ccc; }
+        
+        .prof-stats { display: flex; justify-content: space-around; background: white; margin: -25px 20px 20px 20px; padding: 15px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); position: relative; z-index: 3; }
+        .prof-stat-item { text-align: center; cursor: pointer; }
+        .prof-stat-item h4 { font-size: 18px; color: var(--primary-blue); margin-bottom: 2px; }
+        .prof-stat-item p { font-size: 11px; color: #777; font-weight: 500; }
+        
+        .prof-menu-container { padding: 0 20px; }
+        .prof-menu-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 20px; }
+        .prof-list-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+        .prof-list-item:last-child { border-bottom: none; }
+        .prof-list-left { display: flex; align-items: center; gap: 15px; }
+        .prof-list-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .prof-list-text { font-size: 15px; font-weight: 500; color: #333; }
+
+        /* Profile Sub-Pages (Orders, Wishlist) */
+        #orders-page, #wishlist-page { background: #f1f3f6; padding-bottom: 80px; }
+        .sub-page-content { padding: 15px; }
+        .order-card { background: white; border-radius: 8px; padding: 15px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; font-size: 12px; color: #666; }
+        .order-status { color: #388e3c; font-weight: bold; }
+        .order-item { display: flex; gap: 10px; margin-bottom: 10px; }
+        .order-item img { width: 50px; height: 50px; object-fit: contain; }
+        .wishlist-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; z-index: 500; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #888; cursor: pointer; }
+        .nav-item.active { color: var(--primary-blue); font-weight: 700; }
+        .nav-item svg { width: 24px; height: 24px; fill: currentColor; margin-bottom: 3px; }
+
+        .cart-modal { position: fixed; top: 0; left: 100%; width: 100%; height: 100%; background: #f1f3f6; z-index: 1000; transition: left 0.3s; display: flex; flex-direction: column; }
+        .cart-modal.open { left: 0; }
+        .cart-header { padding: 15px; background: white; display: flex; gap: 15px; font-weight: bold; align-items: center; border-bottom: 1px solid #eee; }
+        .cart-scroll-area { flex: 1; overflow-y: auto; padding-bottom: 80px; } 
+        .cart-items-container { padding: 15px; }
+        .cart-item { display: flex; gap: 15px; background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .cart-item img { width: 70px; height: 70px; object-fit: contain; }
+        .cart-price-details { background: white; padding: 15px 20px; margin: 0 15px 15px 15px; border-radius: 8px; }
+        .price-row.total { font-weight: 700; font-size: 16px; border-top: 1px dashed #ddd; padding-top: 10px; margin-top: 10px; color: var(--primary-blue); display: flex; justify-content: space-between;}
+        
+        /* Cart Similar Products */
+        .cart-similar-section { padding: 0 15px 20px 15px; }
+        .cart-similar-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #333; }
+        .cart-similar-scroll { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
+        .cart-sim-card { min-width: 130px; background: white; padding: 10px; border-radius: 8px; cursor: pointer; }
+        .cart-sim-card img { width: 100%; height: 100px; object-fit: contain; margin-bottom: 8px; }
+        .cart-sim-card-title { font-size: 12px; color: #333; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cart-sim-card-price { font-size: 14px; font-weight: 700; color: var(--primary-blue); }
+
+        .cart-footer { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px; background: white; border-top: 1px solid #eee; z-index: 1001; }
+        .btn-pay { width: 100%; padding: 16px; background: #ffb300; color: white; border: none; font-weight: bold; border-radius: 8px; font-size: 16px; }
+
+        /* Modals */
+        .overlay-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; }
+        .overlay-modal.open { display: flex; }
+        .modal-content { background: white; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; position: relative;}
+        .modal-title { font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-bottom: 15px; }
+        .qr-img { width: 200px; height: 200px; margin: 15px auto; border: 2px solid #eee; padding: 10px; border-radius: 8px; }
+        .btn-success { width: 100%; padding: 12px; background: #388e3c; color: white; border: none; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        .success-icon { width: 80px; height: 80px; background: #e8f5e9; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; }
+        .success-icon svg { width: 40px; height: 40px; fill: #43a047; }
+        .fireworks-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: -1; border-radius: 12px;}
+        .particle { position: absolute; width: 8px; height: 8px; border-radius: 50%; animation: explode 1s ease-out infinite; opacity: 0; }
+        @keyframes explode { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <!-- HOME PAGE -->
+    <div id="home-page">
+        <div class="header">
+            <div class="header-top">
+                <div>
+                    <div class="logo-text">Diwali Celebration</div>
+                    <div class="logo-sub">Explore Plus ⭐</div>
+                </div>
+                <div class="header-icons">
+                    <svg onclick="handleProfileClick()" width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <svg onclick="openCart()" width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                </div>
+            </div>
+            <div class="location-bar"><svg width="14" height="14" viewBox="0 0 24 24" fill="#ffb300"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> 110006 <span>Select delivery location ></span></div>
+            <div class="search-container">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#666"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" placeholder="Search for Products...">
+            </div>
+        </div>
+
+        <div class="top-tabs">
+            <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/2662/2662503.png"><span>Minutes</span></div>
+            <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/7893/7893979.png"><span>Travel</span></div>
+            <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/2693/2693505.png"><span>Value 365</span></div>
+            <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/10706/10706442.png"><span>Gifts</span></div>
+        </div>
+
+        <div class="banner-container">
+            <div class="banner-slider" id="slider"></div>
+        </div>
+
+        <div class="section-title">Big Diwali Shopping Utsav</div>
+        <div id="dynamicContent"></div>
+    </div>
+
+    <!-- AUTHENTICATION (LOGIN/REGISTER) PAGE -->
+    <div id="auth-page" class="full-page">
+        <div class="page-header">
+            <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <span>Account</span>
+        </div>
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Welcome to Diwali Celebration</h2>
+                <p>Login or create an account to continue</p>
+            </div>
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</div>
+                <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Register</div>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="auth-form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" required placeholder="Enter email">
+                </div>
+                <div class="auth-form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn-auth">Login</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
+                <div class="auth-form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="regName" required placeholder="Enter your name">
+                </div>
+                <div class="auth-form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="regPhone" required placeholder="Enter phone number">
+                </div>
+                <div class="auth-form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="regEmail" required placeholder="Enter email">
+                </div>
+                <div class="auth-form-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" required placeholder="Create password">
+                </div>
+                <button type="submit" class="btn-auth">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- USER PROFILE PAGE -->
+    <div id="profile-page" class="full-page">
+        <div class="prof-header">
+            <div class="prof-user">
+                <div class="prof-avatar" id="profAvatar">U</div>
+                <div class="prof-info">
+                    <h3 id="profName">User Name</h3>
+                    <p id="profEmail">user@example.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="prof-stats">
+            <div class="prof-stat-item" onclick="openOrders()"><h4 id="statOrders">0</h4><p>Orders</p></div>
+            <div class="prof-stat-item" onclick="openWishlist()"><h4 id="statWishlist">0</h4><p>Wishlist</p></div>
+            <div class="prof-stat-item"><h4>0</h4><p>Coupons</p></div>
+        </div>
+        
+        <div class="prof-menu-container">
+            <div class="prof-menu-card">
+                <div class="prof-list-item" onclick="openOrders()">
+                    <div class="prof-list-left">
+                        <div class="prof-list-icon" style="background:#e3f2fd; color:#1976d2;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
+                        <div class="prof-list-text">My Orders</div>
+                    </div>
+                </div>
+                <div class="prof-list-item" onclick="openWishlist()">
+                    <div class="prof-list-left">
+                        <div class="prof-list-icon" style="background:#ffebee; color:#e53935;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+                        <div class="prof-list-text">My Wishlist</div>
+                    </div>
+                </div>
+                <div class="prof-list-item" onclick="alert('Settings Page')">
+                    <div class="prof-list-left">
+                        <div class="prof-list-icon" style="background:#e8f5e9; color:#43a047;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></div>
+                        <div class="prof-list-text">Account Settings</div>
+                    </div>
+                </div>
+                <div class="prof-list-item" onclick="handleLogout()">
+                    <div class="prof-list-left">
+                        <div class="prof-list-icon" style="background:#ffebee; color:#d32f2f;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg></div>
+                        <div class="prof-list-text" style="color:#d32f2f;">Logout</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDERS PAGE -->
+    <div id="orders-page" class="full-page">
+        <div class="page-header">
+            <svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <span>My Orders</span>
+        </div>
+        <div class="sub-page-content" id="ordersList">
+            <!-- Orders render here -->
+        </div>
+    </div>
+
+    <!-- WISHLIST PAGE -->
+    <div id="wishlist-page" class="full-page">
+        <div class="page-header">
+            <svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <span>My Wishlist</span>
+        </div>
+        <div class="sub-page-content">
+            <div class="wishlist-grid" id="wishlistGrid">
+                <!-- Wishlist items render here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT FORM FULL PAGE -->
+    <div id="checkout-page" class="full-page">
+        <div class="page-header">
+            <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <span>Delivery Address</span>
+        </div>
+        <div class="page-content">
+            <form id="checkoutForm" onsubmit="processPayment(event)">
+                <div class="form-group-full"><label>Full Name</label><input type="text" id="chkName" required placeholder="Enter your name"></div>
+                <div class="form-group-full"><label>Flat, House no., Building</label><input type="text" required placeholder="Enter address"></div>
+                <div class="form-group-full"><label>Area, Street, Sector, Village</label><input type="text" required placeholder="Enter area details"></div>
+                <div class="form-group-full" style="display:flex; gap:10px;">
+                    <div style="flex:1;"><label>State</label><input type="text" required placeholder="State"></div>
+                    <div style="flex:1;"><label>PIN Code</label><input type="number" required placeholder="110006"></div>
+                </div>
+                <button type="submit" class="btn-submit-full" style="background:#ffb300;">Proceed to Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CATEGORY PAGE -->
+    <div id="category-page" class="full-page">
+        <div class="page-header">
+            <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <span>All Categories</span>
+        </div>
+        <div class="cat-layout" style="display:flex; flex:1; overflow:hidden; background:#f1f3f6;">
+            <div style="width:100px; background:#f8f9fa; border-right:1px solid #eee;">
+                <div class="cat-menu-item active" style="padding:18px 10px; text-align:center; font-size:13px; color:var(--primary-blue); font-weight:700; border-left:3px solid var(--accent-gold); background:white;" onclick="switchCategory('patake', this)">Patake</div>
+                <div class="cat-menu-item" style="padding:18px 10px; text-align:center; font-size:13px; color:#666; font-weight:500; border-left:3px solid transparent; cursor:pointer;" onclick="switchCategory('clothes', this)">Clothes</div>
+            </div>
+            <div style="flex:1; padding:10px; overflow-y:auto;">
+                <div class="grid" id="categoryGrid" style="padding:0;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART MODAL -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <svg onclick="closeCart()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> My Cart
+        </div>
+        <div class="cart-scroll-area">
+            <div class="cart-items-container" id="cartList"></div>
+            <div class="cart-price-details">
+                <div class="price-row total"><span>Total Amount</span><span id="cartTotal">₹0</span></div>
+            </div>
+            <!-- Similar Products in Cart -->
+            <div class="cart-similar-section">
+                <div class="cart-similar-title">Similar Products</div>
+                <div class="cart-similar-scroll" id="cartSimilarList"></div>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <button class="btn-pay" onclick="initiateCartCheckout()">Pay Now</button>
+        </div>
+    </div>
+
+    <!-- QR SCANNER MODAL -->
+    <div class="overlay-modal" id="qrModal">
+        <div class="modal-content">
+            <div class="modal-title">Scan to Pay</div>
+            <p style="font-size:13px; color:#666;">Scan this QR code with any UPI App</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=diwali@upi&pn=DiwaliShop&am=500" class="qr-img" alt="QR Code">
+            <button class="btn-success" onclick="paymentSuccess()">I have Paid</button>
+            <button style="background:none; border:none; margin-top:10px; color:#d32f2f; cursor:pointer;" onclick="closeModal('qrModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div class="overlay-modal" id="successModal">
+        <div class="modal-content" style="overflow:hidden;">
+            <div class="fireworks-container" id="fireworks"></div>
+            <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+            <div class="modal-title" style="color:#388e3c; font-size:22px;">Payment Successful!</div>
+            <p style="color:#666; margin-bottom:20px;">Aapka order successfully place ho gaya hai. Happy Diwali! 🎇</p>
+            <button class="btn-submit-full" onclick="closeModal('successModal'); goHome();">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <div class="nav-item active" id="nav-home" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</div>
+        <div class="nav-item" id="nav-cat" onclick="openCategoriesPage()"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories</div>
+        <div class="nav-item" id="nav-acc" onclick="handleProfileClick()"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Account</div>
+        <div class="nav-item" onclick="openCart()"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart</div>
+    </div>
+
+    <script>
+        let allProducts = [];
+        let allBanners = [];
+        let cart = [];
+        let currentUser = null;
+        const API_URL = "http://localhost:5000";
+
+        // LocalStorage Helpers
+        function getCart() { return JSON.parse(localStorage.getItem('diwali_cart')) || []; }
+        function saveCart(c) { localStorage.setItem('diwali_cart', JSON.stringify(c)); }
+        function getUsers() { return JSON.parse(localStorage.getItem('users')) || []; }
+        function saveUsers(u) { localStorage.setItem('users', JSON.stringify(u)); }
+
+        async function loadData() {
+            try {
+                const [prodRes, bannerRes] = await Promise.all([
+                    fetch(`${API_URL}/api/products`),
+                    fetch(`${API_URL}/api/banners`)
+                ]);
+                allProducts = await prodRes.json();
+                allBanners = await bannerRes.json();
+                renderHomePage(allProducts);
+                renderTopBanners();
+                
+                cart = getCart();
+                updateCartUI();
+                checkAuthState();
+            } catch (e) { console.error(e); }
+        }
+
+        function renderTopBanners() {
+            const slider = document.getElementById('slider');
+            slider.innerHTML = allBanners.map(b => `<img src="${b.imageUrl}">`).join('');
+            if(allBanners.length <= 1) return;
+            let idx = 0;
+            setInterval(() => {
+                idx = (idx + 1) % allBanners.length;
+                slider.style.transform = `translateX(-${idx * 100}%)`;
+            }, 3000);
+        }
+
+        function openProductPage(id) { window.location.href = `/product.html?id=${id}`; }
+
+        function buyNowDirect(id) {
+            if(!currentUser) return alert("Please login first to place an order.");
+            const p = allProducts.find(x => x._id === id);
+            if(p.category === 'clothes') {
+                alert("Please open the product page to select a size before buying.");
+                return openProductPage(id);
+            }
+            cart = getCart();
+            const exist = cart.find(x => x._id === id && x.size === "N/A");
+            if(!exist) { cart.push({...p, qty: 1, size: "N/A"}); saveCart(cart); }
+            window.location.href = 'index.html?checkout=true';
+        }
+
+        function renderHomePage(products) {
+            const container = document.getElementById('dynamicContent');
+            container.innerHTML = products.length === 0 ? '<p style="text-align:center; padding:20px;">No products found.</p>' : '';
+            let html = `<div class="grid">`;
+            products.forEach(p => {
+                html += `
+                    <div class="card">
+                        <img src="${p.imageUrl}" class="card-img" onclick="openProductPage('${p._id}')">
+                        <div class="card-title" onclick="openProductPage('${p._id}')">${p.name}</div>
+                        <div onclick="openProductPage('${p._id}')"><span class="card-price">₹${p.price}</span><span class="card-old">₹${p.oldPrice}</span></div>
+                        <div class="card-btn-group">
+                            <button class="btn-add-small" onclick="event.stopPropagation(); openProductPage('${p._id}')">Add to Cart</button>
+                            <button class="btn-buy-small" onclick="event.stopPropagation(); buyNowDirect('${p._id}')">Buy Now</button>
+                        </div>
+                    </div>`;
+            });
+            html += `</div>`;
+            container.innerHTML += html;
+        }
+
+        function openCategoriesPage() {
+            document.getElementById('home-page').style.display = 'none';
+            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+            document.getElementById('category-page').style.display = 'flex';
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-cat').classList.add('active');
+            switchCategory('patake', document.querySelector('.cat-menu-item'));
+        }
+
+        function switchCategory(cat, el) {
+            document.querySelectorAll('.cat-menu-item').forEach(c => {
+                c.classList.remove('active');
+                c.style.color = '#666'; c.style.fontWeight = '500'; c.style.borderLeftColor = 'transparent'; c.style.background = 'transparent';
+            });
+            el.classList.add('active');
+            el.style.color = 'var(--primary-blue)'; el.style.fontWeight = '700'; el.style.borderLeftColor = 'var(--accent-gold)'; el.style.background = 'white';
+            
+            const filtered = allProducts.filter(p => p.category === cat);
+            const grid = document.getElementById('categoryGrid');
+            if(filtered.length === 0) { grid.innerHTML = '<p style="grid-column: span 2; text-align:center;">No products found.</p>'; return; }
+            grid.innerHTML = filtered.map(p => `
+                <div class="card">
+                    <img src="${p.imageUrl}" class="card-img" onclick="openProductPage('${p._id}')">
+                    <div class="card-title" onclick="openProductPage('${p._id}')">${p.name}</div>
+                    <div onclick="openProductPage('${p._id}')"><span class="card-price">₹${p.price}</span></div>
+                    <div class="card-btn-group">
+                        <button class="btn-add-small" onclick="event.stopPropagation(); openProductPage('${p._id}')">Add to Cart</button>
+                        <button class="btn-buy-small" onclick="event.stopPropagation(); buyNowDirect('${p._id}')">Buy Now</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- AUTH SYSTEM ---
+        function checkAuthState() {
+            currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        }
+
+        function handleProfileClick() {
+            if(currentUser) {
+                openProfile();
+            } else {
+                document.getElementById('home-page').style.display = 'none';
+                document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+                document.getElementById('auth-page').style.display = 'flex';
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                document.getElementById('nav-acc').classList.add('active');
+            }
+        }
+
+        function switchAuthTab(tab) {
+            document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+            document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const phone = document.getElementById('regPhone').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            let users = getUsers();
+            if(users.find(u => u.email === email)) return alert("Email already registered!");
+
+            users.push({ name, phone, email, password });
+            saveUsers(users);
+            alert("✅ Registration Successful! Please login.");
+            switchAuthTab('login');
+            document.getElementById('loginEmail').value = email;
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            let users = getUsers();
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if(user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                currentUser = user;
+                alert("✅ Login Successful!");
+                openProfile();
+            } else {
+                alert("❌ Invalid email or password!");
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            alert("Logged out successfully!");
+            goHome();
+        }
+
+        // --- PROFILE & SUB-PAGES ---
+        function openProfile() {
+            document.getElementById('home-page').style.display = 'none';
+            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+            document.getElementById('profile-page').style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-acc').classList.add('active');
+
+            // Load Profile Data
+            document.getElementById('profName').innerText = currentUser.name;
+            document.getElementById('profEmail').innerText = currentUser.email;
+            document.getElementById('profAvatar').innerText = currentUser.name.charAt(0).toUpperCase();
+
+            // Load Stats
+            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
+            let wishlist = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || [];
+            document.getElementById('statOrders').innerText = orders.length;
+            document.getElementById('statWishlist').innerText = wishlist.length;
+        }
+
+        function openOrders() {
+            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+            document.getElementById('orders-page').style.display = 'flex';
+
+            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
+            const container = document.getElementById('ordersList');
+            
+            if(orders.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#777; margin-top:20px;">No orders yet!</p>';
+                return;
+            }
+
+            container.innerHTML = orders.map(order => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <span>Order ID: ${order.id}</span>
+                        <span class="order-status">${order.status}</span>
+                    </div>
+                    <div style="font-size:12px; color:#666; margin-bottom:10px;">Date: ${order.date}</div>
+                    ${order.items.map(item => `
+                        <div class="order-item">
+                            <img src="${item.imageUrl}">
+                            <div>
+                                <div style="font-size:14px; font-weight:600;">${item.name}</div>
+                                <div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div>
+                                <div style="font-size:14px; font-weight:700; color:var(--primary-blue);">₹${item.price * item.qty}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div style="text-align:right; font-weight:bold; margin-top:10px; border-top:1px solid #eee; padding-top:10px;">Total: ₹${order.total}</div>
+                </div>
+            `).join('');
+        }
+
+        function openWishlist() {
+            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+            document.getElementById('wishlist-page').style.display = 'flex';
+
+            let wishlistIds = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || [];
+            const container = document.getElementById('wishlistGrid');
+            
+            if(wishlistIds.length === 0) {
+                container.innerHTML = '<p style="grid-column: span 2; text-align:center; color:#777; margin-top:20px;">Your wishlist is empty!</p>';
+                return;
+            }
+
+            // Filter products that are in wishlist
+            const wishlistProducts = allProducts.filter(p => wishlistIds.includes(p._id));
+            
+            container.innerHTML = wishlistProducts.map(p => `
+                <div class="card" onclick="openProductPage('${p._id}')">
+                    <img src="${p.imageUrl}" class="card-img">
+                    <div class="card-title">${p.name}</div>
+                    <div><span class="card-price">₹${p.price}</span></div>
+                    <button class="btn-add-small" style="margin-top:10px; width:100%;" onclick="event.stopPropagation(); openProductPage('${p._id}')">View Product</button>
+                </div>
+            `).join('');
+        }
+
+        // --- CART ---
+        function updateCartUI() {
+            cart = getCart();
+            const list = document.getElementById('cartList');
+            let totalPrice = 0;
+            list.innerHTML = '';
+            if(cart.length === 0) { list.innerHTML = '<p style="text-align:center; padding:20px; color:#777;">Your cart is empty.</p>'; } 
+            else {
+                cart.forEach((item, index) => {
+                    totalPrice += item.price * item.qty;
+                    list.innerHTML += `
+                        <div class="cart-item">
+                            <img src="${item.imageUrl}">
+                            <div style="flex:1;">
+                                <div style="font-size:14px; font-weight:600; color:#333;">${item.name}</div>
+                                <div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div>
+                                <div style="font-weight:700; margin-top:5px; color:var(--primary-blue);">₹${item.price * item.qty}</div>
+                            </div>
+                            <button onclick="removeFromCart(${index})" style="border:none; background:none; color:red; font-size:12px;">Remove</button>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('cartTotal').innerText = `₹${totalPrice}`;
+            
+            // Render Similar Products in Cart
+            const similar = allProducts.filter(p => !cart.find(c => c._id === p._id)).slice(0, 4);
+            document.getElementById('cartSimilarList').innerHTML = similar.length === 0 ? '<p style="font-size:12px; color:#777;">No other products.</p>' : similar.map(p => `
+                <div class="cart-sim-card" onclick="closeCart(); openProductPage('${p._id}')">
+                    <img src="${p.imageUrl}">
+                    <div class="cart-sim-card-title">${p.name}</div>
+                    <div class="cart-sim-card-price">₹${p.price}</div>
+                </div>
+            `).join('');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart(cart);
+            updateCartUI();
+        }
+
+        function openCart() { document.getElementById('cartModal').classList.add('open'); updateCartUI(); }
+        function closeCart() { document.getElementById('cartModal').classList.remove('open'); }
+
+        // --- CHECKOUT FLOW ---
+        function initiateCartCheckout() {
+            if(cart.length === 0) return alert("Cart is empty!");
+            if(!currentUser) {
+                closeCart();
+                alert("Please login first to place an order.");
+                return handleProfileClick();
+            }
+            closeCart();
+            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+            document.getElementById('checkout-page').style.display = 'flex';
+        }
+
+        function checkUrlForCheckout() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('checkout') === 'true') {
+                window.history.replaceState({}, document.title, window.location.pathname);
+                if(!currentUser) {
+                    alert("Please login first to place an order.");
+                    return handleProfileClick();
+                }
+                document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+                document.getElementById('checkout-page').style.display = 'flex';
+            }
+        }
+
+        function processPayment(e) {
+            e.preventDefault();
+            document.getElementById('checkout-page').style.display = 'none';
+            document.getElementById('qrModal').classList.add('open');
+        }
+
+        function paymentSuccess() {
+            closeModal('qrModal');
+            
+            // Save Order to User Profile
+            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
+            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            orders.unshift({
+                id: 'ORD' + Date.now(),
+                date: new Date().toLocaleDateString(),
+                items: cart,
+                total: totalAmount,
+                status: 'Delivered'
+            });
+            localStorage.setItem('orders_' + currentUser.email, JSON.stringify(orders));
+
+            document.getElementById('successModal').classList.add('open');
+            createFireworks();
+            cart = []; 
+            saveCart(cart);
+            updateCartUI();
+        }
+
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+        function createFireworks() {
+            const container = document.getElementById('fireworks');
+            container.innerHTML = '';
+            const colors = ['#ff0000', '#ffb300', '#00ff00', '#00bfff', '#ff00ff'];
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 100 + 50;
+                particle.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+                particle.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                container.appendChild(particle);
+            }
+        }
+
+        // --- NAVIGATION ---
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Init
+        loadData();
+        checkUrlForCheckout();
+    </script>
+</body>
+</html>

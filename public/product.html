@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Product Details - Diwali Celebration</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        :root { --primary-blue: #0b2240; --accent-gold: #ffb300; --bg-color: #f1f3f6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); overflow-x: hidden; padding-bottom: 80px; }
+        
+        /* Header */
+        .pd-header { display: flex; align-items: center; padding: 15px; background: white; gap: 15px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .pd-header span { font-weight: 600; font-size: 16px; color: #333; }
+        
+        /* Image Section */
+        .pd-image-section { background: white; position: relative; display: flex; flex-direction: column; align-items: center; padding: 20px 0 10px 0; }
+        .pd-main-image-container { width: 100%; height: 350px; display: flex; justify-content: center; align-items: center; background: #fafafa; }
+        .pd-main-image { max-width: 100%; max-height: 100%; object-fit: contain; transition: opacity 0.3s; }
+        .pd-slider-dots { display: flex; gap: 8px; margin-top: 15px; }
+        .pd-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; cursor: pointer; transition: 0.3s; }
+        .pd-dot.active { background: var(--primary-blue); width: 20px; border-radius: 4px; }
+        
+        /* Like & Share */
+        .pd-floating-icons { position: absolute; top: 20px; right: 15px; display: flex; flex-direction: column; gap: 15px; z-index: 5; }
+        .pd-float-icon { background: white; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer; transition: 0.2s; }
+        .pd-float-icon.liked svg { fill: #e53935; stroke: #e53935; }
+
+        /* Details */
+        .pd-details { background: white; padding: 20px; margin-top: 8px; }
+        .pd-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #212121; }
+        .pd-rating-row { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .pd-rating { background: #388e3c; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .pd-desc { font-size: 14px; color: #666; margin-bottom: 20px; line-height: 1.5; }
+        .pd-price-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .pd-price { font-size: 28px; font-weight: 700; color: var(--primary-blue); }
+        .pd-old-price { font-size: 16px; color: #999; text-decoration: line-through; }
+        .pd-discount { font-size: 18px; color: #388e3c; font-weight: 700; }
+
+        /* Size Selector */
+        .pd-size-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee; display: none; }
+        .pd-size-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; color: #333; }
+        .pd-size-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .pd-size-btn { border: 1px solid #ccc; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; background: white; transition: 0.2s; }
+        .pd-size-btn.active { border: 2px solid var(--primary-blue); color: var(--primary-blue); background: #e6f0ff; }
+
+        /* Highlights & Specs */
+        .pd-highlights { margin-bottom: 20px; }
+        .pd-highlight-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: #333; }
+        .pd-highlight-list { list-style: none; font-size: 13px; color: #555; }
+        .pd-highlight-list li { margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .pd-highlight-list li::before { content: '✓'; color: #388e3c; font-weight: bold; }
+
+        /* Offers & Policy */
+        .pd-offer-box { border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .pd-offer-title { font-size: 15px; font-weight: 700; color: #2874f0; margin-bottom: 10px; }
+        .pd-offer-item { font-size: 13px; color: #444; margin-bottom: 8px; }
+        
+        .pd-delivery-box { border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .pd-delivery-title { font-weight: 700; margin-bottom: 12px; color: #333; font-size: 15px;}
+        .pd-delivery-text { font-size: 14px; color: #444; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+
+        .pd-policy-box { border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 20px; background: #fafafa; }
+        .pd-policy-title { font-size: 15px; font-weight: 700; color: #333; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .pd-policy-text { font-size: 13px; color: #555; line-height: 1.5; }
+
+        /* Similar Products */
+        .pd-similar-section { padding: 15px; background: white; margin-top: 8px; border-top: 8px solid #f1f3f6; }
+        .pd-similar-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #333; }
+        .pd-similar-scroll { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
+        .pd-similar-scroll::-webkit-scrollbar { display: none; }
+        .pd-sim-card { min-width: 130px; background: #f9f9f9; padding: 10px; border-radius: 8px; cursor: pointer; border: 1px solid #eee; }
+        .pd-sim-card img { width: 100%; height: 100px; object-fit: contain; margin-bottom: 8px; }
+        .pd-sim-card-title { font-size: 12px; color: #333; font-weight: 500; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .pd-sim-card-price { font-size: 14px; font-weight: 700; color: var(--primary-blue); }
+
+        /* STICKY BOTTOM BAR */
+        .sticky-buy-bar { position: fixed; bottom: 0; left: 0; width: 100%; display: flex; background: white; z-index: 999; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); height: 65px; }
+        .btn-cart { flex: 1; padding: 15px; font-weight: 700; font-size: 16px; border: none; background: #ff9f00; color: white; cursor: pointer; border-right: 1px solid #eee; }
+        .btn-buy { flex: 1; padding: 15px; font-weight: 700; font-size: 16px; border: none; background: var(--primary-blue); color: white; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="pd-header">
+        <svg onclick="window.location.href='index.html'" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        <span>Product Details</span>
+    </div>
+    
+    <!-- Image Section -->
+    <div class="pd-image-section">
+        <div class="pd-main-image-container">
+            <img id="pdMainImage" class="pd-main-image" src="">
+        </div>
+        <div class="pd-slider-dots" id="pdSliderDots"></div>
+        
+        <div class="pd-floating-icons">
+            <div class="pd-float-icon" id="likeBtn" onclick="toggleLike()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            </div>
+            <div class="pd-float-icon" onclick="shareProduct()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details -->
+    <div class="pd-details">
+        <div class="pd-title" id="pdTitle">Loading...</div>
+        <div class="pd-rating-row"><span class="pd-rating">4.3 ★</span><span style="font-size:12px; color:#888;">1,234 Ratings & 567 Reviews</span></div>
+        <div class="pd-desc" id="pdDesc"></div>
+        
+        <div class="pd-price-row">
+            <span class="pd-price" id="pdPrice"></span>
+            <span class="pd-old-price" id="pdOldPrice"></span>
+            <span class="pd-discount" id="pdDiscount"></span>
+        </div>
+
+        <div class="pd-size-section" id="pdSizeSection">
+            <div class="pd-size-title">Select Size</div>
+            <div class="pd-size-options" id="pdSizeOptions"></div>
+        </div>
+
+        <div class="pd-highlights">
+            <div class="pd-highlight-title">Product Highlights</div>
+            <ul class="pd-highlight-list">
+                <li>Premium Quality Material</li>
+                <li>Perfect for Diwali & Festive Season</li>
+                <li>100% Genuine Product</li>
+                <li>Exclusive Diwali Collection</li>
+            </ul>
+        </div>
+
+        <div class="pd-offer-box">
+            <div class="pd-offer-title">Available Offers</div>
+            <div class="pd-offer-item"><span style="color:#388e3c;font-weight:bold;">Bank Offer</span> 10% instant discount on HDFC Bank Cards</div>
+            <div class="pd-offer-item"><span style="color:#388e3c;font-weight:bold;">Special Price</span> Get extra 5% off on your first order</div>
+        </div>
+
+        <div class="pd-delivery-box">
+            <div class="pd-delivery-title">Delivery & Services</div>
+            <div class="pd-delivery-text">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#333"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg>
+                Delivery by <b>25 Oct, Sun</b> | <span style="color:#388e3c;">Free Delivery</span>
+            </div>
+            <div class="pd-delivery-text">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#333"><path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7z"/></svg>
+                10-Day Return Policy
+            </div>
+        </div>
+
+        <div class="pd-policy-box">
+            <div class="pd-policy-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffb300"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                Return & Refund Policy
+            </div>
+            <div class="pd-policy-text">This item is eligible for <b>FREE 10-Day Return</b>. You can return it within 10 days of delivery for a full refund. No questions asked!</div>
+        </div>
+    </div>
+
+    <!-- Similar Products Section -->
+    <div class="pd-similar-section">
+        <div class="pd-similar-title">Similar Products</div>
+        <div class="pd-similar-scroll" id="pdSimilarList"></div>
+    </div>
+
+    <!-- Sticky Bottom Bar -->
+    <div class="sticky-buy-bar">
+        <button class="btn-cart" onclick="addToCart()">Add to cart</button>
+        <button class="btn-buy" onclick="buyNow()">Buy Now</button>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:5000";
+        let product = null;
+        let selectedSize = "";
+        let productImages = [];
+        let currentImageIndex = 0;
+        let slideInterval = null;
+        let isLiked = false;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        async function loadProduct() {
+            if(!productId) return window.location.href = 'index.html';
+            try {
+                const res = await fetch(`${API_URL}/api/products`);
+                const allProducts = await res.json();
+                product = allProducts.find(p => p._id === productId);
+                if(!product) return alert("Product not found!");
+                
+                renderProduct(allProducts);
+                checkWishlistStatus();
+            } catch(e) { console.error(e); }
+        }
+
+        function renderProduct(allProducts) {
+            document.getElementById('pdTitle').innerText = product.name;
+            document.getElementById('pdDesc').innerText = product.description || "No description available.";
+            document.getElementById('pdPrice').innerText = `₹${product.price}`;
+            document.getElementById('pdOldPrice').innerText = `₹${product.oldPrice}`;
+            const discount = Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100);
+            document.getElementById('pdDiscount').innerText = `${discount}% off`;
+
+            if(product.category === 'clothes') {
+                document.getElementById('pdSizeSection').style.display = 'block';
+                const sizes = ['XS', 'S', 'M', 'L', 'XL', '2XL'];
+                document.getElementById('pdSizeOptions').innerHTML = sizes.map(s => `<div class="pd-size-btn" onclick="selectSize('${s}', this)">${s}</div>`).join('');
+            }
+
+            productImages = [product.imageUrl, ...(product.additionalImages || [])];
+            document.getElementById('pdSliderDots').innerHTML = productImages.map((_, i) => `<div class="pd-dot ${i===0?'active':''}" onclick="goToImage(${i})"></div>`).join('');
+            updateMainImage();
+
+            if(productImages.length > 1) {
+                slideInterval = setInterval(() => {
+                    currentImageIndex = (currentImageIndex + 1) % productImages.length;
+                    updateMainImage();
+                }, 3000);
+            }
+
+            // Render Similar Products
+            const similar = allProducts.filter(p => p._id !== product._id && p.category === product.category).slice(0, 5);
+            document.getElementById('pdSimilarList').innerHTML = similar.map(p => `
+                <div class="pd-sim-card" onclick="window.location.href='product.html?id=${p._id}'">
+                    <img src="${p.imageUrl}">
+                    <div class="pd-sim-card-title">${p.name}</div>
+                    <div class="pd-sim-card-price">₹${p.price}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectSize(size, el) {
+            document.querySelectorAll('.pd-size-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            selectedSize = size;
+        }
+
+        function updateMainImage() {
+            const img = document.getElementById('pdMainImage');
+            img.style.opacity = 0;
+            setTimeout(() => { img.src = productImages[currentImageIndex]; img.style.opacity = 1; }, 150);
+            const dots = document.querySelectorAll('.pd-dot');
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === currentImageIndex));
+        }
+        
+        function goToImage(index) { currentImageIndex = index; updateMainImage(); }
+
+        // --- WISHLIST LOGIC ---
+        function checkWishlistStatus() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if(!user) return;
+            let wishlist = JSON.parse(localStorage.getItem('wishlist_' + user.email)) || [];
+            if(wishlist.includes(product._id)) {
+                isLiked = true;
+                document.getElementById('likeBtn').classList.add('liked');
+            }
+        }
+
+        function toggleLike() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if(!user) {
+                alert("Please login from the home page to add items to your Wishlist!");
+                return;
+            }
+            
+            let wishlist = JSON.parse(localStorage.getItem('wishlist_' + user.email)) || [];
+            const btn = document.getElementById('likeBtn');
+
+            if(wishlist.includes(product._id)) {
+                wishlist = wishlist.filter(id => id !== product._id);
+                isLiked = false;
+                btn.classList.remove('liked');
+            } else {
+                wishlist.push(product._id);
+                isLiked = true;
+                btn.classList.add('liked');
+                alert("❤️ Added to Wishlist!");
+            }
+            localStorage.setItem('wishlist_' + user.email, JSON.stringify(wishlist));
+        }
+
+        function shareProduct() {
+            if (navigator.share) {
+                navigator.share({ title: product.name, url: window.location.href }).catch(console.error);
+            } else { alert("Link copied!"); }
+        }
+
+        // --- CART & BUY LOGIC ---
+        function getCart() { return JSON.parse(localStorage.getItem('diwali_cart')) || []; }
+        function saveCart(cart) { localStorage.setItem('diwali_cart', JSON.stringify(cart)); }
+
+        function addToCart() {
+            if(product.category === 'clothes' && !selectedSize) return alert("Please select a size first!");
+            let cart = getCart();
+            const exist = cart.find(item => item._id === product._id && item.size === (selectedSize || "N/A"));
+            
+            if(exist) exist.qty++;
+            else cart.push({ ...product, qty: 1, size: selectedSize || "N/A" });
+            
+            saveCart(cart);
+            alert("✅ Added to cart successfully!");
+        }
+
+        function buyNow() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if(!user) return alert("Please login first from the home page to place an order!");
+
+            if(product.category === 'clothes' && !selectedSize) return alert("Please select a size first!");
+
+            let cart = getCart();
+            const exist = cart.find(item => item._id === product._id && item.size === (selectedSize || "N/A"));
+            if(!exist) {
+                cart.push({ ...product, qty: 1, size: selectedSize || "N/A" });
+                saveCart(cart);
+            }
+            window.location.href = 'index.html?checkout=true';
+        }
+
+        loadProduct();
+    </script>
+</body>
+</html>

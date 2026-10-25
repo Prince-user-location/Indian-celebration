@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #f8fafc; color: #333; padding-bottom: 50px;}
+        
+        /* Top Header */
+        .top-header { background: white; padding: 20px; border-bottom: 1px solid #e2e8f0; }
+        .top-header h2 { font-size: 22px; font-weight: 700; color: #1e293b; }
+        .top-header p { font-size: 13px; color: #64748b; margin-top: 4px; }
+
+        /* Tabs */
+        .tabs-container { display: flex; background: white; border-bottom: 1px solid #e2e8f0; padding: 0 20px; gap: 20px; overflow-x: auto; }
+        .tab-item { padding: 15px 0; font-size: 14px; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+        .tab-item.active { color: #6366f1; border-bottom-color: #6366f1; }
+
+        /* Content Area */
+        .content-area { padding: 20px; }
+
+        /* Section Header */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .section-title { font-size: 18px; font-weight: 700; color: #1e293b; }
+        .btn-add { background: #6366f1; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+
+        /* List Cards */
+        .list-container { display: flex; flex-direction: column; gap: 15px; }
+        .list-card { background: white; border-radius: 12px; padding: 15px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .list-card-left { display: flex; align-items: center; gap: 15px; flex: 1; overflow: hidden; }
+        .list-card-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0; }
+        .list-card-title { font-size: 15px; font-weight: 700; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .action-btns { display: flex; gap: 8px; flex-shrink: 0; }
+        .btn-edit { background: #f1f5f9; color: #334155; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .btn-del { background: #fee2e2; color: #dc2626; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+        /* Form Modal */
+        .form-modal { display: none; background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .form-modal.active { display: block; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+        input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; }
+        input:focus, select:focus, textarea:focus { border-color: #6366f1; }
+        .btn-save { background: #6366f1; color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .btn-cancel { background: #f1f5f9; color: #475569; width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+
+        #imagePreview { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;}
+        #imagePreview img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #ccc; }
+        
+        .note-text { font-size: 11px; color: #ef4444; margin-top: 5px; display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="top-header">
+        <h2>Diwali Admin Panel</h2>
+        <p>Manage Products, Banners & Orders</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-container">
+        <div class="tab-item active" onclick="switchTab('banner')">Banners</div>
+        <div class="tab-item" onclick="switchTab('patake')">Patake</div>
+        <div class="tab-item" onclick="switchTab('clothes')">Clothes</div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area">
+        
+        <!-- Section Header -->
+        <div class="section-header">
+            <div class="section-title" id="sectionTitle">Banners</div>
+            <button class="btn-add" onclick="showForm()">+ Add New</button>
+        </div>
+
+        <!-- Form -->
+        <div class="form-modal" id="addForm">
+            <form id="itemForm">
+                <input type="hidden" id="itemId">
+                <input type="hidden" id="itemType" value="banner">
+                
+                <div class="form-group" id="nameGroup" style="display:none;">
+                    <label>Product Name</label>
+                    <input type="text" id="pName" placeholder="e.g. Premium Pataka">
+                </div>
+                <div class="form-group" id="priceGroup" style="display:none; gap:10px;">
+                    <div style="flex:1;"><label>Price (₹)</label><input type="number" id="pPrice"></div>
+                    <div style="flex:1;"><label>Old Price (₹)</label><input type="number" id="pOldPrice"></div>
+                </div>
+                <div class="form-group" id="descGroup" style="display:none;">
+                    <label>Description</label>
+                    <textarea id="pDesc" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Image(s)</label>
+                    <input type="file" id="pImageFiles" accept="image/*" multiple>
+                    <div class="note-text" id="imgNote">Note: You can select multiple images (up to 5) at once from gallery for product slider.</div>
+                    <div id="imagePreview"></div>
+                </div>
+
+                <button type="submit" class="btn-save" id="btnSubmit">Save</button>
+                <button type="button" class="btn-cancel" onclick="hideForm()">Cancel</button>
+            </form>
+        </div>
+
+        <!-- List Container -->
+        <div class="list-container" id="listContainer">
+            <!-- Cards load here -->
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:5000";
+        let currentTab = 'banner';
+        let allProducts = [];
+        let allBanners = [];
+
+        // Image Preview
+        document.getElementById('pImageFiles').addEventListener('change', function(e) {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            Array.from(e.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Tab Switching
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('sectionTitle').innerText = tab.charAt(0).toUpperCase() + tab.slice(1);
+            document.getElementById('itemType').value = tab;
+
+            // Show/hide fields
+            if(tab === 'banner') {
+                document.getElementById('nameGroup').style.display = 'none';
+                document.getElementById('priceGroup').style.display = 'none';
+                document.getElementById('descGroup').style.display = 'none';
+                document.getElementById('imgNote').style.display = 'none';
+                document.getElementById('pImageFiles').removeAttribute('multiple');
+            } else {
+                document.getElementById('nameGroup').style.display = 'block';
+                document.getElementById('priceGroup').style.display = 'flex';
+                document.getElementById('descGroup').style.display = 'block';
+                document.getElementById('imgNote').style.display = 'block';
+                document.getElementById('pImageFiles').setAttribute('multiple', 'true');
+            }
+
+            hideForm();
+            loadList();
+        }
+
+        // Load List Data
+        async function loadList() {
+            const container = document.getElementById('listContainer');
+            container.innerHTML = 'Loading...';
+            
+            try {
+                if(currentTab === 'banner') {
+                    const res = await fetch(`${API_URL}/api/banners`);
+                    allBanners = await res.json();
+                    container.innerHTML = allBanners.map((b, i) => `
+                        <div class="list-card">
+                            <div class="list-card-left">
+                                <img src="${b.imageUrl}" class="list-card-img">
+                                <div class="list-card-title">Banner N00${i+1}</div>
+                            </div>
+                            <div class="action-btns">
+                                <button class="btn-edit" onclick="editItem('${b._id}')">Edit</button>
+                                <button class="btn-del" onclick="deleteItem('banner', '${b._id}')">Del</button>
+                            </div>
+                        </div>
+                    `).join('') || '<p>No banners found.</p>';
+                } else {
+                    const res = await fetch(`${API_URL}/api/products`);
+                    allProducts = await res.json();
+                    const filtered = allProducts.filter(p => p.category === currentTab);
+                    
+                    container.innerHTML = filtered.map(p => `
+                        <div class="list-card">
+                            <div class="list-card-left">
+                                <img src="${p.imageUrl}" class="list-card-img">
+                                <div class="list-card-title">${p.name} <br><span style="font-size:11px; color:#666;">₹${p.price}</span></div>
+                            </div>
+                            <div class="action-btns">
+                                <button class="btn-edit" onclick="editItem('${p._id}')">Edit</button>
+                                <button class="btn-del" onclick="deleteItem('product', '${p._id}')">Del</button>
+                            </div>
+                        </div>
+                    `).join('') || '<p>No products found in this category.</p>';
+                }
+            } catch(e) { container.innerHTML = 'Error loading data.'; }
+        }
+
+        // Form Visibility
+        function showForm() { 
+            document.getElementById('addForm').classList.add('active'); 
+        }
+        function hideForm() { 
+            document.getElementById('addForm').classList.remove('active');
+            document.getElementById('itemForm').reset();
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('itemId').value = '';
+            document.getElementById('itemType').value = currentTab;
+        }
+
+        // Add/Edit Form Submit
+        document.getElementById('itemForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('itemId').value;
+            const type = document.getElementById('itemType').value;
+            const formData = new FormData();
+            
+            const fileInput = document.getElementById('pImageFiles');
+            for(let i=0; i<fileInput.files.length; i++) {
+                if(type === 'banner') formData.append('imageFile', fileInput.files[i]); // Single for banner
+                else formData.append('imageFiles', fileInput.files[i]); // Multiple for products
+            }
+
+            if(type === 'banner') {
+                if(!id && fileInput.files.length === 0) return alert("Select banner image");
+                
+                const method = id ? 'PUT' : 'POST';
+                const url = id ? `${API_URL}/api/admin/banner/${id}` : `${API_URL}/api/admin/banner`;
+                await fetch(url, { method: method, body: formData });
+            } else {
+                formData.append('name', document.getElementById('pName').value);
+                formData.append('price', document.getElementById('pPrice').value);
+                formData.append('oldPrice', document.getElementById('pOldPrice').value);
+                formData.append('category', type);
+                formData.append('description', document.getElementById('pDesc').value);
+
+                if(id) {
+                    // Send existing images so they aren't lost
+                    const prod = allProducts.find(p => p._id === id);
+                    let existing = [prod.imageUrl, ...(prod.additionalImages||[])];
+                    formData.append('existingImages', JSON.stringify(existing));
+                    
+                    await fetch(`${API_URL}/api/admin/product/${id}`, { method: 'PUT', body: formData });
+                } else {
+                    if(fileInput.files.length === 0) return alert("Select at least 1 image");
+                    await fetch(`${API_URL}/api/admin/product`, { method: 'POST', body: formData });
+                }
+            }
+            
+            alert("✅ Saved Successfully!");
+            hideForm();
+            loadList();
+        });
+
+        // Edit Item
+        function editItem(id) {
+            showForm();
+            document.getElementById('itemId').value = id;
+            
+            if(currentTab === 'banner') {
+                document.getElementById('nameGroup').style.display = 'none';
+                document.getElementById('priceGroup').style.display = 'none';
+                document.getElementById('descGroup').style.display = 'none';
+            } else {
+                const p = allProducts.find(item => item._id === id);
+                document.getElementById('nameGroup').style.display = 'block';
+                document.getElementById('priceGroup').style.display = 'flex';
+                document.getElementById('descGroup').style.display = 'block';
+                
+                document.getElementById('pName').value = p.name;
+                document.getElementById('pPrice').value = p.price;
+                document.getElementById('pOldPrice').value = p.oldPrice;
+                document.getElementById('pDesc').value = p.description;
+                
+                // Show note about adding new images
+                document.getElementById('imgNote').innerText = "Note: Upload new images only if you want to add/replace. Old images will be kept.";
+                document.getElementById('imgNote').style.display = 'block';
+            }
+            window.scrollTo(0,0);
+        }
+
+        // Delete Item
+        async function deleteItem(type, id) {
+            if(!confirm("Are you sure you want to delete this?")) return;
+            
+            const url = type === 'product' ? `${API_URL}/api/admin/product/${id}` : `${API_URL}/api/admin/banner/${id}`;
+            await fetch(url, { method: 'DELETE' });
+            
+            alert("🗑️ Deleted!");
+            loadList();
+        }
+
+        // Initial Load
+        loadList();
+    </script>
+</body>
+</html>
