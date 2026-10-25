@@ -157,9 +157,7 @@
     </div>
 
     <script>
-        // FIXED API URL FOR RENDER
-        const API_URL = "";
-        
+        const API_URL = ""; // Render ke liye fix
         let product = null;
         let selectedSize = "";
         let productImages = [];
@@ -177,7 +175,6 @@
                 const allProducts = await res.json();
                 product = allProducts.find(p => p._id === productId);
                 if(!product) return alert("Product not found!");
-                
                 renderProduct(allProducts);
                 checkWishlistStatus();
             } catch(e) { console.error(e); }
@@ -250,10 +247,8 @@
                 alert("Please login from the home page to add items to your Wishlist!");
                 return;
             }
-            
             let wishlist = JSON.parse(localStorage.getItem('wishlist_' + user.email)) || [];
             const btn = document.getElementById('likeBtn');
-
             if(wishlist.includes(product._id)) {
                 wishlist = wishlist.filter(id => id !== product._id);
                 isLiked = false;
@@ -280,20 +275,15 @@
             if(product.category === 'clothes' && !selectedSize) return alert("Please select a size first!");
             let cart = getCart();
             const exist = cart.find(item => item._id === product._id && item.size === (selectedSize || "N/A"));
-            
             if(exist) exist.qty++;
             else cart.push({ ...product, qty: 1, size: selectedSize || "N/A" });
-            
             saveCart(cart);
             alert("✅ Added to cart successfully!");
         }
 
+        // FIXED: Buy Now (No login check, goes to checkout)
         function buyNow() {
-            const user = JSON.parse(localStorage.getItem('currentUser'));
-            if(!user) return alert("Please login first from the home page to place an order!");
-
             if(product.category === 'clothes' && !selectedSize) return alert("Please select a size first!");
-
             let cart = getCart();
             const exist = cart.find(item => item._id === product._id && item.size === (selectedSize || "N/A"));
             if(!exist) {
