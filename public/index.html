@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Diwali Celebration</title>
+    <title>Indian Celebration</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         :root { --primary-blue: #0b2240; --accent-gold: #ffb300; --bg-color: #f8f9fa; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); overflow-x: hidden; padding-bottom: 70px; }
         
-        /* Header & Home Page Styles (Same as before) */
+        /* Header */
         .header { background: linear-gradient(135deg, #0b2240 0%, #1a3b66 100%); position: sticky; top: 0; z-index: 100; padding: 15px 15px 20px 15px; display: flex; flex-direction: column; gap: 12px; border-bottom: 2px solid var(--accent-gold); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .header-top { display: flex; justify-content: space-between; align-items: center; }
         .logo-text { font-size: 22px; font-weight: 700; font-style: italic; color: white; letter-spacing: -0.5px; }
@@ -20,13 +20,19 @@
         .location-bar span { color: var(--accent-gold); margin-left: 5px; }
         .search-container { background: white; border-radius: 8px; display: flex; align-items: center; padding: 10px 15px; gap: 10px; }
         .search-container input { border: none; outline: none; width: 100%; font-size: 14px; }
+        
+        /* Top Tabs */
         .top-tabs { display: flex; justify-content: space-between; padding: 15px 10px; gap: 10px; overflow-x: auto; }
         .tab-box { background: white; border-radius: 12px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; min-width: 80px; box-shadow: 0 3px 8px rgba(0,0,0,0.06); cursor: pointer; }
         .tab-box img { width: 38px; height: 38px; object-fit: contain; margin-bottom: 8px; }
         .tab-box span { font-size: 11px; font-weight: 600; }
+        
+        /* Banner */
         .banner-container { position: relative; width: 100%; height: 220px; overflow: hidden; margin-bottom: 10px; background: #111; }
         .banner-slider { display: flex; height: 100%; transition: transform 0.5s ease-in-out; }
         .banner-slider img { min-width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Products Grid */
         .section-title { background: white; padding: 15px; font-size: 18px; font-weight: 700; color: var(--primary-blue); }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; }
         .card { background: white; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -34,11 +40,13 @@
         .card-title { font-size: 13px; margin-bottom: 8px; font-weight: 500; }
         .card-price { font-size: 16px; font-weight: 700; color: var(--primary-blue); }
         .card-old { font-size: 12px; color: #999; text-decoration: line-through; margin-left: 5px; }
+        
+        /* BUTTONS */
         .card-btn-group { display: flex; gap: 6px; margin-top: auto; padding-top: 10px; }
         .btn-add-small { flex: 1; background: #ff9f00; color: white; border: none; padding: 8px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; }
         .btn-buy-small { flex: 1; background: var(--primary-blue); color: white; border: none; padding: 8px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; }
 
-        /* Full Pages */
+        /* ================= FULL PAGES ================= */
         .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f1f3f6; z-index: 200; overflow-y: auto; flex-direction: column; }
         .page-header { display: flex; align-items: center; padding: 15px; background: white; gap: 15px; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .page-header span { font-weight: 600; font-size: 16px; color: #333; }
@@ -50,7 +58,7 @@
         .form-group-full input { width: 100%; border: none; outline: none; font-size: 15px; font-weight: 500; color: #333; background: transparent; }
         .btn-submit-full { width: 100%; padding: 16px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer; }
 
-        /* Auth Page */
+        /* ================= AUTH PAGE ================= */
         #auth-page { background: white; padding-bottom: 100px; }
         .auth-container { padding: 30px 20px; }
         .auth-header { text-align: center; margin-bottom: 30px; }
@@ -65,7 +73,7 @@
         .auth-form-group input:focus { border-color: var(--primary-blue); }
         .btn-auth { width: 100%; padding: 14px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; margin-bottom: 20px;}
 
-        /* Professional User Profile Page */
+        /* ================= PROFESSIONAL USER PROFILE ================= */
         #profile-page { background: #f1f3f6; padding-bottom: 80px; }
         .prof-header { background: linear-gradient(135deg, #0b2240, #1a3b66); padding: 40px 20px 60px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; position: relative; overflow: hidden; }
         .prof-header::after { content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(255, 179, 0, 0.1); border-radius: 50%; }
@@ -146,7 +154,7 @@
         <div class="header">
             <div class="header-top">
                 <div>
-                    <div class="logo-text">Diwali Celebration</div>
+                    <div class="logo-text">Indian Celebration</div>
                     <div class="logo-sub">Explore Plus ⭐</div>
                 </div>
                 <div class="header-icons">
@@ -193,17 +201,207 @@
         </div>
     </div>
 
-    <!-- AUTH PAGE, PROFILE, ORDERS, WISHLIST, CHECKOUT, CART, MODALS, BOTTOM NAV (Same as before, included in full code) -->
-    <!-- ... (rest of the HTML body remains same as previous version) ... -->
+    <!-- AUTHENTICATION (LOGIN/REGISTER) PAGE -->
+    <div id="auth-page" class="full-page">
+        <div class="page-header">
+            <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <span>Account</span>
+        </div>
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Welcome to Indian Celebration</h2>
+                <p>Login or create an account to continue</p>
+            </div>
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</div>
+                <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Register</div>
+            </div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="auth-form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" required placeholder="Enter email">
+                </div>
+                <div class="auth-form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn-auth">Login</button>
+            </form>
+
+            <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
+                <div class="auth-form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="regName" required placeholder="Enter your name">
+                </div>
+                <div class="auth-form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="regPhone" required placeholder="Enter phone number">
+                </div>
+                <div class="auth-form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="regEmail" required placeholder="Enter email">
+                </div>
+                <div class="auth-form-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" required placeholder="Create password">
+                </div>
+                <button type="submit" class="btn-auth">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- USER PROFILE PAGE -->
+    <div id="profile-page" class="full-page">
+        <div class="prof-header">
+            <div class="prof-user">
+                <div class="prof-avatar" id="profAvatar">U</div>
+                <div class="prof-info">
+                    <h3 id="profName">User Name</h3>
+                    <p id="profEmail">user@example.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="prof-stats">
+            <div class="prof-stat-item" onclick="openOrders()"><h4 id="statOrders">0</h4><p>Orders</p></div>
+            <div class="prof-stat-item" onclick="openWishlist()"><h4 id="statWishlist">0</h4><p>Wishlist</p></div>
+            <div class="prof-stat-item"><h4>0</h4><p>Coupons</p></div>
+        </div>
+        
+        <div class="prof-menu-container">
+            <div class="prof-menu-card">
+                <div class="prof-list-item" onclick="openOrders()">
+                    <div class="prof-list-left">
+                        <div class="prof-list-icon" style="background:#e3f2fd; color:#1976d2;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
+                        <div class="prof-list-text">My Orders</div>
+                    </div>
+                </div>
+                <div class="prof-list-item" onclick="openWishlist()">
+                    <div class="prof-list-left">
+                        <div class="prof-list-icon" style="background:#ffebee; color:#e53935;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+                        <div class="prof-list-text">My Wishlist</div>
+                    </div>
+                </div>
+                <div class="prof-list-item" onclick="alert('Settings Page')">
+                    <div class="prof-list-left">
+                        <div class="prof-list-icon" style="background:#e8f5e9; color:#43a047;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></div>
+                        <div class="prof-list-text">Account Settings</div>
+                    </div>
+                </div>
+                <div class="prof-list-item" onclick="handleLogout()">
+                    <div class="prof-list-left">
+                        <div class="prof-list-icon" style="background:#ffebee; color:#d32f2f;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg></div>
+                        <div class="prof-list-text" style="color:#d32f2f;">Logout</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDERS PAGE -->
+    <div id="orders-page" class="full-page">
+        <div class="page-header">
+            <svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <span>My Orders</span>
+        </div>
+        <div class="sub-page-content" id="ordersList"></div>
+    </div>
+
+    <!-- WISHLIST PAGE -->
+    <div id="wishlist-page" class="full-page">
+        <div class="page-header">
+            <svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <span>My Wishlist</span>
+        </div>
+        <div class="sub-page-content"><div class="wishlist-grid" id="wishlistGrid"></div></div>
+    </div>
+
+    <!-- CHECKOUT FORM FULL PAGE -->
+    <div id="checkout-page" class="full-page">
+        <div class="page-header">
+            <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <span>Delivery Address</span>
+        </div>
+        <div class="page-content">
+            <form id="checkoutForm" onsubmit="processPayment(event)">
+                <div class="form-group-full"><label>Full Name</label><input type="text" id="chkName" required placeholder="Enter your name"></div>
+                <div class="form-group-full"><label>Flat, House no., Building</label><input type="text" required placeholder="Enter address"></div>
+                <div class="form-group-full"><label>Area, Street, Sector, Village</label><input type="text" required placeholder="Enter area details"></div>
+                <div class="form-group-full" style="display:flex; gap:10px;">
+                    <div style="flex:1;"><label>State</label><input type="text" required placeholder="State"></div>
+                    <div style="flex:1;"><label>PIN Code</label><input type="number" required placeholder="110006"></div>
+                </div>
+                <button type="submit" class="btn-submit-full" style="background:#ffb300;">Proceed to Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CART MODAL -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <svg onclick="closeCart()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> My Cart
+        </div>
+        <div class="cart-scroll-area">
+            <div class="cart-items-container" id="cartList"></div>
+            <div class="cart-price-details">
+                <div class="price-row total"><span>Total Amount</span><span id="cartTotal">₹0</span></div>
+            </div>
+            <div class="cart-similar-section">
+                <div class="cart-similar-title">Similar Products</div>
+                <div class="cart-similar-scroll" id="cartSimilarList"></div>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <button class="btn-pay" onclick="initiateCartCheckout()">Pay Now</button>
+        </div>
+    </div>
+
+    <!-- QR SCANNER MODAL -->
+    <div class="overlay-modal" id="qrModal">
+        <div class="modal-content">
+            <div class="modal-title">Scan to Pay</div>
+            <p style="font-size:13px; color:#666;">Scan this QR code with any UPI App</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=diwali@upi&pn=DiwaliShop&am=500" class="qr-img" alt="QR Code">
+            <button class="btn-success" onclick="paymentSuccess()">I have Paid</button>
+            <button style="background:none; border:none; margin-top:10px; color:#d32f2f; cursor:pointer;" onclick="closeModal('qrModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div class="overlay-modal" id="successModal">
+        <div class="modal-content" style="overflow:hidden;">
+            <div class="fireworks-container" id="fireworks"></div>
+            <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+            <div class="modal-title" style="color:#388e3c; font-size:22px;">Payment Successful!</div>
+            <p style="color:#666; margin-bottom:20px;">Aapka order successfully place ho gaya hai. Happy Diwali! 🎇</p>
+            <button class="btn-submit-full" onclick="closeModal('successModal'); goHome();">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- ================= BOTTOM NAVIGATION BAR ================= -->
+    <div class="bottom-nav">
+        <div class="nav-item active" id="nav-home" onclick="goHome()">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
+        </div>
+        <div class="nav-item" id="nav-cat" onclick="openCategoriesPage()">
+            <svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories
+        </div>
+        <div class="nav-item" id="nav-acc" onclick="handleProfileClick()">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Account
+        </div>
+        <div class="nav-item" onclick="openCart()">
+            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart
+        </div>
+    </div>
 
     <script>
         let allProducts = [];
         let allBanners = [];
         let cart = [];
         let currentUser = null;
-        const API_URL = ""; // Render ke liye fix
+        
+        const API_URL = ""; // Render Fix
 
-        // LocalStorage Helpers
         function getCart() { return JSON.parse(localStorage.getItem('diwali_cart')) || []; }
         function saveCart(c) { localStorage.setItem('diwali_cart', JSON.stringify(c)); }
         function getUsers() { return JSON.parse(localStorage.getItem('users')) || []; }
@@ -239,7 +437,6 @@
 
         function openProductPage(id) { window.location.href = `/product.html?id=${id}`; }
 
-        // FIXED: Buy Now Direct (No login check, goes to checkout)
         function buyNowDirect(id) {
             const p = allProducts.find(x => x._id === id);
             if(p.category === 'clothes') {
@@ -275,14 +472,265 @@
             container.innerHTML = html;
         }
 
-        // FIXED: Open Categories Page
+        // --- AUTH SYSTEM ---
+        function checkAuthState() { currentUser = JSON.parse(localStorage.getItem('currentUser')); }
+
+        function handleProfileClick() {
+            if(currentUser) {
+                openProfile();
+            } else {
+                document.getElementById('home-page').style.display = 'none';
+                document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+                document.getElementById('auth-page').style.display = 'flex';
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                document.getElementById('nav-acc').classList.add('active');
+            }
+        }
+
+        function switchAuthTab(tab) {
+            document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+            document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const phone = document.getElementById('regPhone').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            let users = getUsers();
+            if(users.find(u => u.email === email)) return alert("Email already registered!");
+
+            users.push({ name, phone, email, password });
+            saveUsers(users);
+            alert("✅ Registration Successful! Please login.");
+            switchAuthTab('login');
+            document.getElementById('loginEmail').value = email;
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            let users = getUsers();
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if(user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                currentUser = user;
+                alert("✅ Login Successful!");
+                openProfile();
+            } else {
+                alert("❌ Invalid email or password!");
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            alert("Logged out successfully!");
+            goHome();
+        }
+
+        // --- PROFILE & SUB-PAGES ---
+        function openProfile() {
+            document.getElementById('home-page').style.display = 'none';
+            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+            document.getElementById('profile-page').style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-acc').classList.add('active');
+
+            document.getElementById('profName').innerText = currentUser.name;
+            document.getElementById('profEmail').innerText = currentUser.email;
+            document.getElementById('profAvatar').innerText = currentUser.name.charAt(0).toUpperCase();
+
+            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
+            let wishlist = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || [];
+            document.getElementById('statOrders').innerText = orders.length;
+            document.getElementById('statWishlist').innerText = wishlist.length;
+        }
+
+        function openOrders() {
+            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+            document.getElementById('orders-page').style.display = 'flex';
+
+            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
+            const container = document.getElementById('ordersList');
+            
+            if(orders.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#777; margin-top:20px;">No orders yet!</p>';
+                return;
+            }
+
+            container.innerHTML = orders.map(order => `
+                <div class="order-card">
+                    <div class="order-header"><span>Order ID: ${order.id}</span><span class="order-status">${order.status}</span></div>
+                    <div style="font-size:12px; color:#666; margin-bottom:10px;">Date: ${order.date}</div>
+                    ${order.items.map(item => `
+                        <div class="order-item">
+                            <img src="${item.imageUrl}">
+                            <div>
+                                <div style="font-size:14px; font-weight:600;">${item.name}</div>
+                                <div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div>
+                                <div style="font-size:14px; font-weight:700; color:var(--primary-blue);">₹${item.price * item.qty}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div style="text-align:right; font-weight:bold; margin-top:10px; border-top:1px solid #eee; padding-top:10px;">Total: ₹${order.total}</div>
+                </div>
+            `).join('');
+        }
+
+        function openWishlist() {
+            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+            document.getElementById('wishlist-page').style.display = 'flex';
+
+            let wishlistIds = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || [];
+            const container = document.getElementById('wishlistGrid');
+            
+            if(wishlistIds.length === 0) {
+                container.innerHTML = '<p style="grid-column: span 2; text-align:center; color:#777; margin-top:20px;">Your wishlist is empty!</p>';
+                return;
+            }
+
+            const wishlistProducts = allProducts.filter(p => wishlistIds.includes(p._id));
+            container.innerHTML = wishlistProducts.map(p => `
+                <div class="card" onclick="openProductPage('${p._id}')">
+                    <img src="${p.imageUrl}" class="card-img">
+                    <div class="card-title">${p.name}</div>
+                    <div><span class="card-price">₹${p.price}</span></div>
+                </div>
+            `).join('');
+        }
+
+        // --- CART & CHECKOUT ---
+        function updateCartUI() {
+            cart = getCart();
+            const list = document.getElementById('cartList');
+            let totalPrice = 0;
+            list.innerHTML = '';
+            if(cart.length === 0) { list.innerHTML = '<p style="text-align:center; padding:20px; color:#777;">Your cart is empty.</p>'; } 
+            else {
+                cart.forEach((item, index) => {
+                    totalPrice += item.price * item.qty;
+                    list.innerHTML += `
+                        <div class="cart-item">
+                            <img src="${item.imageUrl}">
+                            <div style="flex:1;">
+                                <div style="font-size:14px; font-weight:600; color:#333;">${item.name}</div>
+                                <div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div>
+                                <div style="font-weight:700; margin-top:5px; color:var(--primary-blue);">₹${item.price * item.qty}</div>
+                            </div>
+                            <button onclick="removeFromCart(${index})" style="border:none; background:none; color:red; font-size:12px;">Remove</button>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('cartTotal').innerText = `₹${totalPrice}`;
+            
+            const similar = allProducts.filter(p => !cart.find(c => c._id === p._id)).slice(0, 4);
+            document.getElementById('cartSimilarList').innerHTML = similar.length === 0 ? '<p style="font-size:12px; color:#777;">No other products.</p>' : similar.map(p => `
+                <div class="cart-sim-card" onclick="closeCart(); openProductPage('${p._id}')">
+                    <img src="${p.imageUrl}">
+                    <div class="cart-sim-card-title">${p.name}</div>
+                    <div class="cart-sim-card-price">₹${p.price}</div>
+                </div>
+            `).join('');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart(cart);
+            updateCartUI();
+        }
+
+        function openCart() { document.getElementById('cartModal').classList.add('open'); updateCartUI(); }
+        function closeCart() { document.getElementById('cartModal').classList.remove('open'); }
+
+        function initiateCartCheckout() {
+            if(cart.length === 0) return alert("Cart is empty!");
+            closeCart();
+            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+            document.getElementById('checkout-page').style.display = 'flex';
+        }
+
+        function checkUrlForCheckout() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('checkout') === 'true') {
+                window.history.replaceState({}, document.title, window.location.pathname);
+                document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
+                document.getElementById('checkout-page').style.display = 'flex';
+            }
+        }
+
+        function processPayment(e) {
+            e.preventDefault();
+            if(!currentUser) {
+                alert("Please login to place an order.");
+                return handleProfileClick();
+            }
+            document.getElementById('checkout-page').style.display = 'none';
+            document.getElementById('qrModal').classList.add('open');
+        }
+
+        function paymentSuccess() {
+            closeModal('qrModal');
+            
+            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
+            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            orders.unshift({
+                id: 'ORD' + Date.now(),
+                date: new Date().toLocaleDateString(),
+                items: cart,
+                total: totalAmount,
+                status: 'Delivered'
+            });
+            localStorage.setItem('orders_' + currentUser.email, JSON.stringify(orders));
+
+            document.getElementById('successModal').classList.add('open');
+            createFireworks();
+            cart = []; 
+            saveCart(cart);
+            updateCartUI();
+        }
+
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+        function createFireworks() {
+            const container = document.getElementById('fireworks');
+            container.innerHTML = '';
+            const colors = ['#ff0000', '#ffb300', '#00ff00', '#00bfff', '#ff00ff'];
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 100 + 50;
+                particle.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+                particle.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                container.appendChild(particle);
+            }
+        }
+
+        // --- NAVIGATION ---
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
         function openCategoriesPage() {
             document.getElementById('home-page').style.display = 'none';
             document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
             document.getElementById('category-page').style.display = 'flex';
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.getElementById('nav-cat').classList.add('active');
-            // Default load Patake
             switchCategory('patake', document.querySelector('.cat-menu-item'));
         }
 
@@ -309,208 +757,6 @@
                 </div>
             `).join('');
         }
-
-        // --- AUTH & PROFILE (Same as before) ---
-        function checkAuthState() { currentUser = JSON.parse(localStorage.getItem('currentUser')); }
-        function handleProfileClick() {
-            if(currentUser) { openProfile(); } 
-            else {
-                document.getElementById('home-page').style.display = 'none';
-                document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-                document.getElementById('auth-page').style.display = 'flex';
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                document.getElementById('nav-acc').classList.add('active');
-            }
-        }
-        function switchAuthTab(tab) {
-            document.getElementById('tab-login').classList.toggle('active', tab === 'login');
-            document.getElementById('tab-register').classList.toggle('active', tab === 'register');
-            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
-            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
-        }
-        function handleRegister(e) {
-            e.preventDefault();
-            const name = document.getElementById('regName').value;
-            const phone = document.getElementById('regPhone').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            let users = getUsers();
-            if(users.find(u => u.email === email)) return alert("Email already registered!");
-            users.push({ name, phone, email, password });
-            saveUsers(users);
-            alert("✅ Registration Successful! Please login.");
-            switchAuthTab('login');
-            document.getElementById('loginEmail').value = email;
-        }
-        function handleLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            let users = getUsers();
-            const user = users.find(u => u.email === email && u.password === password);
-            if(user) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                currentUser = user;
-                alert("✅ Login Successful!");
-                openProfile();
-            } else { alert("❌ Invalid email or password!"); }
-        }
-        function handleLogout() {
-            localStorage.removeItem('currentUser');
-            currentUser = null;
-            alert("Logged out successfully!");
-            goHome();
-        }
-        function openProfile() {
-            document.getElementById('home-page').style.display = 'none';
-            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-            document.getElementById('profile-page').style.display = 'block';
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById('nav-acc').classList.add('active');
-
-            document.getElementById('profName').innerText = currentUser.name;
-            document.getElementById('profEmail').innerText = currentUser.email;
-            document.getElementById('profAvatar').innerText = currentUser.name.charAt(0).toUpperCase();
-
-            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
-            let wishlist = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || [];
-            document.getElementById('statOrders').innerText = orders.length;
-            document.getElementById('statWishlist').innerText = wishlist.length;
-        }
-        function openOrders() {
-            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-            document.getElementById('orders-page').style.display = 'flex';
-            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
-            const container = document.getElementById('ordersList');
-            if(orders.length === 0) { container.innerHTML = '<p style="text-align:center; color:#777; margin-top:20px;">No orders yet!</p>'; return; }
-            container.innerHTML = orders.map(order => `
-                <div class="order-card">
-                    <div class="order-header"><span>Order ID: ${order.id}</span><span class="order-status">${order.status}</span></div>
-                    <div style="font-size:12px; color:#666; margin-bottom:10px;">Date: ${order.date}</div>
-                    ${order.items.map(item => `
-                        <div class="order-item">
-                            <img src="${item.imageUrl}">
-                            <div>
-                                <div style="font-size:14px; font-weight:600;">${item.name}</div>
-                                <div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div>
-                                <div style="font-size:14px; font-weight:700; color:var(--primary-blue);">₹${item.price * item.qty}</div>
-                            </div>
-                        </div>
-                    `).join('')}
-                    <div style="text-align:right; font-weight:bold; margin-top:10px; border-top:1px solid #eee; padding-top:10px;">Total: ₹${order.total}</div>
-                </div>
-            `).join('');
-        }
-        function openWishlist() {
-            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-            document.getElementById('wishlist-page').style.display = 'flex';
-            let wishlistIds = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || [];
-            const container = document.getElementById('wishlistGrid');
-            if(wishlistIds.length === 0) { container.innerHTML = '<p style="grid-column: span 2; text-align:center; color:#777; margin-top:20px;">Your wishlist is empty!</p>'; return; }
-            const wishlistProducts = allProducts.filter(p => wishlistIds.includes(p._id));
-            container.innerHTML = wishlistProducts.map(p => `
-                <div class="card" onclick="openProductPage('${p._id}')">
-                    <img src="${p.imageUrl}" class="card-img">
-                    <div class="card-title">${p.name}</div>
-                    <div><span class="card-price">₹${p.price}</span></div>
-                </div>
-            `).join('');
-        }
-
-        // --- CART & CHECKOUT (Same as before) ---
-        function updateCartUI() {
-            cart = getCart();
-            const list = document.getElementById('cartList');
-            let totalPrice = 0;
-            list.innerHTML = '';
-            if(cart.length === 0) { list.innerHTML = '<p style="text-align:center; padding:20px; color:#777;">Your cart is empty.</p>'; } 
-            else {
-                cart.forEach((item, index) => {
-                    totalPrice += item.price * item.qty;
-                    list.innerHTML += `
-                        <div class="cart-item">
-                            <img src="${item.imageUrl}">
-                            <div style="flex:1;">
-                                <div style="font-size:14px; font-weight:600; color:#333;">${item.name}</div>
-                                <div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div>
-                                <div style="font-weight:700; margin-top:5px; color:var(--primary-blue);">₹${item.price * item.qty}</div>
-                            </div>
-                            <button onclick="removeFromCart(${index})" style="border:none; background:none; color:red; font-size:12px;">Remove</button>
-                        </div>
-                    `;
-                });
-            }
-            document.getElementById('cartTotal').innerText = `₹${totalPrice}`;
-            const similar = allProducts.filter(p => !cart.find(c => c._id === p._id)).slice(0, 4);
-            document.getElementById('cartSimilarList').innerHTML = similar.length === 0 ? '<p style="font-size:12px; color:#777;">No other products.</p>' : similar.map(p => `
-                <div class="cart-sim-card" onclick="closeCart(); openProductPage('${p._id}')">
-                    <img src="${p.imageUrl}">
-                    <div class="cart-sim-card-title">${p.name}</div>
-                    <div class="cart-sim-card-price">₹${p.price}</div>
-                </div>
-            `).join('');
-        }
-        function removeFromCart(index) { cart.splice(index, 1); saveCart(cart); updateCartUI(); }
-        function openCart() { document.getElementById('cartModal').classList.add('open'); updateCartUI(); }
-        function closeCart() { document.getElementById('cartModal').classList.remove('open'); }
-
-        // FIXED: Cart Checkout (No login check here, handled in form submit)
-        function initiateCartCheckout() {
-            if(cart.length === 0) return alert("Cart is empty!");
-            closeCart();
-            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-            document.getElementById('checkout-page').style.display = 'flex';
-        }
-
-        function checkUrlForCheckout() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.get('checkout') === 'true') {
-                window.history.replaceState({}, document.title, window.location.pathname);
-                document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-                document.getElementById('checkout-page').style.display = 'flex';
-            }
-        }
-
-        // FIXED: Form submit -> QR Scanner (Login check here)
-        function processPayment(e) {
-            e.preventDefault();
-            if(!currentUser) {
-                alert("Please login to place an order.");
-                return handleProfileClick();
-            }
-            document.getElementById('checkout-page').style.display = 'none';
-            document.getElementById('qrModal').classList.add('open');
-        }
-
-        function paymentSuccess() {
-            closeModal('qrModal');
-            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
-            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            orders.unshift({ id: 'ORD' + Date.now(), date: new Date().toLocaleDateString(), items: cart, total: totalAmount, status: 'Delivered' });
-            localStorage.setItem('orders_' + currentUser.email, JSON.stringify(orders));
-            document.getElementById('successModal').classList.add('open');
-            createFireworks();
-            cart = []; saveCart(cart); updateCartUI();
-        }
-        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-        function createFireworks() {
-            const container = document.getElementById('fireworks');
-            container.innerHTML = '';
-            const colors = ['#ff0000', '#ffb300', '#00ff00', '#00bfff', '#ff00ff'];
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 100 + 50;
-                particle.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
-                particle.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.left = '50%'; particle.style.top = '50%';
-                particle.style.animationDelay = `${Math.random() * 0.5}s`;
-                container.appendChild(particle);
-            }
-        }
-        function goHome() { window.location.href = 'index.html'; }
 
         loadData();
         checkUrlForCheckout();
