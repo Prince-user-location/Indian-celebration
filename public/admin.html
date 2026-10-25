@@ -7,7 +7,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: #f8fafc; color: #333; padding-bottom: 50px;}
+        body { background: #f8fafc; color: #333; padding-bottom: 50px; }
         
         .top-header { background: white; padding: 20px; border-bottom: 1px solid #e2e8f0; }
         .top-header h2 { font-size: 22px; font-weight: 700; color: #1e293b; }
@@ -22,7 +22,6 @@
         .section-title { font-size: 18px; font-weight: 700; color: #1e293b; }
         .btn-add { background: #6366f1; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
 
-        /* List Cards */
         .list-container { display: flex; flex-direction: column; gap: 15px; }
         .list-card { background: white; border-radius: 12px; padding: 15px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .list-card-left { display: flex; align-items: center; gap: 15px; flex: 1; overflow: hidden; }
@@ -33,17 +32,16 @@
         .btn-edit { background: #f1f5f9; color: #334155; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
         .btn-del { background: #fee2e2; color: #dc2626; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
 
-        /* Order Card Specific */
         .order-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; font-size: 13px; color: #555; }
         .order-user { font-weight: 700; color: #1e293b; font-size: 14px; margin-bottom: 5px; }
         .order-addr { font-size: 12px; color: #666; margin-bottom: 10px; }
+        .order-utr { font-size: 14px; font-weight: 700; color: #d97706; background: #fffbeb; padding: 8px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #fde68a;}
         .order-items { display: flex; flex-direction: column; gap: 8px; }
         .order-item { display: flex; gap: 10px; align-items: center; font-size: 13px; }
         .order-item img { width: 40px; height: 40px; object-fit: contain; border-radius: 4px; }
         .order-total { text-align: right; font-weight: 700; margin-top: 10px; color: #6366f1; font-size: 16px;}
 
-        /* Form Modal */
         .form-modal { display: none; background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .form-modal.active { display: block; }
         .form-group { margin-bottom: 15px; }
@@ -53,7 +51,6 @@
         .btn-cancel { background: #f1f5f9; color: #475569; width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
         #imagePreview { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;}
         #imagePreview img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #ccc; }
-        .note-text { font-size: 11px; color: #ef4444; margin-top: 5px; display: none; }
     </style>
 </head>
 <body>
@@ -97,7 +94,6 @@
                 <div class="form-group">
                     <label>Upload Image(s)</label>
                     <input type="file" id="pImageFiles" accept="image/*" multiple>
-                    <div class="note-text" id="imgNote">Note: You can select multiple images (up to 5) at once from gallery for product slider.</div>
                     <div id="imagePreview"></div>
                 </div>
 
@@ -110,7 +106,7 @@
     </div>
 
     <script>
-        const API_URL = ""; // Render Fix
+        const API_URL = "";
         let currentTab = 'orders';
         let allProducts = [];
         let allBanners = [];
@@ -137,23 +133,18 @@
             document.getElementById('sectionTitle').innerText = tab.charAt(0).toUpperCase() + tab.slice(1);
             document.getElementById('itemType').value = tab;
 
-            if(tab === 'orders') {
-                document.getElementById('addBtn').style.display = 'none';
-            } else {
-                document.getElementById('addBtn').style.display = 'block';
-            }
+            if(tab === 'orders') { document.getElementById('addBtn').style.display = 'none'; } 
+            else { document.getElementById('addBtn').style.display = 'block'; }
 
             if(tab === 'banner') {
                 document.getElementById('nameGroup').style.display = 'none';
                 document.getElementById('priceGroup').style.display = 'none';
                 document.getElementById('descGroup').style.display = 'none';
-                document.getElementById('imgNote').style.display = 'none';
                 document.getElementById('pImageFiles').removeAttribute('multiple');
             } else {
                 document.getElementById('nameGroup').style.display = 'block';
                 document.getElementById('priceGroup').style.display = 'flex';
                 document.getElementById('descGroup').style.display = 'block';
-                document.getElementById('imgNote').style.display = 'block';
                 document.getElementById('pImageFiles').setAttribute('multiple', 'true');
             }
 
@@ -178,7 +169,11 @@
                                 <span>${o.date}</span>
                             </div>
                             <div class="order-user">${o.user.name} (${o.user.phone})</div>
-                            <div class="order-addr">${o.address}</div>
+                            <div class="order-addr">Address: ${o.address}</div>
+                            
+                            <!-- UTR Section for Admin -->
+                            <div class="order-utr">UTR / Txn ID: ${o.utr || 'N/A'}</div>
+                            
                             <div class="order-items">
                                 ${o.items.map(i => `
                                     <div class="order-item">
@@ -201,7 +196,6 @@
                                 <div class="list-card-title">Banner N00${i+1}</div>
                             </div>
                             <div class="action-btns">
-                                <button class="btn-edit" onclick="editItem('${b._id}')">Edit</button>
                                 <button class="btn-del" onclick="deleteItem('banner', '${b._id}')">Del</button>
                             </div>
                         </div>
@@ -279,11 +273,8 @@
         function editItem(id) {
             showForm();
             document.getElementById('itemId').value = id;
-            if(currentTab === 'banner') {
-                document.getElementById('nameGroup').style.display = 'none';
-                document.getElementById('priceGroup').style.display = 'none';
-                document.getElementById('descGroup').style.display = 'none';
-            } else {
+            if(currentTab === 'banner') { }
+            else {
                 const p = allProducts.find(item => item._id === id);
                 document.getElementById('nameGroup').style.display = 'block';
                 document.getElementById('priceGroup').style.display = 'flex';
@@ -292,8 +283,6 @@
                 document.getElementById('pPrice').value = p.price;
                 document.getElementById('pOldPrice').value = p.oldPrice;
                 document.getElementById('pDesc').value = p.description;
-                document.getElementById('imgNote').innerText = "Note: Upload new images only if you want to add/replace.";
-                document.getElementById('imgNote').style.display = 'block';
             }
             window.scrollTo(0,0);
         }
@@ -306,7 +295,6 @@
             loadList();
         }
 
-        // Init
         switchTab('orders');
     </script>
 </body>

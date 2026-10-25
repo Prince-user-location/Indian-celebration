@@ -10,7 +10,6 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- FOLDERS SETUP ---
 const uploadDir = path.join(__dirname, 'public', 'uploads');
 const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
@@ -18,35 +17,29 @@ if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
 const productsFile = path.join(dataDir, 'products.json');
 const bannersFile = path.join(dataDir, 'banners.json');
-const ordersFile = path.join(dataDir, 'orders.json'); // New Orders File
+const ordersFile = path.join(dataDir, 'orders.json');
 
 if (!fs.existsSync(productsFile)) fs.writeFileSync(productsFile, '[]');
 if (!fs.existsSync(bannersFile)) fs.writeFileSync(bannersFile, '[]');
 if (!fs.existsSync(ordersFile)) fs.writeFileSync(ordersFile, '[]');
 
-// --- MULTER CONFIG ---
 const storage = multer.diskStorage({
     destination: function (req, file, cb) { cb(null, uploadDir) },
     filename: function (req, file, cb) { cb(null, 'img_' + Date.now() + path.extname(file.originalname)) }
 });
 const upload = multer({ storage: storage });
 
-// --- HELPERS ---
 const readData = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 const writeData = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 2));
 
-// --- ROUTES ---
-
-// Products & Banners
 app.get('/api/products', (req, res) => res.json(readData(productsFile)));
 app.get('/api/banners', (req, res) => res.json(readData(bannersFile)));
-
-// NEW: Orders API
 app.get('/api/orders', (req, res) => res.json(readData(ordersFile)));
 
+// Save Order with UTR
 app.post('/api/order', (req, res) => {
     try {
-        const { user, cart, total, address } = req.body;
+        const { user, cart, total, address, utr } = req.body;
         const orders = readData(ordersFile);
         const newOrder = {
             id: 'ORD' + Date.now(),
@@ -54,8 +47,9 @@ app.post('/api/order', (req, res) => {
             address: address,
             items: cart,
             total: total,
+            utr: utr || "N/A", // Save UTR
             date: new Date().toLocaleString(),
-            status: 'Paid'
+            status: 'Pending Verification' // Status is now pending
         };
         orders.unshift(newOrder);
         writeData(ordersFile, orders);
@@ -63,7 +57,7 @@ app.post('/api/order', (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// Admin Product & Banner Routes
+// ... (Baaki product, banner routes same rahenge jo pichle code me the)
 app.post('/api/admin/product', upload.array('imageFiles', 5), (req, res) => {
     try {
         const { name, price, oldPrice, category, description } = req.body;
@@ -86,10 +80,8 @@ app.put('/api/admin/product/:id', upload.array('imageFiles', 5), (req, res) => {
         let products = readData(productsFile);
         const index = products.findIndex(p => p._id === req.params.id);
         if (index === -1) return res.status(404).json({ error: "Product not found" });
-
         let images = existingImages ? JSON.parse(existingImages) : [];
         if (req.files && req.files.length > 0) images = [...req.files.map(f => `/uploads/${f.filename}`), ...images];
-
         products[index] = { ...products[index], name, price: Number(price), oldPrice: Number(oldPrice), category, description, imageUrl: images[0] || products[index].imageUrl, additionalImages: images.slice(1) };
         writeData(productsFile, products);
         res.json({ success: true, message: "Product Updated!" });
