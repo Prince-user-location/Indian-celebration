@@ -10,7 +10,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); overflow-x: hidden; padding-bottom: 70px; }
         
-        /* Header */
+        /* Header & Styles (Same as before) */
         .header { background: linear-gradient(135deg, #0b2240 0%, #1a3b66 100%); position: sticky; top: 0; z-index: 100; padding: 15px 15px 20px 15px; display: flex; flex-direction: column; gap: 12px; border-bottom: 2px solid var(--accent-gold); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .header-top { display: flex; justify-content: space-between; align-items: center; }
         .logo-text { font-size: 22px; font-weight: 700; font-style: italic; color: white; letter-spacing: -0.5px; }
@@ -20,19 +20,13 @@
         .location-bar span { color: var(--accent-gold); margin-left: 5px; }
         .search-container { background: white; border-radius: 8px; display: flex; align-items: center; padding: 10px 15px; gap: 10px; }
         .search-container input { border: none; outline: none; width: 100%; font-size: 14px; }
-        
-        /* Top Tabs */
         .top-tabs { display: flex; justify-content: space-between; padding: 15px 10px; gap: 10px; overflow-x: auto; }
         .tab-box { background: white; border-radius: 12px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; min-width: 80px; box-shadow: 0 3px 8px rgba(0,0,0,0.06); cursor: pointer; }
         .tab-box img { width: 38px; height: 38px; object-fit: contain; margin-bottom: 8px; }
         .tab-box span { font-size: 11px; font-weight: 600; }
-        
-        /* Banner */
         .banner-container { position: relative; width: 100%; height: 220px; overflow: hidden; margin-bottom: 10px; background: #111; }
         .banner-slider { display: flex; height: 100%; transition: transform 0.5s ease-in-out; }
         .banner-slider img { min-width: 100%; height: 100%; object-fit: cover; }
-        
-        /* Products Grid */
         .section-title { background: white; padding: 15px; font-size: 18px; font-weight: 700; color: var(--primary-blue); }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; }
         .card { background: white; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -40,13 +34,11 @@
         .card-title { font-size: 13px; margin-bottom: 8px; font-weight: 500; }
         .card-price { font-size: 16px; font-weight: 700; color: var(--primary-blue); }
         .card-old { font-size: 12px; color: #999; text-decoration: line-through; margin-left: 5px; }
-        
-        /* BUTTONS */
         .card-btn-group { display: flex; gap: 6px; margin-top: auto; padding-top: 10px; }
         .btn-add-small { flex: 1; background: #ff9f00; color: white; border: none; padding: 8px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; }
         .btn-buy-small { flex: 1; background: var(--primary-blue); color: white; border: none; padding: 8px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; }
 
-        /* ================= FULL PAGES ================= */
+        /* Full Pages */
         .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f1f3f6; z-index: 200; overflow-y: auto; flex-direction: column; }
         .page-header { display: flex; align-items: center; padding: 15px; background: white; gap: 15px; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .page-header span { font-weight: 600; font-size: 16px; color: #333; }
@@ -58,7 +50,7 @@
         .form-group-full input { width: 100%; border: none; outline: none; font-size: 15px; font-weight: 500; color: #333; background: transparent; }
         .btn-submit-full { width: 100%; padding: 16px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer; }
 
-        /* ================= AUTH PAGE ================= */
+        /* Auth Page */
         #auth-page { background: white; padding-bottom: 100px; }
         .auth-container { padding: 30px 20px; }
         .auth-header { text-align: center; margin-bottom: 30px; }
@@ -73,26 +65,22 @@
         .auth-form-group input:focus { border-color: var(--primary-blue); }
         .btn-auth { width: 100%; padding: 14px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; margin-bottom: 20px;}
 
-        /* ================= PROFESSIONAL USER PROFILE ================= */
+        /* User Profile */
         #profile-page { background: #f1f3f6; padding-bottom: 80px; }
-        .prof-header { background: linear-gradient(135deg, #0b2240, #1a3b66); padding: 40px 20px 60px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; position: relative; overflow: hidden; }
-        .prof-header::after { content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(255, 179, 0, 0.1); border-radius: 50%; }
+        .prof-header { background: linear-gradient(135deg, #0b2240, #1a3b66); padding: 40px 20px 60px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; position: relative; }
         .prof-user { display: flex; align-items: center; gap: 20px; position: relative; z-index: 2; }
-        .prof-avatar { width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 32px; color: var(--primary-blue); font-weight: bold; border: 4px solid var(--accent-gold); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .prof-avatar { width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 32px; color: var(--primary-blue); font-weight: bold; border: 4px solid var(--accent-gold); }
         .prof-info h3 { font-size: 22px; font-weight: 600; margin-bottom: 5px; }
         .prof-info p { font-size: 14px; color: #ccc; }
-        
         .prof-stats { display: flex; justify-content: space-around; background: white; margin: -35px 20px 25px 20px; padding: 20px; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); position: relative; z-index: 3; }
         .prof-stat-item { text-align: center; cursor: pointer; flex: 1; }
         .prof-stat-item:not(:last-child) { border-right: 1px solid #f0f0f0; }
         .prof-stat-item h4 { font-size: 22px; color: var(--primary-blue); margin-bottom: 4px; font-weight: 700; }
         .prof-stat-item p { font-size: 12px; color: #777; font-weight: 500; }
-        
         .prof-menu-container { padding: 0 20px; }
         .prof-menu-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
-        .prof-list-item { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; }
+        .prof-list-item { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
         .prof-list-item:last-child { border-bottom: none; }
-        .prof-list-item:active { background: #f9f9f9; }
         .prof-list-left { display: flex; align-items: center; gap: 18px; }
         .prof-list-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; justify-content: center; align-items: center; }
         .prof-list-text { font-size: 16px; font-weight: 500; color: #333; }
@@ -113,33 +101,38 @@
         .nav-item.active { color: var(--primary-blue); font-weight: 700; }
         .nav-item svg { width: 24px; height: 24px; fill: currentColor; margin-bottom: 3px; }
 
-        /* Cart Modal & Similar Products */
+        /* Cart Modal */
         .cart-modal { position: fixed; top: 0; left: 100%; width: 100%; height: 100%; background: #f1f3f6; z-index: 1000; transition: left 0.3s; display: flex; flex-direction: column; }
         .cart-modal.open { left: 0; }
         .cart-header { padding: 15px; background: white; display: flex; gap: 15px; font-weight: bold; align-items: center; border-bottom: 1px solid #eee; }
         .cart-scroll-area { flex: 1; overflow-y: auto; padding-bottom: 80px; } 
         .cart-items-container { padding: 15px; }
-        .cart-item { display: flex; gap: 15px; background: white; padding: 15px; margin-bottom: 10px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .cart-item { display: flex; gap: 15px; background: white; padding: 15px; margin-bottom: 10px; border-radius: 12px; }
         .cart-item img { width: 70px; height: 70px; object-fit: contain; }
         .cart-price-details { background: white; padding: 15px 20px; margin: 0 15px 15px 15px; border-radius: 12px; }
         .price-row.total { font-weight: 700; font-size: 16px; border-top: 1px dashed #ddd; padding-top: 10px; margin-top: 10px; color: var(--primary-blue); display: flex; justify-content: space-between;}
         .cart-similar-section { padding: 0 15px 20px 15px; }
         .cart-similar-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #333; }
         .cart-similar-scroll { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
-        .cart-sim-card { min-width: 130px; background: white; padding: 10px; border-radius: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .cart-sim-card { min-width: 130px; background: white; padding: 10px; border-radius: 12px; cursor: pointer; }
         .cart-sim-card img { width: 100%; height: 100px; object-fit: contain; margin-bottom: 8px; }
         .cart-sim-card-title { font-size: 12px; color: #333; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .cart-sim-card-price { font-size: 14px; font-weight: 700; color: var(--primary-blue); }
         .cart-footer { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px; background: white; border-top: 1px solid #eee; z-index: 1001; }
         .btn-pay { width: 100%; padding: 16px; background: #ffb300; color: white; border: none; font-weight: bold; border-radius: 8px; font-size: 16px; }
 
-        /* Modals */
+        /* Modals (QR & Success) */
         .overlay-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; }
         .overlay-modal.open { display: flex; }
         .modal-content { background: white; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; position: relative;}
         .modal-title { font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-bottom: 15px; }
         .qr-img { width: 200px; height: 200px; margin: 15px auto; border: 2px solid #eee; padding: 10px; border-radius: 8px; }
-        .btn-success { width: 100%; padding: 12px; background: #388e3c; color: white; border: none; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        
+        /* Spinner Animation for Verifying */
+        .spinner { display: none; margin: 20px auto; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-blue); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .verify-text { display: none; color: var(--primary-blue); font-weight: 600; font-size: 15px; margin-bottom: 15px; }
+
         .success-icon { width: 80px; height: 80px; background: #e8f5e9; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; }
         .success-icon svg { width: 40px; height: 40px; fill: #43a047; }
         .fireworks-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: -1; border-radius: 12px;}
@@ -168,18 +161,13 @@
                 <input type="text" placeholder="Search for Products...">
             </div>
         </div>
-
         <div class="top-tabs">
             <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/2662/2662503.png"><span>Minutes</span></div>
             <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/7893/7893979.png"><span>Travel</span></div>
             <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/2693/2693505.png"><span>Value 365</span></div>
             <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/10706/10706442.png"><span>Gifts</span></div>
         </div>
-
-        <div class="banner-container">
-            <div class="banner-slider" id="slider"></div>
-        </div>
-
+        <div class="banner-container"><div class="banner-slider" id="slider"></div></div>
         <div class="section-title">Big Diwali Shopping Utsav</div>
         <div id="dynamicContent"></div>
     </div>
@@ -195,57 +183,29 @@
                 <div class="cat-menu-item active" style="padding:18px 10px; text-align:center; font-size:13px; color:var(--primary-blue); font-weight:700; border-left:3px solid var(--accent-gold); background:white;" onclick="switchCategory('patake', this)">Patake</div>
                 <div class="cat-menu-item" style="padding:18px 10px; text-align:center; font-size:13px; color:#666; font-weight:500; border-left:3px solid transparent; cursor:pointer;" onclick="switchCategory('clothes', this)">Clothes</div>
             </div>
-            <div style="flex:1; padding:10px; overflow-y:auto;">
-                <div class="grid" id="categoryGrid" style="padding:0;"></div>
-            </div>
+            <div style="flex:1; padding:10px; overflow-y:auto;"><div class="grid" id="categoryGrid" style="padding:0;"></div></div>
         </div>
     </div>
 
-    <!-- AUTHENTICATION (LOGIN/REGISTER) PAGE -->
+    <!-- AUTHENTICATION PAGE -->
     <div id="auth-page" class="full-page">
-        <div class="page-header">
-            <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span>Account</span>
-        </div>
+        <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>Account</span></div>
         <div class="auth-container">
-            <div class="auth-header">
-                <h2>Welcome to Indian Celebration</h2>
-                <p>Login or create an account to continue</p>
-            </div>
+            <div class="auth-header"><h2>Welcome to Diwali Celebration</h2><p>Login or create an account to continue</p></div>
             <div class="auth-tabs">
                 <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</div>
                 <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Register</div>
             </div>
-            
             <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="auth-form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="loginEmail" required placeholder="Enter email">
-                </div>
-                <div class="auth-form-group">
-                    <label>Password</label>
-                    <input type="password" id="loginPassword" required placeholder="Enter password">
-                </div>
+                <div class="auth-form-group"><label>Email Address</label><input type="email" id="loginEmail" required placeholder="Enter email"></div>
+                <div class="auth-form-group"><label>Password</label><input type="password" id="loginPassword" required placeholder="Enter password"></div>
                 <button type="submit" class="btn-auth">Login</button>
             </form>
-
             <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
-                <div class="auth-form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="regName" required placeholder="Enter your name">
-                </div>
-                <div class="auth-form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" id="regPhone" required placeholder="Enter phone number">
-                </div>
-                <div class="auth-form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="regEmail" required placeholder="Enter email">
-                </div>
-                <div class="auth-form-group">
-                    <label>Password</label>
-                    <input type="password" id="regPassword" required placeholder="Create password">
-                </div>
+                <div class="auth-form-group"><label>Full Name</label><input type="text" id="regName" required placeholder="Enter your name"></div>
+                <div class="auth-form-group"><label>Phone Number</label><input type="tel" id="regPhone" required placeholder="Enter phone number"></div>
+                <div class="auth-form-group"><label>Email Address</label><input type="email" id="regEmail" required placeholder="Enter email"></div>
+                <div class="auth-form-group"><label>Password</label><input type="password" id="regPassword" required placeholder="Create password"></div>
                 <button type="submit" class="btn-auth">Register</button>
             </form>
         </div>
@@ -254,79 +214,41 @@
     <!-- USER PROFILE PAGE -->
     <div id="profile-page" class="full-page">
         <div class="prof-header">
-            <div class="prof-user">
-                <div class="prof-avatar" id="profAvatar">U</div>
-                <div class="prof-info">
-                    <h3 id="profName">User Name</h3>
-                    <p id="profEmail">user@example.com</p>
-                </div>
-            </div>
+            <div class="prof-user"><div class="prof-avatar" id="profAvatar">U</div><div class="prof-info"><h3 id="profName">User Name</h3><p id="profEmail">user@example.com</p></div></div>
         </div>
         <div class="prof-stats">
             <div class="prof-stat-item" onclick="openOrders()"><h4 id="statOrders">0</h4><p>Orders</p></div>
             <div class="prof-stat-item" onclick="openWishlist()"><h4 id="statWishlist">0</h4><p>Wishlist</p></div>
             <div class="prof-stat-item"><h4>0</h4><p>Coupons</p></div>
         </div>
-        
         <div class="prof-menu-container">
             <div class="prof-menu-card">
-                <div class="prof-list-item" onclick="openOrders()">
-                    <div class="prof-list-left">
-                        <div class="prof-list-icon" style="background:#e3f2fd; color:#1976d2;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
-                        <div class="prof-list-text">My Orders</div>
-                    </div>
-                </div>
-                <div class="prof-list-item" onclick="openWishlist()">
-                    <div class="prof-list-left">
-                        <div class="prof-list-icon" style="background:#ffebee; color:#e53935;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
-                        <div class="prof-list-text">My Wishlist</div>
-                    </div>
-                </div>
-                <div class="prof-list-item" onclick="alert('Settings Page')">
-                    <div class="prof-list-left">
-                        <div class="prof-list-icon" style="background:#e8f5e9; color:#43a047;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></div>
-                        <div class="prof-list-text">Account Settings</div>
-                    </div>
-                </div>
-                <div class="prof-list-item" onclick="handleLogout()">
-                    <div class="prof-list-left">
-                        <div class="prof-list-icon" style="background:#ffebee; color:#d32f2f;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg></div>
-                        <div class="prof-list-text" style="color:#d32f2f;">Logout</div>
-                    </div>
-                </div>
+                <div class="prof-list-item" onclick="openOrders()"><div class="prof-list-left"><div class="prof-list-icon" style="background:#e3f2fd; color:#1976d2;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div><div class="prof-list-text">My Orders</div></div></div>
+                <div class="prof-list-item" onclick="openWishlist()"><div class="prof-list-left"><div class="prof-list-icon" style="background:#ffebee; color:#e53935;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div><div class="prof-list-text">My Wishlist</div></div></div>
+                <div class="prof-list-item" onclick="handleLogout()"><div class="prof-list-left"><div class="prof-list-icon" style="background:#ffebee; color:#d32f2f;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg></div><div class="prof-list-text" style="color:#d32f2f;">Logout</div></div></div>
             </div>
         </div>
     </div>
 
     <!-- ORDERS PAGE -->
     <div id="orders-page" class="full-page">
-        <div class="page-header">
-            <svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span>My Orders</span>
-        </div>
+        <div class="page-header"><svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Orders</span></div>
         <div class="sub-page-content" id="ordersList"></div>
     </div>
 
     <!-- WISHLIST PAGE -->
     <div id="wishlist-page" class="full-page">
-        <div class="page-header">
-            <svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span>My Wishlist</span>
-        </div>
+        <div class="page-header"><svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Wishlist</span></div>
         <div class="sub-page-content"><div class="wishlist-grid" id="wishlistGrid"></div></div>
     </div>
 
-    <!-- CHECKOUT FORM FULL PAGE -->
+    <!-- CHECKOUT FORM PAGE -->
     <div id="checkout-page" class="full-page">
-        <div class="page-header">
-            <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span>Delivery Address</span>
-        </div>
+        <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>Delivery Address</span></div>
         <div class="page-content">
             <form id="checkoutForm" onsubmit="processPayment(event)">
                 <div class="form-group-full"><label>Full Name</label><input type="text" id="chkName" required placeholder="Enter your name"></div>
-                <div class="form-group-full"><label>Flat, House no., Building</label><input type="text" required placeholder="Enter address"></div>
-                <div class="form-group-full"><label>Area, Street, Sector, Village</label><input type="text" required placeholder="Enter area details"></div>
+                <div class="form-group-full"><label>Full Address</label><input type="text" id="chkAddress" required placeholder="House No, Street, Area"></div>
                 <div class="form-group-full" style="display:flex; gap:10px;">
                     <div style="flex:1;"><label>State</label><input type="text" required placeholder="State"></div>
                     <div style="flex:1;"><label>PIN Code</label><input type="number" required placeholder="110006"></div>
@@ -338,32 +260,26 @@
 
     <!-- CART MODAL -->
     <div class="cart-modal" id="cartModal">
-        <div class="cart-header">
-            <svg onclick="closeCart()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> My Cart
-        </div>
+        <div class="cart-header"><svg onclick="closeCart()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> My Cart</div>
         <div class="cart-scroll-area">
             <div class="cart-items-container" id="cartList"></div>
-            <div class="cart-price-details">
-                <div class="price-row total"><span>Total Amount</span><span id="cartTotal">₹0</span></div>
-            </div>
-            <div class="cart-similar-section">
-                <div class="cart-similar-title">Similar Products</div>
-                <div class="cart-similar-scroll" id="cartSimilarList"></div>
-            </div>
+            <div class="cart-price-details"><div class="price-row total"><span>Total Amount</span><span id="cartTotal">₹0</span></div></div>
+            <div class="cart-similar-section"><div class="cart-similar-title">Similar Products</div><div class="cart-similar-scroll" id="cartSimilarList"></div></div>
         </div>
-        <div class="cart-footer">
-            <button class="btn-pay" onclick="initiateCartCheckout()">Pay Now</button>
-        </div>
+        <div class="cart-footer"><button class="btn-pay" onclick="initiateCartCheckout()">Pay Now</button></div>
     </div>
 
-    <!-- QR SCANNER MODAL -->
+    <!-- QR SCANNER MODAL (NO BUTTONS) -->
     <div class="overlay-modal" id="qrModal">
         <div class="modal-content">
-            <div class="modal-title">Scan to Pay</div>
-            <p style="font-size:13px; color:#666;">Scan this QR code with any UPI App</p>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=diwali@upi&pn=DiwaliShop&am=500" class="qr-img" alt="QR Code">
-            <button class="btn-success" onclick="paymentSuccess()">I have Paid</button>
-            <button style="background:none; border:none; margin-top:10px; color:#d32f2f; cursor:pointer;" onclick="closeModal('qrModal')">Cancel</button>
+            <div class="modal-title" id="qrTitle">Scan to Pay</div>
+            <p style="font-size:13px; color:#666;" id="qrSubTitle">Scan this QR code with any UPI App</p>
+            
+            <img src="https://i.ibb.co/Cs49YGDd/IMG-20261024-WA0003.jpg" class="qr-img" id="qrImage" alt="QR Code">
+            
+            <!-- Spinner for Verifying -->
+            <div class="spinner" id="verifySpinner"></div>
+            <div class="verify-text" id="verifyText">Verifying Payment...</div>
         </div>
     </div>
 
@@ -378,20 +294,12 @@
         </div>
     </div>
 
-    <!-- ================= BOTTOM NAVIGATION BAR ================= -->
+    <!-- BOTTOM NAV -->
     <div class="bottom-nav">
-        <div class="nav-item active" id="nav-home" onclick="goHome()">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
-        </div>
-        <div class="nav-item" id="nav-cat" onclick="openCategoriesPage()">
-            <svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories
-        </div>
-        <div class="nav-item" id="nav-acc" onclick="handleProfileClick()">
-            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Account
-        </div>
-        <div class="nav-item" onclick="openCart()">
-            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart
-        </div>
+        <div class="nav-item active" id="nav-home" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</div>
+        <div class="nav-item" id="nav-cat" onclick="openCategoriesPage()"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories</div>
+        <div class="nav-item" id="nav-acc" onclick="handleProfileClick()"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Account</div>
+        <div class="nav-item" onclick="openCart()"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart</div>
     </div>
 
     <script>
@@ -399,8 +307,8 @@
         let allBanners = [];
         let cart = [];
         let currentUser = null;
-        
-        const API_URL = ""; // Render Fix
+        let checkoutAddress = "";
+        const API_URL = "";
 
         function getCart() { return JSON.parse(localStorage.getItem('diwali_cart')) || []; }
         function saveCart(c) { localStorage.setItem('diwali_cart', JSON.stringify(c)); }
@@ -476,9 +384,8 @@
         function checkAuthState() { currentUser = JSON.parse(localStorage.getItem('currentUser')); }
 
         function handleProfileClick() {
-            if(currentUser) {
-                openProfile();
-            } else {
+            if(currentUser) { openProfile(); } 
+            else {
                 document.getElementById('home-page').style.display = 'none';
                 document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
                 document.getElementById('auth-page').style.display = 'flex';
@@ -500,10 +407,8 @@
             const phone = document.getElementById('regPhone').value;
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPassword').value;
-
             let users = getUsers();
             if(users.find(u => u.email === email)) return alert("Email already registered!");
-
             users.push({ name, phone, email, password });
             saveUsers(users);
             alert("✅ Registration Successful! Please login.");
@@ -515,18 +420,14 @@
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-
             let users = getUsers();
             const user = users.find(u => u.email === email && u.password === password);
-
             if(user) {
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 currentUser = user;
                 alert("✅ Login Successful!");
                 openProfile();
-            } else {
-                alert("❌ Invalid email or password!");
-            }
+            } else { alert("❌ Invalid email or password!"); }
         }
 
         function handleLogout() {
@@ -557,15 +458,9 @@
         function openOrders() {
             document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
             document.getElementById('orders-page').style.display = 'flex';
-
             let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
             const container = document.getElementById('ordersList');
-            
-            if(orders.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#777; margin-top:20px;">No orders yet!</p>';
-                return;
-            }
-
+            if(orders.length === 0) { container.innerHTML = '<p style="text-align:center; color:#777; margin-top:20px;">No orders yet!</p>'; return; }
             container.innerHTML = orders.map(order => `
                 <div class="order-card">
                     <div class="order-header"><span>Order ID: ${order.id}</span><span class="order-status">${order.status}</span></div>
@@ -573,11 +468,7 @@
                     ${order.items.map(item => `
                         <div class="order-item">
                             <img src="${item.imageUrl}">
-                            <div>
-                                <div style="font-size:14px; font-weight:600;">${item.name}</div>
-                                <div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div>
-                                <div style="font-size:14px; font-weight:700; color:var(--primary-blue);">₹${item.price * item.qty}</div>
-                            </div>
+                            <div><div style="font-size:14px; font-weight:600;">${item.name}</div><div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div><div style="font-size:14px; font-weight:700; color:var(--primary-blue);">₹${item.price * item.qty}</div></div>
                         </div>
                     `).join('')}
                     <div style="text-align:right; font-weight:bold; margin-top:10px; border-top:1px solid #eee; padding-top:10px;">Total: ₹${order.total}</div>
@@ -588,21 +479,13 @@
         function openWishlist() {
             document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
             document.getElementById('wishlist-page').style.display = 'flex';
-
             let wishlistIds = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || [];
             const container = document.getElementById('wishlistGrid');
-            
-            if(wishlistIds.length === 0) {
-                container.innerHTML = '<p style="grid-column: span 2; text-align:center; color:#777; margin-top:20px;">Your wishlist is empty!</p>';
-                return;
-            }
-
+            if(wishlistIds.length === 0) { container.innerHTML = '<p style="grid-column: span 2; text-align:center; color:#777; margin-top:20px;">Your wishlist is empty!</p>'; return; }
             const wishlistProducts = allProducts.filter(p => wishlistIds.includes(p._id));
             container.innerHTML = wishlistProducts.map(p => `
                 <div class="card" onclick="openProductPage('${p._id}')">
-                    <img src="${p.imageUrl}" class="card-img">
-                    <div class="card-title">${p.name}</div>
-                    <div><span class="card-price">₹${p.price}</span></div>
+                    <img src="${p.imageUrl}" class="card-img"><div class="card-title">${p.name}</div><div><span class="card-price">₹${p.price}</span></div>
                 </div>
             `).join('');
         }
@@ -631,23 +514,15 @@
                 });
             }
             document.getElementById('cartTotal').innerText = `₹${totalPrice}`;
-            
             const similar = allProducts.filter(p => !cart.find(c => c._id === p._id)).slice(0, 4);
             document.getElementById('cartSimilarList').innerHTML = similar.length === 0 ? '<p style="font-size:12px; color:#777;">No other products.</p>' : similar.map(p => `
                 <div class="cart-sim-card" onclick="closeCart(); openProductPage('${p._id}')">
-                    <img src="${p.imageUrl}">
-                    <div class="cart-sim-card-title">${p.name}</div>
-                    <div class="cart-sim-card-price">₹${p.price}</div>
+                    <img src="${p.imageUrl}"><div class="cart-sim-card-title">${p.name}</div><div class="cart-sim-card-price">₹${p.price}</div>
                 </div>
             `).join('');
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            saveCart(cart);
-            updateCartUI();
-        }
-
+        function removeFromCart(index) { cart.splice(index, 1); saveCart(cart); updateCartUI(); }
         function openCart() { document.getElementById('cartModal').classList.add('open'); updateCartUI(); }
         function closeCart() { document.getElementById('cartModal').classList.remove('open'); }
 
@@ -667,33 +542,76 @@
             }
         }
 
+        // --- PROCESS PAYMENT & AUTOMATIC QR VERIFICATION ---
         function processPayment(e) {
             e.preventDefault();
             if(!currentUser) {
                 alert("Please login to place an order.");
                 return handleProfileClick();
             }
+            
+            // Save address temporarily
+            const name = document.getElementById('chkName').value;
+            const addr = document.getElementById('chkAddress').value;
+            const state = document.querySelector('input[placeholder="State"]').value;
+            const pin = document.querySelector('input[placeholder="110006"]').value;
+            checkoutAddress = `${name}, ${addr}, ${state} - ${pin}`;
+
+            // Show QR Scanner
             document.getElementById('checkout-page').style.display = 'none';
             document.getElementById('qrModal').classList.add('open');
+            
+            // Hide QR image initially, show verifying text after 3 seconds (simulating scan time)
+            setTimeout(() => {
+                document.getElementById('qrImage').style.display = 'none';
+                document.getElementById('qrSubTitle').style.display = 'none';
+                document.getElementById('verifySpinner').style.display = 'block';
+                document.getElementById('verifyText').style.display = 'block';
+                document.getElementById('qrTitle').innerText = "Processing Payment...";
+
+                // After 5 seconds of verifying, call backend to save order
+                setTimeout(async () => {
+                    await saveOrderToBackend();
+                }, 5000);
+
+            }, 3000);
         }
 
-        function paymentSuccess() {
-            closeModal('qrModal');
-            
-            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
+        async function saveOrderToBackend() {
             const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             
+            // Save to backend
+            try {
+                await fetch(`${API_URL}/api/order`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user: currentUser, cart: cart, total: totalAmount, address: checkoutAddress })
+                });
+            } catch(e) { console.log(e); }
+
+            // Save to local storage for User Profile
+            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
             orders.unshift({
                 id: 'ORD' + Date.now(),
                 date: new Date().toLocaleDateString(),
                 items: cart,
                 total: totalAmount,
-                status: 'Delivered'
+                status: 'Paid'
             });
             localStorage.setItem('orders_' + currentUser.email, JSON.stringify(orders));
 
+            // Reset QR Modal state for next time
+            document.getElementById('qrTitle').innerText = "Scan to Pay";
+            document.getElementById('qrImage').style.display = 'block';
+            document.getElementById('qrSubTitle').style.display = 'block';
+            document.getElementById('verifySpinner').style.display = 'none';
+            document.getElementById('verifyText').style.display = 'none';
+            document.getElementById('qrModal').classList.remove('open');
+
+            // Show Success Modal
             document.getElementById('successModal').classList.add('open');
             createFireworks();
+            
             cart = []; 
             saveCart(cart);
             updateCartUI();
@@ -713,17 +631,13 @@
                 particle.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
                 particle.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
                 particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.left = '50%';
-                particle.style.top = '50%';
+                particle.style.left = '50%'; particle.style.top = '50%';
                 particle.style.animationDelay = `${Math.random() * 0.5}s`;
                 container.appendChild(particle);
             }
         }
 
-        // --- NAVIGATION ---
-        function goHome() {
-            window.location.href = 'index.html';
-        }
+        function goHome() { window.location.href = 'index.html'; }
 
         function openCategoriesPage() {
             document.getElementById('home-page').style.display = 'none';

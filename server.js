@@ -18,8 +18,11 @@ if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
 const productsFile = path.join(dataDir, 'products.json');
 const bannersFile = path.join(dataDir, 'banners.json');
+const ordersFile = path.join(dataDir, 'orders.json'); // New Orders File
+
 if (!fs.existsSync(productsFile)) fs.writeFileSync(productsFile, '[]');
 if (!fs.existsSync(bannersFile)) fs.writeFileSync(bannersFile, '[]');
+if (!fs.existsSync(ordersFile)) fs.writeFileSync(ordersFile, '[]');
 
 // --- MULTER CONFIG ---
 const storage = multer.diskStorage({
@@ -34,69 +37,65 @@ const writeData = (file, data) => fs.writeFileSync(file, JSON.stringify(data, nu
 
 // --- ROUTES ---
 
-// Get Data
+// Products & Banners
 app.get('/api/products', (req, res) => res.json(readData(productsFile)));
 app.get('/api/banners', (req, res) => res.json(readData(bannersFile)));
 
-// 1. ADD PRODUCT (Multiple Images)
+// NEW: Orders API
+app.get('/api/orders', (req, res) => res.json(readData(ordersFile)));
+
+app.post('/api/order', (req, res) => {
+    try {
+        const { user, cart, total, address } = req.body;
+        const orders = readData(ordersFile);
+        const newOrder = {
+            id: 'ORD' + Date.now(),
+            user: user,
+            address: address,
+            items: cart,
+            total: total,
+            date: new Date().toLocaleString(),
+            status: 'Paid'
+        };
+        orders.unshift(newOrder);
+        writeData(ordersFile, orders);
+        res.json({ success: true, orderId: newOrder.id });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Admin Product & Banner Routes
 app.post('/api/admin/product', upload.array('imageFiles', 5), (req, res) => {
     try {
         const { name, price, oldPrice, category, description } = req.body;
         let images = [];
-        
-        if (req.files && req.files.length > 0) {
-            images = req.files.map(f => `/uploads/${f.filename}`);
-        } else if (req.body.imageUrl) {
-            images.push(req.body.imageUrl);
-        }
-
+        if (req.files && req.files.length > 0) images = req.files.map(f => `/uploads/${f.filename}`);
+        else if (req.body.imageUrl) images.push(req.body.imageUrl);
         if (images.length === 0) return res.status(400).json({ error: "Image required" });
 
         const products = readData(productsFile);
-        const newProduct = {
-            _id: 'prod_' + Date.now(),
-            name, price: Number(price), oldPrice: Number(oldPrice), category, description,
-            imageUrl: images[0], // Main image
-            additionalImages: images.slice(1) // Other images
-        };
-
+        const newProduct = { _id: 'prod_' + Date.now(), name, price: Number(price), oldPrice: Number(oldPrice), category, description, imageUrl: images[0], additionalImages: images.slice(1) };
         products.unshift(newProduct);
         writeData(productsFile, products);
-        res.json({ success: true, message: "Product Saved Successfully!" });
+        res.json({ success: true, message: "Product Saved!" });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 2. EDIT PRODUCT
 app.put('/api/admin/product/:id', upload.array('imageFiles', 5), (req, res) => {
     try {
         const { name, price, oldPrice, category, description, existingImages } = req.body;
         let products = readData(productsFile);
         const index = products.findIndex(p => p._id === req.params.id);
-        
         if (index === -1) return res.status(404).json({ error: "Product not found" });
 
-        // Existing images sent from frontend as JSON string
         let images = existingImages ? JSON.parse(existingImages) : [];
-        
-        // If new files uploaded, add them
-        if (req.files && req.files.length > 0) {
-            const newImages = req.files.map(f => `/uploads/${f.filename}`);
-            images = [...newImages, ...images]; // New images first
-        }
+        if (req.files && req.files.length > 0) images = [...req.files.map(f => `/uploads/${f.filename}`), ...images];
 
-        products[index] = {
-            ...products[index],
-            name, price: Number(price), oldPrice: Number(oldPrice), category, description,
-            imageUrl: images[0] || products[index].imageUrl,
-            additionalImages: images.slice(1)
-        };
-
+        products[index] = { ...products[index], name, price: Number(price), oldPrice: Number(oldPrice), category, description, imageUrl: images[0] || products[index].imageUrl, additionalImages: images.slice(1) };
         writeData(productsFile, products);
         res.json({ success: true, message: "Product Updated!" });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 3. DELETE PRODUCT
 app.delete('/api/admin/product/:id', (req, res) => {
     try {
         let products = readData(productsFile);
@@ -106,12 +105,10 @@ app.delete('/api/admin/product/:id', (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 4. ADD BANNER
 app.post('/api/admin/banner', upload.single('imageFile'), (req, res) => {
     try {
         let finalImage = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
         if (!finalImage) return res.status(400).json({ error: "Image required" });
-
         const banners = readData(bannersFile);
         banners.push({ _id: 'ban_' + Date.now(), imageUrl: finalImage });
         writeData(bannersFile, banners);
@@ -119,23 +116,18 @@ app.post('/api/admin/banner', upload.single('imageFile'), (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 5. EDIT BANNER
 app.put('/api/admin/banner/:id', upload.single('imageFile'), (req, res) => {
     try {
         let banners = readData(bannersFile);
         const index = banners.findIndex(b => b._id === req.params.id);
         if (index === -1) return res.status(404).json({ error: "Banner not found" });
-
         let finalImage = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
-        
         if(finalImage) banners[index].imageUrl = finalImage;
-        
         writeData(bannersFile, banners);
         res.json({ success: true, message: "Banner Updated!" });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 6. DELETE BANNER
 app.delete('/api/admin/banner/:id', (req, res) => {
     try {
         let banners = readData(bannersFile);
