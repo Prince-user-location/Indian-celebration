@@ -1,0 +1,45 @@
+[
+  {
+    "id": "ORD1793092415973",
+    "user": {
+      "name": "Prince Kumar",
+      "phone": "9508376277",
+      "email": "pk767@gmail.com",
+      "password": "prince44"
+    },
+    "address": "Prince Kumar, Fulwariya sajour bhagalpur, Bihar - 812006",
+    "items": [
+      {
+        "_id": "prod_1792911172300",
+        "name": "Indian Celebrition ",
+        "price": 400,
+        "oldPrice": 749,
+        "category": "patake",
+        "description": "Happy Diwali 🪔🪔🪔 \r\nLight up your celebration 💥💥",
+        "imageUrl": "/uploads/img_1792911172286.jpg",
+        "additionalImages": [],
+        "qty": 1,
+        "size": "N/A"
+      },
+      {
+        "_id": "prod_1792845991147",
+        "name": "Tendy&Comfy",
+        "price": 499,
+        "oldPrice": 1099,
+        "category": "clothes",
+        "description": "Women's Cardigan Top& shirt set\r\nKintwear+shirts",
+        "imageUrl": "/uploads/img_1792846146628.jpg",
+        "additionalImages": [
+          "/uploads/img_1792845991134.jpg"
+        ],
+        "qty": 1,
+        "size": "S"
+      }
+    ],
+    "total": 899,
+    "utr": "121254639698",
+    "paymentProof": "/uploads/img_1793092415835.jpg",
+    "exactTime": "27/10/2026, 2:43:35 pm.866 ms",
+    "status": "Paid / Verified"
+  }
+]

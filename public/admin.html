@@ -32,15 +32,26 @@
         .btn-edit { background: #f1f5f9; color: #334155; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
         .btn-del { background: #fee2e2; color: #dc2626; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
 
+        /* Order Card Specific */
         .order-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; font-size: 13px; color: #555; }
         .order-user { font-weight: 700; color: #1e293b; font-size: 14px; margin-bottom: 5px; }
         .order-addr { font-size: 12px; color: #666; margin-bottom: 10px; }
-        .order-utr { font-size: 14px; font-weight: 700; color: #d97706; background: #fffbeb; padding: 8px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #fde68a;}
+        
+        /* Proof & UTR Section */
+        .proof-box { background: #f8fafc; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 8px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center;}
+        .proof-box img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #ccc; cursor: pointer; }
+        .proof-info { flex: 1; }
+        .proof-utr { font-size: 14px; font-weight: 700; color: #d97706; margin-bottom: 4px;}
+        .proof-time { font-size: 12px; font-weight: 600; color: #3b82f6; }
+
         .order-items { display: flex; flex-direction: column; gap: 8px; }
         .order-item { display: flex; gap: 10px; align-items: center; font-size: 13px; }
         .order-item img { width: 40px; height: 40px; object-fit: contain; border-radius: 4px; }
         .order-total { text-align: right; font-weight: 700; margin-top: 10px; color: #6366f1; font-size: 16px;}
+
+        .btn-verify { width: 100%; padding: 12px; background: #388e3c; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 14px; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 10px rgba(56, 142, 60, 0.2); }
+        .status-verified { color: #388e3c; font-weight: 800; text-align: center; margin-top: 15px; background: #e8f5e9; padding: 10px; border-radius: 8px; }
 
         .form-modal { display: none; background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .form-modal.active { display: block; }
@@ -106,7 +117,7 @@
     </div>
 
     <script>
-        const API_URL = "";
+        const API_URL = ""; // Render Fix
         let currentTab = 'orders';
         let allProducts = [];
         let allBanners = [];
@@ -162,17 +173,25 @@
                     const orders = await res.json();
                     if(orders.length === 0) { container.innerHTML = '<p style="text-align:center;">No orders yet.</p>'; return; }
                     
+                    // History List (Latest First)
                     container.innerHTML = orders.map(o => `
                         <div class="order-card">
                             <div class="order-header">
                                 <span>ID: ${o.id}</span>
-                                <span>${o.date}</span>
+                                <span style="font-weight:bold; color: ${o.status === 'Paid / Verified' ? '#388e3c' : '#d97706'}">${o.status}</span>
                             </div>
                             <div class="order-user">${o.user.name} (${o.user.phone})</div>
                             <div class="order-addr">Address: ${o.address}</div>
                             
-                            <!-- UTR Section for Admin -->
-                            <div class="order-utr">UTR / Txn ID: ${o.utr || 'N/A'}</div>
+                            <!-- PAYMENT PROOF SECTION -->
+                            <div class="proof-box">
+                                <img src="${o.paymentProof}" alt="Proof" onclick="window.open('${o.paymentProof}', '_blank')">
+                                <div class="proof-info">
+                                    <div class="proof-utr">UTR: ${o.utr}</div>
+                                    <div class="proof-time">Time: ${o.exactTime}</div>
+                                    <p style="font-size: 10px; color: #666; margin-top: 4px;">Click image to view full size</p>
+                                </div>
+                            </div>
                             
                             <div class="order-items">
                                 ${o.items.map(i => `
@@ -183,6 +202,12 @@
                                 `).join('')}
                             </div>
                             <div class="order-total">Total: ₹${o.total}</div>
+
+                            <!-- VERIFY BUTTON LOGIC -->
+                            ${o.status === 'Pending Verification' 
+                                ? `<button class="btn-verify" onclick="verifyOrder('${o.id}')">Mark as Paid (Verify)</button>` 
+                                : `<div class="status-verified">✅ Payment Verified</div>`
+                            }
                         </div>
                     `).join('');
                 } 
@@ -220,6 +245,23 @@
                     `).join('') || '<p>No products found.</p>';
                 }
             } catch(e) { container.innerHTML = 'Error loading data.'; }
+        }
+
+        // VERIFY ORDER FUNCTION
+        async function verifyOrder(id) {
+            if(!confirm("Kya aapne bank account me payment receive kar li hai? (Verify Order?)")) return;
+            
+            try {
+                const res = await fetch(`${API_URL}/api/admin/order/${id}/verify`, { method: 'PUT' });
+                const data = await res.json();
+                
+                if(data.success) {
+                    alert("✅ Order Verified Successfully!");
+                    loadList(); // Refresh list to show updated status
+                } else {
+                    alert("Error: " + data.error);
+                }
+            } catch(e) { alert("Server Error!"); }
         }
 
         function showForm() { document.getElementById('addForm').classList.add('active'); }

@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// --- FOLDERS SETUP ---
 const uploadDir = path.join(__dirname, 'public', 'uploads');
 const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
@@ -23,6 +24,7 @@ if (!fs.existsSync(productsFile)) fs.writeFileSync(productsFile, '[]');
 if (!fs.existsSync(bannersFile)) fs.writeFileSync(bannersFile, '[]');
 if (!fs.existsSync(ordersFile)) fs.writeFileSync(ordersFile, '[]');
 
+// --- MULTER CONFIG ---
 const storage = multer.diskStorage({
     destination: function (req, file, cb) { cb(null, uploadDir) },
     filename: function (req, file, cb) { cb(null, 'img_' + Date.now() + path.extname(file.originalname)) }
@@ -32,24 +34,32 @@ const upload = multer({ storage: storage });
 const readData = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 const writeData = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 2));
 
+// --- APIs ---
 app.get('/api/products', (req, res) => res.json(readData(productsFile)));
 app.get('/api/banners', (req, res) => res.json(readData(bannersFile)));
 app.get('/api/orders', (req, res) => res.json(readData(ordersFile)));
 
-// Save Order with UTR
-app.post('/api/order', (req, res) => {
+// Order Submit Route
+app.post('/api/order', upload.single('paymentProof'), (req, res) => {
     try {
         const { user, cart, total, address, utr } = req.body;
+        if(!req.file) return res.status(400).json({ error: "Payment screenshot is required." });
+        if(!utr) return res.status(400).json({ error: "UTR is required." });
+
         const orders = readData(ordersFile);
+        const now = new Date();
+        const exactTime = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) + `.${now.getMilliseconds()} ms`;
+
         const newOrder = {
             id: 'ORD' + Date.now(),
-            user: user,
+            user: JSON.parse(user),
             address: address,
-            items: cart,
-            total: total,
-            utr: utr || "N/A", // Save UTR
-            date: new Date().toLocaleString(),
-            status: 'Pending Verification' // Status is now pending
+            items: JSON.parse(cart),
+            total: Number(total),
+            utr: utr,
+            paymentProof: `/uploads/${req.file.filename}`,
+            exactTime: exactTime,
+            status: 'Pending Verification' 
         };
         orders.unshift(newOrder);
         writeData(ordersFile, orders);
@@ -57,7 +67,20 @@ app.post('/api/order', (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ... (Baaki product, banner routes same rahenge jo pichle code me the)
+// NEW: Verify Order API (Admin Panel ke liye)
+app.put('/api/admin/order/:id/verify', (req, res) => {
+    try {
+        let orders = readData(ordersFile);
+        const index = orders.findIndex(o => o.id === req.params.id);
+        if(index === -1) return res.status(404).json({ error: "Order not found" });
+
+        orders[index].status = 'Paid / Verified';
+        writeData(ordersFile, orders);
+        res.json({ success: true, message: "Order Verified!" });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Admin Routes (Products & Banners)
 app.post('/api/admin/product', upload.array('imageFiles', 5), (req, res) => {
     try {
         const { name, price, oldPrice, category, description } = req.body;
@@ -71,20 +94,6 @@ app.post('/api/admin/product', upload.array('imageFiles', 5), (req, res) => {
         products.unshift(newProduct);
         writeData(productsFile, products);
         res.json({ success: true, message: "Product Saved!" });
-    } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-app.put('/api/admin/product/:id', upload.array('imageFiles', 5), (req, res) => {
-    try {
-        const { name, price, oldPrice, category, description, existingImages } = req.body;
-        let products = readData(productsFile);
-        const index = products.findIndex(p => p._id === req.params.id);
-        if (index === -1) return res.status(404).json({ error: "Product not found" });
-        let images = existingImages ? JSON.parse(existingImages) : [];
-        if (req.files && req.files.length > 0) images = [...req.files.map(f => `/uploads/${f.filename}`), ...images];
-        products[index] = { ...products[index], name, price: Number(price), oldPrice: Number(oldPrice), category, description, imageUrl: images[0] || products[index].imageUrl, additionalImages: images.slice(1) };
-        writeData(productsFile, products);
-        res.json({ success: true, message: "Product Updated!" });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
@@ -105,18 +114,6 @@ app.post('/api/admin/banner', upload.single('imageFile'), (req, res) => {
         banners.push({ _id: 'ban_' + Date.now(), imageUrl: finalImage });
         writeData(bannersFile, banners);
         res.json({ success: true, message: "Banner Saved!" });
-    } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-app.put('/api/admin/banner/:id', upload.single('imageFile'), (req, res) => {
-    try {
-        let banners = readData(bannersFile);
-        const index = banners.findIndex(b => b._id === req.params.id);
-        if (index === -1) return res.status(404).json({ error: "Banner not found" });
-        let finalImage = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
-        if(finalImage) banners[index].imageUrl = finalImage;
-        writeData(bannersFile, banners);
-        res.json({ success: true, message: "Banner Updated!" });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 

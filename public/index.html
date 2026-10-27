@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Indian Celebration</title>
+    <title>Diwali Celebration</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         :root { --primary-blue: #0b2240; --accent-gold: #ffb300; --bg-color: #f8f9fa; }
@@ -21,18 +21,14 @@
         .search-container { background: white; border-radius: 8px; display: flex; align-items: center; padding: 10px 15px; gap: 10px; }
         .search-container input { border: none; outline: none; width: 100%; font-size: 14px; }
         
-        /* Top Tabs */
+        /* Tabs, Banner, Grid (Same as before) */
         .top-tabs { display: flex; justify-content: space-between; padding: 15px 10px; gap: 10px; overflow-x: auto; }
         .tab-box { background: white; border-radius: 12px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; min-width: 80px; box-shadow: 0 3px 8px rgba(0,0,0,0.06); cursor: pointer; }
         .tab-box img { width: 38px; height: 38px; object-fit: contain; margin-bottom: 8px; }
         .tab-box span { font-size: 11px; font-weight: 600; }
-        
-        /* Banner */
         .banner-container { position: relative; width: 100%; height: 220px; overflow: hidden; margin-bottom: 10px; background: #111; }
         .banner-slider { display: flex; height: 100%; transition: transform 0.5s ease-in-out; }
         .banner-slider img { min-width: 100%; height: 100%; object-fit: cover; }
-        
-        /* Products Grid */
         .section-title { background: white; padding: 15px; font-size: 18px; font-weight: 700; color: var(--primary-blue); }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; }
         .card { background: white; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -56,22 +52,19 @@
         .form-group-full input { width: 100%; border: none; outline: none; font-size: 15px; font-weight: 500; color: #333; background: transparent; }
         .btn-submit-full { width: 100%; padding: 16px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer; }
 
-        /* Auth Page */
+        /* Auth, Profile, Orders (Same as before) */
         #auth-page { background: white; padding-bottom: 100px; }
         .auth-container { padding: 30px 20px; }
         .auth-header { text-align: center; margin-bottom: 30px; }
         .auth-header h2 { color: var(--primary-blue); font-size: 24px; margin-bottom: 5px; }
-        .auth-header p { color: #666; font-size: 14px; }
         .auth-tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 20px; }
         .auth-tab { flex: 1; text-align: center; padding: 10px; font-weight: 600; color: #888; cursor: pointer; }
         .auth-tab.active { color: var(--primary-blue); border-bottom: 2px solid var(--primary-blue); margin-bottom: -2px; }
         .auth-form-group { margin-bottom: 15px; }
         .auth-form-group label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 5px; }
         .auth-form-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; outline: none; font-size: 14px; }
-        .auth-form-group input:focus { border-color: var(--primary-blue); }
         .btn-auth { width: 100%; padding: 14px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; margin-bottom: 20px;}
 
-        /* User Profile */
         #profile-page { background: #f1f3f6; padding-bottom: 80px; }
         .prof-header { background: linear-gradient(135deg, #0b2240, #1a3b66); padding: 40px 20px 60px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; position: relative; }
         .prof-user { display: flex; align-items: center; gap: 20px; position: relative; z-index: 2; }
@@ -86,12 +79,10 @@
         .prof-menu-container { padding: 0 20px; }
         .prof-menu-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
         .prof-list-item { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
-        .prof-list-item:last-child { border-bottom: none; }
         .prof-list-left { display: flex; align-items: center; gap: 18px; }
         .prof-list-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; justify-content: center; align-items: center; }
         .prof-list-text { font-size: 16px; font-weight: 500; color: #333; }
 
-        /* Sub-Pages */
         #orders-page, #wishlist-page { background: #f1f3f6; padding-bottom: 80px; }
         .sub-page-content { padding: 15px; }
         .order-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -149,7 +140,7 @@
         <div class="header">
             <div class="header-top">
                 <div>
-                    <div class="logo-text">Indian Celebration</div>
+                    <div class="logo-text">Diwali Celebration</div>
                     <div class="logo-sub">Explore Plus ⭐</div>
                 </div>
                 <div class="header-icons">
@@ -204,7 +195,7 @@
         </div>
         <div class="auth-container">
             <div class="auth-header">
-                <h2>Welcome to Indian Celebration</h2>
+                <h2>Welcome to Diwali Celebration</h2>
                 <p>Login or create an account to continue</p>
             </div>
             <div class="auth-tabs">
@@ -299,25 +290,28 @@
         <div class="cart-footer"><button class="btn-pay" onclick="initiateCartCheckout()">Pay Now</button></div>
     </div>
 
-    <!-- QR SCANNER & UTR MODAL -->
+    <!-- QR SCANNER & UTR & PHOTO MODAL -->
     <div class="overlay-modal" id="qrModal">
         <div class="modal-content">
             <div class="modal-title">Scan & Pay</div>
             <p style="font-size:12px; color:#666; margin-bottom: 10px;">Scan with GPay, PhonePe, Paytm</p>
             
-            <!-- ========================================================== -->
-            <!-- AAPKA IMGBB WALA QR CODE YAHAN HAI -->
-            <!-- ========================================================== -->
-            <img src="https://i.postimg.cc/rmxjrMZS/IMG-20261024-WA0003.jpg" class="qr-img" alt="Scanner">
+            <!-- Aapka ImgBB Wala QR Code -->
+            <img src="https://i.ibb.co/Cs49YGDd/IMG-20261024-WA0003.jpg" class="qr-img" alt="Scanner">
             
-            <div style="background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 12px; margin: 10px 0; text-align: left;">
-                <p style="font-size: 12px; color: #b26a00; margin: 0; font-weight: 500;">Payment ke baad UTR / Txn ID yahan enter karein:</p>
+            <div style="background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 10px; margin: 10px 0; text-align: left;">
+                <p style="font-size: 11px; color: #b26a00; margin: 0; font-weight: 500;">Payment ke baad UTR ID aur Payment ka Screenshot daalein:</p>
             </div>
 
-            <input type="text" id="utrInput" placeholder="Enter 12-digit UTR ID" style="width: 100%; padding: 14px; border: 2px solid #ccc; border-radius: 8px; margin-bottom: 15px; outline: none; font-size: 16px; text-align: center; font-weight: bold; letter-spacing: 1px;">
+            <input type="text" id="utrInput" placeholder="Enter 12-digit UTR ID" style="width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; margin-bottom: 10px; outline: none; font-size: 14px; text-align: center; font-weight: bold;">
             
-            <button class="btn-submit-full" style="background:#388e3c; margin-top: 0; font-size: 16px; box-shadow: 0 4px 10px rgba(56, 142, 60, 0.3);" onclick="verifyAndPlaceOrder()">Verify & Place Order</button>
-            <button style="background:none; border:none; margin-top:15px; color:#d32f2f; cursor:pointer; font-weight: 600; font-size: 14px;" onclick="closeModal('qrModal')">Cancel Payment</button>
+            <div style="text-align: left; margin-bottom: 15px;">
+                <label style="font-size: 12px; font-weight: 600; color: #555;">Upload Payment Screenshot:</label>
+                <input type="file" id="proofImage" accept="image/*" style="width: 100%; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; margin-top: 5px; background: #fafafa;">
+            </div>
+            
+            <button class="btn-submit-full" style="background:#388e3c; margin-top: 0; font-size: 16px; box-shadow: 0 4px 10px rgba(56, 142, 60, 0.3);" onclick="verifyAndPlaceOrder()">Submit Proof & Place Order</button>
+            <button style="background:none; border:none; margin-top:15px; color:#d32f2f; cursor:pointer; font-weight: 600; font-size: 14px;" onclick="closeModal('qrModal')">Cancel</button>
         </div>
     </div>
 
@@ -327,7 +321,7 @@
             <div class="fireworks-container" id="fireworks"></div>
             <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
             <div class="modal-title" style="color:#388e3c; font-size:22px;">Order Placed!</div>
-            <p style="color:#666; margin-bottom:20px; font-size: 14px;">Aapka order successfully place ho gaya hai. Admin aapke payment ko verify karke order dispatch karega.</p>
+            <p style="color:#666; margin-bottom:20px; font-size: 14px;">Aapka order place ho gaya hai. Admin aapke payment proof ko verify karke order dispatch karega.</p>
             <button class="btn-submit-full" onclick="closeModal('successModal'); goHome();">Continue Shopping</button>
         </div>
     </div>
@@ -346,7 +340,7 @@
         let cart = [];
         let currentUser = null;
         let checkoutAddress = "";
-        const API_URL = ""; // Render Fix
+        const API_URL = "";
 
         function getCart() { return JSON.parse(localStorage.getItem('diwali_cart')) || []; }
         function saveCart(c) { localStorage.setItem('diwali_cart', JSON.stringify(c)); }
@@ -594,48 +588,66 @@
             document.getElementById('qrModal').classList.add('open');
         }
 
-        // Verify UTR and Place Order (Manual Verification)
+        // Verify UTR + Proof Image & Place Order
         async function verifyAndPlaceOrder() {
             const utr = document.getElementById('utrInput').value;
+            const fileInput = document.getElementById('proofImage');
+            
             if(!utr || utr.length < 8) {
-                return alert("Please enter a valid UTR / Transaction ID to place the order.");
+                return alert("Please enter a valid UTR / Transaction ID.");
+            }
+            if (fileInput.files.length === 0) {
+                return alert("Please upload a payment screenshot.");
             }
 
             const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             
+            // Prepare FormData for image upload
+            const formData = new FormData();
+            formData.append('user', JSON.stringify(currentUser));
+            formData.append('cart', JSON.stringify(cart));
+            formData.append('total', totalAmount);
+            formData.append('address', checkoutAddress);
+            formData.append('utr', utr);
+            formData.append('paymentProof', fileInput.files[0]);
+
             try {
-                await fetch(`${API_URL}/api/order`, {
+                const res = await fetch(`${API_URL}/api/order`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        user: currentUser, 
-                        cart: cart, 
-                        total: totalAmount, 
-                        address: checkoutAddress,
-                        utr: utr
-                    })
+                    body: formData 
                 });
-            } catch(e) { console.log(e); }
+                
+                const data = await res.json();
+                
+                if(data.success) {
+                    // Save to local storage for User Profile
+                    let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
+                    orders.unshift({
+                        id: data.orderId,
+                        date: new Date().toLocaleDateString(),
+                        items: cart,
+                        total: totalAmount,
+                        status: 'Pending Verification'
+                    });
+                    localStorage.setItem('orders_' + currentUser.email, JSON.stringify(orders));
 
-            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
-            orders.unshift({
-                id: 'ORD' + Date.now(),
-                date: new Date().toLocaleDateString(),
-                items: cart,
-                total: totalAmount,
-                status: 'Pending Verification'
-            });
-            localStorage.setItem('orders_' + currentUser.email, JSON.stringify(orders));
+                    document.getElementById('utrInput').value = '';
+                    fileInput.value = '';
+                    document.getElementById('qrModal').classList.remove('open');
 
-            document.getElementById('utrInput').value = '';
-            document.getElementById('qrModal').classList.remove('open');
-
-            document.getElementById('successModal').classList.add('open');
-            createFireworks();
-            
-            cart = []; 
-            saveCart(cart);
-            updateCartUI();
+                    document.getElementById('successModal').classList.add('open');
+                    createFireworks();
+                    
+                    cart = []; 
+                    saveCart(cart);
+                    updateCartUI();
+                } else {
+                    alert("Error: " + data.error);
+                }
+            } catch(e) { 
+                console.error(e); 
+                alert("Server error! Please try again.");
+            }
         }
 
         function closeModal(id) { document.getElementById(id).classList.remove('open'); }
