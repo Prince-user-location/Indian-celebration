@@ -3,144 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Indian Celebration</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        :root { --primary-blue: #0b2240; --accent-gold: #ffb300; --bg-color: #f8f9fa; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-color); overflow-x: hidden; padding-bottom: 70px; }
-        
-        /* Header */
-        .header { background: linear-gradient(135deg, #0b2240 0%, #1a3b66 100%); position: sticky; top: 0; z-index: 100; padding: 15px 15px 20px 15px; display: flex; flex-direction: column; gap: 12px; border-bottom: 2px solid var(--accent-gold); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .header-top { display: flex; justify-content: space-between; align-items: center; }
-        .logo-text { font-size: 22px; font-weight: 700; font-style: italic; color: white; letter-spacing: -0.5px; }
-        .logo-sub { font-size: 11px; color: var(--accent-gold); font-style: italic; margin-top: 4px; }
-        .header-icons { display: flex; gap: 18px; color: white; cursor: pointer; }
-        .location-bar { display: flex; align-items: center; color: #ddd; font-size: 12px; gap: 5px; }
-        .location-bar span { color: var(--accent-gold); margin-left: 5px; }
-        .search-container { background: white; border-radius: 8px; display: flex; align-items: center; padding: 10px 15px; gap: 10px; }
-        .search-container input { border: none; outline: none; width: 100%; font-size: 14px; }
-        
-        /* Tabs, Banner, Grid (Same as before) */
-        .top-tabs { display: flex; justify-content: space-between; padding: 15px 10px; gap: 10px; overflow-x: auto; }
-        .tab-box { background: white; border-radius: 12px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; min-width: 80px; box-shadow: 0 3px 8px rgba(0,0,0,0.06); cursor: pointer; }
-        .tab-box img { width: 38px; height: 38px; object-fit: contain; margin-bottom: 8px; }
-        .tab-box span { font-size: 11px; font-weight: 600; }
-        .banner-container { position: relative; width: 100%; height: 220px; overflow: hidden; margin-bottom: 10px; background: #111; }
-        .banner-slider { display: flex; height: 100%; transition: transform 0.5s ease-in-out; }
-        .banner-slider img { min-width: 100%; height: 100%; object-fit: cover; }
-        .section-title { background: white; padding: 15px; font-size: 18px; font-weight: 700; color: var(--primary-blue); }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; }
-        .card { background: white; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .card-img { width: 100%; height: 160px; object-fit: contain; margin-bottom: 12px; }
-        .card-title { font-size: 13px; margin-bottom: 8px; font-weight: 500; }
-        .card-price { font-size: 16px; font-weight: 700; color: var(--primary-blue); }
-        .card-old { font-size: 12px; color: #999; text-decoration: line-through; margin-left: 5px; }
-        .card-btn-group { display: flex; gap: 6px; margin-top: auto; padding-top: 10px; }
-        .btn-add-small { flex: 1; background: #ff9f00; color: white; border: none; padding: 8px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; }
-        .btn-buy-small { flex: 1; background: var(--primary-blue); color: white; border: none; padding: 8px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; }
-
-        /* Full Pages */
-        .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f1f3f6; z-index: 200; overflow-y: auto; flex-direction: column; }
-        .page-header { display: flex; align-items: center; padding: 15px; background: white; gap: 15px; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .page-header span { font-weight: 600; font-size: 16px; color: #333; }
-        .page-content { padding: 20px; flex: 1; }
-
-        /* Checkout Form */
-        .form-group-full { margin-bottom: 15px; background: white; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
-        .form-group-full label { display: block; font-size: 12px; font-weight: 600; color: #666; margin-bottom: 5px; }
-        .form-group-full input { width: 100%; border: none; outline: none; font-size: 15px; font-weight: 500; color: #333; background: transparent; }
-        .btn-submit-full { width: 100%; padding: 16px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer; }
-
-        /* Auth, Profile, Orders (Same as before) */
-        #auth-page { background: white; padding-bottom: 100px; }
-        .auth-container { padding: 30px 20px; }
-        .auth-header { text-align: center; margin-bottom: 30px; }
-        .auth-header h2 { color: var(--primary-blue); font-size: 24px; margin-bottom: 5px; }
-        .auth-tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 20px; }
-        .auth-tab { flex: 1; text-align: center; padding: 10px; font-weight: 600; color: #888; cursor: pointer; }
-        .auth-tab.active { color: var(--primary-blue); border-bottom: 2px solid var(--primary-blue); margin-bottom: -2px; }
-        .auth-form-group { margin-bottom: 15px; }
-        .auth-form-group label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 5px; }
-        .auth-form-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; outline: none; font-size: 14px; }
-        .btn-auth { width: 100%; padding: 14px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; margin-bottom: 20px;}
-
-        #profile-page { background: #f1f3f6; padding-bottom: 80px; }
-        .prof-header { background: linear-gradient(135deg, #0b2240, #1a3b66); padding: 40px 20px 60px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; position: relative; }
-        .prof-user { display: flex; align-items: center; gap: 20px; position: relative; z-index: 2; }
-        .prof-avatar { width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 32px; color: var(--primary-blue); font-weight: bold; border: 4px solid var(--accent-gold); }
-        .prof-info h3 { font-size: 22px; font-weight: 600; margin-bottom: 5px; }
-        .prof-info p { font-size: 14px; color: #ccc; }
-        .prof-stats { display: flex; justify-content: space-around; background: white; margin: -35px 20px 25px 20px; padding: 20px; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); position: relative; z-index: 3; }
-        .prof-stat-item { text-align: center; cursor: pointer; flex: 1; }
-        .prof-stat-item:not(:last-child) { border-right: 1px solid #f0f0f0; }
-        .prof-stat-item h4 { font-size: 22px; color: var(--primary-blue); margin-bottom: 4px; font-weight: 700; }
-        .prof-stat-item p { font-size: 12px; color: #777; font-weight: 500; }
-        .prof-menu-container { padding: 0 20px; }
-        .prof-menu-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
-        .prof-list-item { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
-        .prof-list-left { display: flex; align-items: center; gap: 18px; }
-        .prof-list-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; justify-content: center; align-items: center; }
-        .prof-list-text { font-size: 16px; font-weight: 500; color: #333; }
-
-        #orders-page, #wishlist-page { background: #f1f3f6; padding-bottom: 80px; }
-        .sub-page-content { padding: 15px; }
-        .order-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .order-header { display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 10px; margin-bottom: 12px; font-size: 13px; color: #666; }
-        .order-status { color: #388e3c; font-weight: bold; }
-        .order-item { display: flex; gap: 12px; margin-bottom: 12px; }
-        .order-item img { width: 60px; height: 60px; object-fit: contain; border-radius: 8px; background: #f9f9f9; }
-        .wishlist-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; z-index: 500; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #888; cursor: pointer; }
-        .nav-item.active { color: var(--primary-blue); font-weight: 700; }
-        .nav-item svg { width: 24px; height: 24px; fill: currentColor; margin-bottom: 3px; }
-
-        /* Cart Modal */
-        .cart-modal { position: fixed; top: 0; left: 100%; width: 100%; height: 100%; background: #f1f3f6; z-index: 1000; transition: left 0.3s; display: flex; flex-direction: column; }
-        .cart-modal.open { left: 0; }
-        .cart-header { padding: 15px; background: white; display: flex; gap: 15px; font-weight: bold; align-items: center; border-bottom: 1px solid #eee; }
-        .cart-scroll-area { flex: 1; overflow-y: auto; padding-bottom: 80px; } 
-        .cart-items-container { padding: 15px; }
-        .cart-item { display: flex; gap: 15px; background: white; padding: 15px; margin-bottom: 10px; border-radius: 12px; }
-        .cart-item img { width: 70px; height: 70px; object-fit: contain; }
-        .cart-price-details { background: white; padding: 15px 20px; margin: 0 15px 15px 15px; border-radius: 12px; }
-        .price-row.total { font-weight: 700; font-size: 16px; border-top: 1px dashed #ddd; padding-top: 10px; margin-top: 10px; color: var(--primary-blue); display: flex; justify-content: space-between;}
-        .cart-similar-section { padding: 0 15px 20px 15px; }
-        .cart-similar-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #333; }
-        .cart-similar-scroll { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
-        .cart-sim-card { min-width: 130px; background: white; padding: 10px; border-radius: 12px; cursor: pointer; }
-        .cart-sim-card img { width: 100%; height: 100px; object-fit: contain; margin-bottom: 8px; }
-        .cart-sim-card-title { font-size: 12px; color: #333; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .cart-sim-card-price { font-size: 14px; font-weight: 700; color: var(--primary-blue); }
-        .cart-footer { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px; background: white; border-top: 1px solid #eee; z-index: 1001; }
-        .btn-pay { width: 100%; padding: 16px; background: #ffb300; color: white; border: none; font-weight: bold; border-radius: 8px; font-size: 16px; }
-
-        /* Modals */
-        .overlay-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; }
-        .overlay-modal.open { display: flex; }
-        .modal-content { background: white; padding: 25px 20px; border-radius: 16px; width: 90%; max-width: 400px; text-align: center; position: relative;}
-        .modal-title { font-size: 20px; font-weight: 700; color: var(--primary-blue); margin-bottom: 5px; }
-        
-        .qr-img { width: 220px; height: 220px; margin: 15px auto; border: 2px solid #eee; padding: 10px; border-radius: 12px; object-fit: contain; }
-        
-        .success-icon { width: 80px; height: 80px; background: #e8f5e9; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; }
-        .success-icon svg { width: 40px; height: 40px; fill: #43a047; }
-        .fireworks-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: -1; border-radius: 16px;}
-        .particle { position: absolute; width: 8px; height: 8px; border-radius: 50%; animation: explode 1s ease-out infinite; opacity: 0; }
-        @keyframes explode { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; } }
-    </style>
+    <title>Diwali Celebration - Luxury Shopping</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- HOME PAGE -->
+    <!-- ================= HOME PAGE ================= -->
     <div id="home-page">
         <div class="header">
             <div class="header-top">
                 <div>
-                    <div class="logo-text">Indian Celebration</div>
+                    <div class="logo-text">Diwali Celebration</div>
                     <div class="logo-sub">Explore Plus ⭐</div>
                 </div>
                 <div class="header-icons">
@@ -170,24 +43,24 @@
         <div id="dynamicContent"></div>
     </div>
 
-    <!-- CATEGORY PAGE -->
+    <!-- ================= CATEGORY PAGE ================= -->
     <div id="category-page" class="full-page">
         <div class="page-header">
             <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
             <span>All Categories</span>
         </div>
-        <div class="cat-layout" style="display:flex; flex:1; overflow:hidden; background:#f1f3f6;">
-            <div style="width:100px; background:#f8f9fa; border-right:1px solid #eee;">
-                <div class="cat-menu-item active" style="padding:18px 10px; text-align:center; font-size:13px; color:var(--primary-blue); font-weight:700; border-left:3px solid var(--accent-gold); background:white;" onclick="switchCategory('patake', this)">Patake</div>
-                <div class="cat-menu-item" style="padding:18px 10px; text-align:center; font-size:13px; color:#666; font-weight:500; border-left:3px solid transparent; cursor:pointer;" onclick="switchCategory('clothes', this)">Clothes</div>
+        <div class="cat-layout">
+            <div class="cat-sidebar">
+                <div class="cat-menu-item active" onclick="switchCategory('patake', this)">Patake</div>
+                <div class="cat-menu-item" onclick="switchCategory('clothes', this)">Clothes</div>
             </div>
-            <div style="flex:1; padding:10px; overflow-y:auto;">
-                <div class="grid" id="categoryGrid" style="padding:0;"></div>
+            <div class="cat-content">
+                <div class="grid" id="categoryGrid"></div>
             </div>
         </div>
     </div>
 
-    <!-- AUTHENTICATION PAGE -->
+    <!-- ================= AUTHENTICATION PAGE ================= -->
     <div id="auth-page" class="full-page">
         <div class="page-header">
             <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
@@ -195,8 +68,8 @@
         </div>
         <div class="auth-container">
             <div class="auth-header">
-                <h2>Welcome to Indian Celebration</h2>
-                <p>Login or create an account to continue</p>
+                <h2>Welcome to Diwali Celebration</h2>
+                <p style="color:#666; font-size:14px;">Login or create an account to continue</p>
             </div>
             <div class="auth-tabs">
                 <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</div>
@@ -225,7 +98,7 @@
         </div>
     </div>
 
-    <!-- USER PROFILE PAGE -->
+    <!-- ================= USER PROFILE PAGE ================= -->
     <div id="profile-page" class="full-page">
         <div class="prof-header">
             <div class="prof-user">
@@ -251,22 +124,22 @@
         </div>
     </div>
 
-    <!-- ORDERS PAGE -->
+    <!-- ================= ORDERS PAGE ================= -->
     <div id="orders-page" class="full-page">
         <div class="page-header"><svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Orders</span></div>
         <div class="sub-page-content" id="ordersList"></div>
     </div>
 
-    <!-- WISHLIST PAGE -->
+    <!-- ================= WISHLIST PAGE ================= -->
     <div id="wishlist-page" class="full-page">
         <div class="page-header"><svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Wishlist</span></div>
-        <div class="sub-page-content"><div class="wishlist-grid" id="wishlistGrid"></div></div>
+        <div class="sub-page-content"><div class="grid" id="wishlistGrid"></div></div>
     </div>
 
-    <!-- CHECKOUT FORM PAGE -->
+    <!-- ================= CHECKOUT FORM PAGE ================= -->
     <div id="checkout-page" class="full-page">
         <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>Delivery Address</span></div>
-        <div class="page-content">
+        <div class="page-content" style="padding: 20px;">
             <form id="checkoutForm" onsubmit="processPayment(event)">
                 <div class="form-group-full"><label>Full Name</label><input type="text" id="chkName" required placeholder="Enter your name"></div>
                 <div class="form-group-full"><label>Full Address</label><input type="text" id="chkAddress" required placeholder="House No, Street, Area"></div>
@@ -279,28 +152,25 @@
         </div>
     </div>
 
-    <!-- CART MODAL -->
+    <!-- ================= CART MODAL ================= -->
     <div class="cart-modal" id="cartModal">
         <div class="cart-header"><svg onclick="closeCart()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> My Cart</div>
         <div class="cart-scroll-area">
             <div class="cart-items-container" id="cartList"></div>
             <div class="cart-price-details"><div class="price-row total"><span>Total Amount</span><span id="cartTotal">₹0</span></div></div>
-            <div class="cart-similar-section"><div class="cart-similar-title">Similar Products</div><div class="cart-similar-scroll" id="cartSimilarList"></div></div>
         </div>
         <div class="cart-footer"><button class="btn-pay" onclick="initiateCartCheckout()">Pay Now</button></div>
     </div>
 
-    <!-- QR SCANNER & UTR & PHOTO MODAL -->
+    <!-- ================= QR SCANNER MODAL ================= -->
     <div class="overlay-modal" id="qrModal">
         <div class="modal-content">
             <div class="modal-title">Scan & Pay</div>
             <p style="font-size:12px; color:#666; margin-bottom: 10px;">Scan with GPay, PhonePe, Paytm</p>
-            
-            <!-- Aapka ImgBB Wala QR Code -->
-            <img src="https://i.postimg.cc/rmxjrMZS/IMG-20261024-WA0003.jpg" class="qr-img" alt="Scanner">
+            <img src="https://i.ibb.co/Cs49YGDd/IMG-20261024-WA0003.jpg" class="qr-img" alt="Scanner">
             
             <div style="background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 10px; margin: 10px 0; text-align: left;">
-                <p style="font-size: 11px; color: #b26a00; margin: 0; font-weight: 500;">Payment ke baad UTR ID aur Payment ka Screenshot daalein:</p>
+                <p style="font-size: 11px; color: #b26a00; margin: 0; font-weight: 500;">Payment ke baad UTR ID aur Screenshot daalein:</p>
             </div>
 
             <input type="text" id="utrInput" placeholder="Enter 12-digit UTR ID" style="width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; margin-bottom: 10px; outline: none; font-size: 14px; text-align: center; font-weight: bold;">
@@ -315,10 +185,9 @@
         </div>
     </div>
 
-    <!-- SUCCESS MODAL -->
+    <!-- ================= SUCCESS MODAL ================= -->
     <div class="overlay-modal" id="successModal">
         <div class="modal-content" style="overflow:hidden;">
-            <div class="fireworks-container" id="fireworks"></div>
             <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
             <div class="modal-title" style="color:#388e3c; font-size:22px;">Order Placed!</div>
             <p style="color:#666; margin-bottom:20px; font-size: 14px;">Aapka order place ho gaya hai. Admin aapke payment proof ko verify karke order dispatch karega.</p>
@@ -326,7 +195,7 @@
         </div>
     </div>
 
-    <!-- BOTTOM NAV -->
+    <!-- ================= BOTTOM NAVIGATION ================= -->
     <div class="bottom-nav">
         <div class="nav-item active" id="nav-home" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</div>
         <div class="nav-item" id="nav-cat" onclick="openCategoriesPage()"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories</div>
@@ -334,379 +203,6 @@
         <div class="nav-item" onclick="openCart()"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart</div>
     </div>
 
-    <script>
-        let allProducts = [];
-        let allBanners = [];
-        let cart = [];
-        let currentUser = null;
-        let checkoutAddress = "";
-        const API_URL = "";
-
-        function getCart() { return JSON.parse(localStorage.getItem('diwali_cart')) || []; }
-        function saveCart(c) { localStorage.setItem('diwali_cart', JSON.stringify(c)); }
-        function getUsers() { return JSON.parse(localStorage.getItem('users')) || []; }
-        function saveUsers(u) { localStorage.setItem('users', JSON.stringify(u)); }
-
-        async function loadData() {
-            try {
-                const [prodRes, bannerRes] = await Promise.all([
-                    fetch(`${API_URL}/api/products`),
-                    fetch(`${API_URL}/api/banners`)
-                ]);
-                allProducts = await prodRes.json();
-                allBanners = await bannerRes.json();
-                renderHomePage(allProducts);
-                renderTopBanners();
-                cart = getCart();
-                updateCartUI();
-                checkAuthState();
-            } catch (e) { console.error(e); }
-        }
-
-        function renderTopBanners() {
-            const slider = document.getElementById('slider');
-            if(!allBanners || allBanners.length === 0) return;
-            slider.innerHTML = allBanners.map(b => `<img src="${b.imageUrl}">`).join('');
-            if(allBanners.length <= 1) return;
-            let idx = 0;
-            setInterval(() => {
-                idx = (idx + 1) % allBanners.length;
-                slider.style.transform = `translateX(-${idx * 100}%)`;
-            }, 3000);
-        }
-
-        function openProductPage(id) { window.location.href = `/product.html?id=${id}`; }
-
-        function buyNowDirect(id) {
-            const p = allProducts.find(x => x._id === id);
-            if(p.category === 'clothes') {
-                alert("Please open the product page to select a size before buying.");
-                return openProductPage(id);
-            }
-            cart = getCart();
-            const exist = cart.find(x => x._id === id && x.size === "N/A");
-            if(!exist) { cart.push({...p, qty: 1, size: "N/A"}); saveCart(cart); }
-            window.location.href = 'index.html?checkout=true';
-        }
-
-        function renderHomePage(products) {
-            const container = document.getElementById('dynamicContent');
-            if(!products || products.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:20px;">No products found. Please add products from Admin Panel.</p>';
-                return;
-            }
-            let html = `<div class="grid">`;
-            products.forEach(p => {
-                html += `
-                    <div class="card">
-                        <img src="${p.imageUrl}" class="card-img" onclick="openProductPage('${p._id}')">
-                        <div class="card-title" onclick="openProductPage('${p._id}')">${p.name}</div>
-                        <div onclick="openProductPage('${p._id}')"><span class="card-price">₹${p.price}</span><span class="card-old">₹${p.oldPrice}</span></div>
-                        <div class="card-btn-group">
-                            <button class="btn-add-small" onclick="event.stopPropagation(); openProductPage('${p._id}')">Add to Cart</button>
-                            <button class="btn-buy-small" onclick="event.stopPropagation(); buyNowDirect('${p._id}')">Buy Now</button>
-                        </div>
-                    </div>`;
-            });
-            html += `</div>`;
-            container.innerHTML = html;
-        }
-
-        function checkAuthState() { currentUser = JSON.parse(localStorage.getItem('currentUser')); }
-
-        function handleProfileClick() {
-            if(currentUser) { openProfile(); } 
-            else {
-                document.getElementById('home-page').style.display = 'none';
-                document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-                document.getElementById('auth-page').style.display = 'flex';
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                document.getElementById('nav-acc').classList.add('active');
-            }
-        }
-
-        function switchAuthTab(tab) {
-            document.getElementById('tab-login').classList.toggle('active', tab === 'login');
-            document.getElementById('tab-register').classList.toggle('active', tab === 'register');
-            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
-            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
-        }
-
-        function handleRegister(e) {
-            e.preventDefault();
-            const name = document.getElementById('regName').value;
-            const phone = document.getElementById('regPhone').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            let users = getUsers();
-            if(users.find(u => u.email === email)) return alert("Email already registered!");
-            users.push({ name, phone, email, password });
-            saveUsers(users);
-            alert("✅ Registration Successful! Please login.");
-            switchAuthTab('login');
-            document.getElementById('loginEmail').value = email;
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            let users = getUsers();
-            const user = users.find(u => u.email === email && u.password === password);
-            if(user) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                currentUser = user;
-                alert("✅ Login Successful!");
-                openProfile();
-            } else { alert("❌ Invalid email or password!"); }
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('currentUser');
-            currentUser = null;
-            alert("Logged out successfully!");
-            goHome();
-        }
-
-        function openProfile() {
-            document.getElementById('home-page').style.display = 'none';
-            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-            document.getElementById('profile-page').style.display = 'block';
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById('nav-acc').classList.add('active');
-
-            document.getElementById('profName').innerText = currentUser.name;
-            document.getElementById('profEmail').innerText = currentUser.email;
-            document.getElementById('profAvatar').innerText = currentUser.name.charAt(0).toUpperCase();
-
-            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
-            let wishlist = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || [];
-            document.getElementById('statOrders').innerText = orders.length;
-            document.getElementById('statWishlist').innerText = wishlist.length;
-        }
-
-        function openOrders() {
-            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-            document.getElementById('orders-page').style.display = 'flex';
-            let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
-            const container = document.getElementById('ordersList');
-            if(orders.length === 0) { container.innerHTML = '<p style="text-align:center; color:#777; margin-top:20px;">No orders yet!</p>'; return; }
-            container.innerHTML = orders.map(order => `
-                <div class="order-card">
-                    <div class="order-header"><span>Order ID: ${order.id}</span><span class="order-status">${order.status}</span></div>
-                    <div style="font-size:12px; color:#666; margin-bottom:10px;">Date: ${order.date}</div>
-                    ${order.items.map(item => `
-                        <div class="order-item">
-                            <img src="${item.imageUrl}">
-                            <div><div style="font-size:14px; font-weight:600;">${item.name}</div><div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div><div style="font-size:14px; font-weight:700; color:var(--primary-blue);">₹${item.price * item.qty}</div></div>
-                        </div>
-                    `).join('')}
-                    <div style="text-align:right; font-weight:bold; margin-top:10px; border-top:1px solid #eee; padding-top:10px;">Total: ₹${order.total}</div>
-                </div>
-            `).join('');
-        }
-
-        function openWishlist() {
-            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-            document.getElementById('wishlist-page').style.display = 'flex';
-            let wishlistIds = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || [];
-            const container = document.getElementById('wishlistGrid');
-            if(wishlistIds.length === 0) { container.innerHTML = '<p style="grid-column: span 2; text-align:center; color:#777; margin-top:20px;">Your wishlist is empty!</p>'; return; }
-            const wishlistProducts = allProducts.filter(p => wishlistIds.includes(p._id));
-            container.innerHTML = wishlistProducts.map(p => `
-                <div class="card" onclick="openProductPage('${p._id}')">
-                    <img src="${p.imageUrl}" class="card-img"><div class="card-title">${p.name}</div><div><span class="card-price">₹${p.price}</span></div>
-                </div>
-            `).join('');
-        }
-
-        function updateCartUI() {
-            cart = getCart();
-            const list = document.getElementById('cartList');
-            let totalPrice = 0;
-            list.innerHTML = '';
-            if(cart.length === 0) { list.innerHTML = '<p style="text-align:center; padding:20px; color:#777;">Your cart is empty.</p>'; } 
-            else {
-                cart.forEach((item, index) => {
-                    totalPrice += item.price * item.qty;
-                    list.innerHTML += `
-                        <div class="cart-item">
-                            <img src="${item.imageUrl}">
-                            <div style="flex:1;">
-                                <div style="font-size:14px; font-weight:600; color:#333;">${item.name}</div>
-                                <div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div>
-                                <div style="font-weight:700; margin-top:5px; color:var(--primary-blue);">₹${item.price * item.qty}</div>
-                            </div>
-                            <button onclick="removeFromCart(${index})" style="border:none; background:none; color:red; font-size:12px;">Remove</button>
-                        </div>
-                    `;
-                });
-            }
-            document.getElementById('cartTotal').innerText = `₹${totalPrice}`;
-            const similar = allProducts.filter(p => !cart.find(c => c._id === p._id)).slice(0, 4);
-            document.getElementById('cartSimilarList').innerHTML = similar.length === 0 ? '<p style="font-size:12px; color:#777;">No other products.</p>' : similar.map(p => `
-                <div class="cart-sim-card" onclick="closeCart(); openProductPage('${p._id}')">
-                    <img src="${p.imageUrl}"><div class="cart-sim-card-title">${p.name}</div><div class="cart-sim-card-price">₹${p.price}</div>
-                </div>
-            `).join('');
-        }
-
-        function removeFromCart(index) { cart.splice(index, 1); saveCart(cart); updateCartUI(); }
-        function openCart() { document.getElementById('cartModal').classList.add('open'); updateCartUI(); }
-        function closeCart() { document.getElementById('cartModal').classList.remove('open'); }
-
-        function initiateCartCheckout() {
-            if(cart.length === 0) return alert("Cart is empty!");
-            closeCart();
-            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-            document.getElementById('checkout-page').style.display = 'flex';
-        }
-
-        function checkUrlForCheckout() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.get('checkout') === 'true') {
-                window.history.replaceState({}, document.title, window.location.pathname);
-                document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-                document.getElementById('checkout-page').style.display = 'flex';
-            }
-        }
-
-        function processPayment(e) {
-            e.preventDefault();
-            if(!currentUser) {
-                alert("Please login to place an order.");
-                return handleProfileClick();
-            }
-            
-            const name = document.getElementById('chkName').value;
-            const addr = document.getElementById('chkAddress').value;
-            const state = document.querySelector('input[placeholder="State"]').value;
-            const pin = document.querySelector('input[placeholder="110006"]').value;
-            checkoutAddress = `${name}, ${addr}, ${state} - ${pin}`;
-
-            document.getElementById('checkout-page').style.display = 'none';
-            document.getElementById('qrModal').classList.add('open');
-        }
-
-        // Verify UTR + Proof Image & Place Order
-        async function verifyAndPlaceOrder() {
-            const utr = document.getElementById('utrInput').value;
-            const fileInput = document.getElementById('proofImage');
-            
-            if(!utr || utr.length < 8) {
-                return alert("Please enter a valid UTR / Transaction ID.");
-            }
-            if (fileInput.files.length === 0) {
-                return alert("Please upload a payment screenshot.");
-            }
-
-            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            
-            // Prepare FormData for image upload
-            const formData = new FormData();
-            formData.append('user', JSON.stringify(currentUser));
-            formData.append('cart', JSON.stringify(cart));
-            formData.append('total', totalAmount);
-            formData.append('address', checkoutAddress);
-            formData.append('utr', utr);
-            formData.append('paymentProof', fileInput.files[0]);
-
-            try {
-                const res = await fetch(`${API_URL}/api/order`, {
-                    method: 'POST',
-                    body: formData 
-                });
-                
-                const data = await res.json();
-                
-                if(data.success) {
-                    // Save to local storage for User Profile
-                    let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
-                    orders.unshift({
-                        id: data.orderId,
-                        date: new Date().toLocaleDateString(),
-                        items: cart,
-                        total: totalAmount,
-                        status: 'Pending Verification'
-                    });
-                    localStorage.setItem('orders_' + currentUser.email, JSON.stringify(orders));
-
-                    document.getElementById('utrInput').value = '';
-                    fileInput.value = '';
-                    document.getElementById('qrModal').classList.remove('open');
-
-                    document.getElementById('successModal').classList.add('open');
-                    createFireworks();
-                    
-                    cart = []; 
-                    saveCart(cart);
-                    updateCartUI();
-                } else {
-                    alert("Error: " + data.error);
-                }
-            } catch(e) { 
-                console.error(e); 
-                alert("Server error! Please try again.");
-            }
-        }
-
-        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-        function createFireworks() {
-            const container = document.getElementById('fireworks');
-            container.innerHTML = '';
-            const colors = ['#ff0000', '#ffb300', '#00ff00', '#00bfff', '#ff00ff'];
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 100 + 50;
-                particle.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
-                particle.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.left = '50%'; particle.style.top = '50%';
-                particle.style.animationDelay = `${Math.random() * 0.5}s`;
-                container.appendChild(particle);
-            }
-        }
-
-        function goHome() { window.location.href = 'index.html'; }
-
-        function openCategoriesPage() {
-            document.getElementById('home-page').style.display = 'none';
-            document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
-            document.getElementById('category-page').style.display = 'flex';
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById('nav-cat').classList.add('active');
-            switchCategory('patake', document.querySelector('.cat-menu-item'));
-        }
-
-        function switchCategory(cat, el) {
-            document.querySelectorAll('.cat-menu-item').forEach(c => {
-                c.classList.remove('active');
-                c.style.color = '#666'; c.style.fontWeight = '500'; c.style.borderLeftColor = 'transparent'; c.style.background = 'transparent';
-            });
-            el.classList.add('active');
-            el.style.color = 'var(--primary-blue)'; el.style.fontWeight = '700'; el.style.borderLeftColor = 'var(--accent-gold)'; el.style.background = 'white';
-            
-            const filtered = allProducts.filter(p => p.category === cat);
-            const grid = document.getElementById('categoryGrid');
-            if(filtered.length === 0) { grid.innerHTML = '<p style="grid-column: span 2; text-align:center; padding:20px;">No products found.</p>'; return; }
-            grid.innerHTML = filtered.map(p => `
-                <div class="card">
-                    <img src="${p.imageUrl}" class="card-img" onclick="openProductPage('${p._id}')">
-                    <div class="card-title" onclick="openProductPage('${p._id}')">${p.name}</div>
-                    <div onclick="openProductPage('${p._id}')"><span class="card-price">₹${p.price}</span></div>
-                    <div class="card-btn-group">
-                        <button class="btn-add-small" onclick="event.stopPropagation(); openProductPage('${p._id}')">Add to Cart</button>
-                        <button class="btn-buy-small" onclick="event.stopPropagation(); buyNowDirect('${p._id}')">Buy Now</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        loadData();
-        checkUrlForCheckout();
-    </script>
+    <script src="js/main.js"></script>
 </body>
 </html>

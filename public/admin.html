@@ -5,54 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <style>
+        /* ... (Same CSS as before) ... */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: #f8fafc; color: #333; padding-bottom: 50px; }
-        
         .top-header { background: white; padding: 20px; border-bottom: 1px solid #e2e8f0; }
         .top-header h2 { font-size: 22px; font-weight: 700; color: #1e293b; }
         .top-header p { font-size: 13px; color: #64748b; margin-top: 4px; }
-
         .tabs-container { display: flex; background: white; border-bottom: 1px solid #e2e8f0; padding: 0 20px; gap: 20px; overflow-x: auto; }
         .tab-item { padding: 15px 0; font-size: 14px; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
         .tab-item.active { color: #6366f1; border-bottom-color: #6366f1; }
-
         .content-area { padding: 20px; }
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .section-title { font-size: 18px; font-weight: 700; color: #1e293b; }
         .btn-add { background: #6366f1; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
-
         .list-container { display: flex; flex-direction: column; gap: 15px; }
         .list-card { background: white; border-radius: 12px; padding: 15px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .list-card-left { display: flex; align-items: center; gap: 15px; flex: 1; overflow: hidden; }
         .list-card-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0; }
         .list-card-title { font-size: 15px; font-weight: 700; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
         .action-btns { display: flex; gap: 8px; flex-shrink: 0; }
         .btn-edit { background: #f1f5f9; color: #334155; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
         .btn-del { background: #fee2e2; color: #dc2626; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
-
-        /* Order Card Specific */
         .order-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; font-size: 13px; color: #555; }
         .order-user { font-weight: 700; color: #1e293b; font-size: 14px; margin-bottom: 5px; }
         .order-addr { font-size: 12px; color: #666; margin-bottom: 10px; }
-        
-        /* Proof & UTR Section */
         .proof-box { background: #f8fafc; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 8px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center;}
         .proof-box img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #ccc; cursor: pointer; }
         .proof-info { flex: 1; }
         .proof-utr { font-size: 14px; font-weight: 700; color: #d97706; margin-bottom: 4px;}
         .proof-time { font-size: 12px; font-weight: 600; color: #3b82f6; }
-
         .order-items { display: flex; flex-direction: column; gap: 8px; }
         .order-item { display: flex; gap: 10px; align-items: center; font-size: 13px; }
         .order-item img { width: 40px; height: 40px; object-fit: contain; border-radius: 4px; }
         .order-total { text-align: right; font-weight: 700; margin-top: 10px; color: #6366f1; font-size: 16px;}
-
-        .btn-verify { width: 100%; padding: 12px; background: #388e3c; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 14px; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 10px rgba(56, 142, 60, 0.2); }
+        .btn-verify { width: 100%; padding: 12px; background: #388e3c; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 14px; margin-top: 15px; cursor: pointer; }
         .status-verified { color: #388e3c; font-weight: 800; text-align: center; margin-top: 15px; background: #e8f5e9; padding: 10px; border-radius: 8px; }
-
         .form-modal { display: none; background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .form-modal.active { display: block; }
         .form-group { margin-bottom: 15px; }
@@ -101,6 +90,12 @@
                     <label>Description</label>
                     <textarea id="pDesc" rows="2"></textarea>
                 </div>
+                
+                <!-- NEW: INDIVIDUAL TIMER -->
+                <div class="form-group" id="timerGroup" style="display:none;">
+                    <label>Offer Timer (Hours) - Leave blank for no timer</label>
+                    <input type="number" id="pTimer" placeholder="e.g. 24">
+                </div>
 
                 <div class="form-group">
                     <label>Upload Image(s)</label>
@@ -117,7 +112,7 @@
     </div>
 
     <script>
-        const API_URL = ""; // Render Fix
+        const API_URL = "";
         let currentTab = 'orders';
         let allProducts = [];
         let allBanners = [];
@@ -151,11 +146,13 @@
                 document.getElementById('nameGroup').style.display = 'none';
                 document.getElementById('priceGroup').style.display = 'none';
                 document.getElementById('descGroup').style.display = 'none';
+                document.getElementById('timerGroup').style.display = 'none';
                 document.getElementById('pImageFiles').removeAttribute('multiple');
             } else {
                 document.getElementById('nameGroup').style.display = 'block';
                 document.getElementById('priceGroup').style.display = 'flex';
                 document.getElementById('descGroup').style.display = 'block';
+                document.getElementById('timerGroup').style.display = 'block';
                 document.getElementById('pImageFiles').setAttribute('multiple', 'true');
             }
 
@@ -173,7 +170,6 @@
                     const orders = await res.json();
                     if(orders.length === 0) { container.innerHTML = '<p style="text-align:center;">No orders yet.</p>'; return; }
                     
-                    // History List (Latest First)
                     container.innerHTML = orders.map(o => `
                         <div class="order-card">
                             <div class="order-header">
@@ -182,28 +178,19 @@
                             </div>
                             <div class="order-user">${o.user.name} (${o.user.phone})</div>
                             <div class="order-addr">Address: ${o.address}</div>
-                            
-                            <!-- PAYMENT PROOF SECTION -->
                             <div class="proof-box">
                                 <img src="${o.paymentProof}" alt="Proof" onclick="window.open('${o.paymentProof}', '_blank')">
                                 <div class="proof-info">
                                     <div class="proof-utr">UTR: ${o.utr}</div>
                                     <div class="proof-time">Time: ${o.exactTime}</div>
-                                    <p style="font-size: 10px; color: #666; margin-top: 4px;">Click image to view full size</p>
                                 </div>
                             </div>
-                            
                             <div class="order-items">
                                 ${o.items.map(i => `
-                                    <div class="order-item">
-                                        <img src="${i.imageUrl}">
-                                        <div>${i.name} <br> <span style="font-size:11px; color:#666;">Size: ${i.size} | Qty: ${i.qty}</span></div>
-                                    </div>
+                                    <div class="order-item"><img src="${i.imageUrl}"><div>${i.name} <br> <span style="font-size:11px; color:#666;">Size: ${i.size} | Qty: ${i.qty}</span></div></div>
                                 `).join('')}
                             </div>
                             <div class="order-total">Total: ₹${o.total}</div>
-
-                            <!-- VERIFY BUTTON LOGIC -->
                             ${o.status === 'Pending Verification' 
                                 ? `<button class="btn-verify" onclick="verifyOrder('${o.id}')">Mark as Paid (Verify)</button>` 
                                 : `<div class="status-verified">✅ Payment Verified</div>`
@@ -247,21 +234,11 @@
             } catch(e) { container.innerHTML = 'Error loading data.'; }
         }
 
-        // VERIFY ORDER FUNCTION
         async function verifyOrder(id) {
-            if(!confirm("Kya aapne bank account me payment receive kar li hai? (Verify Order?)")) return;
-            
-            try {
-                const res = await fetch(`${API_URL}/api/admin/order/${id}/verify`, { method: 'PUT' });
-                const data = await res.json();
-                
-                if(data.success) {
-                    alert("✅ Order Verified Successfully!");
-                    loadList(); // Refresh list to show updated status
-                } else {
-                    alert("Error: " + data.error);
-                }
-            } catch(e) { alert("Server Error!"); }
+            if(!confirm("Kya aapne bank account me payment receive kar li hai?")) return;
+            await fetch(`${API_URL}/api/admin/order/${id}/verify`, { method: 'PUT' });
+            alert("✅ Order Verified!");
+            loadList();
         }
 
         function showForm() { document.getElementById('addForm').classList.add('active'); }
@@ -296,6 +273,7 @@
                 formData.append('oldPrice', document.getElementById('pOldPrice').value);
                 formData.append('category', type);
                 formData.append('description', document.getElementById('pDesc').value);
+                formData.append('timerHours', document.getElementById('pTimer').value); // Send timer
 
                 if(id) {
                     const prod = allProducts.find(p => p._id === id);
@@ -321,10 +299,12 @@
                 document.getElementById('nameGroup').style.display = 'block';
                 document.getElementById('priceGroup').style.display = 'flex';
                 document.getElementById('descGroup').style.display = 'block';
+                document.getElementById('timerGroup').style.display = 'block';
                 document.getElementById('pName').value = p.name;
                 document.getElementById('pPrice').value = p.price;
                 document.getElementById('pOldPrice').value = p.oldPrice;
                 document.getElementById('pDesc').value = p.description;
+                document.getElementById('pTimer').value = ''; // Reset timer field for edit
             }
             window.scrollTo(0,0);
         }
