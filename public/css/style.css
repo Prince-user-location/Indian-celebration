@@ -9,92 +9,75 @@
     --text-light: #878787;
     --green: #388e3c;
     --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    --smooth: all 0.2s ease-in-out;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
 body { background-color: var(--bg-color); overflow-x: hidden; padding-bottom: 70px; color: var(--text-dark); }
 
-/* ================= NEW SKY BLUE HEADER (Red Fort + Tiranga) ================= */
+/* Sky Blue Header with Red Fort & Tiranga */
 .header { 
-    background: linear-gradient(rgba(135, 206, 235, 0.9), rgba(135, 206, 235, 0.95)), 
-                url('https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1000&q=80'); /* Red Fort Background */
+    background: linear-gradient(rgba(135, 206, 235, 0.85), rgba(135, 206, 235, 0.95)), 
+                url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Red_Fort_in_Delhi_03-2016.jpg/1200px-Red_Fort_in_Delhi_03-2016.jpg');
     background-size: cover;
     background-position: center;
-    position: sticky; 
-    top: 0; 
-    z-index: 100; 
-    padding: 15px 15px 20px 15px; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 12px; 
+    position: sticky; top: 0; z-index: 100; 
+    padding: 12px 15px; display: flex; flex-direction: column; gap: 12px; 
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    border-bottom: 5px solid;
-    border-image: linear-gradient(to right, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%) 1; /* Tiranga Border */
+    border-bottom: 4px solid;
+    border-image: linear-gradient(to right, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%) 1;
 }
 .header-top { display: flex; justify-content: space-between; align-items: center; }
-.logo-text { font-size: 22px; font-weight: 800; font-style: italic; color: #0b2240; text-shadow: 1px 1px 3px rgba(255,255,255,0.9); letter-spacing: -0.5px; }
+.logo-text { font-size: 20px; font-weight: 800; font-style: italic; color: #0b2240; text-shadow: 1px 1px 2px rgba(255,255,255,0.8); letter-spacing: -0.5px; }
 .logo-sub { font-size: 10px; color: #b45309; font-style: italic; margin-top: 2px; font-weight: 700; }
 .header-icons { display: flex; gap: 20px; color: #0b2240; cursor: pointer; }
-.header-icons svg { filter: drop-shadow(0 2px 4px rgba(255,255,255,0.8)); }
-.location-bar { display: flex; align-items: center; color: #0b2240; font-size: 12px; gap: 5px; font-weight: 600; }
-.location-bar span { color: #b45309; margin-left: 5px; font-weight: 700; cursor: pointer; }
-.search-container { background: var(--white); border-radius: 8px; display: flex; align-items: center; padding: 10px 15px; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.location-bar { display: flex; align-items: center; color: #0b2240; font-size: 12px; gap: 5px; font-weight: 600;}
+.location-bar span { color: #b45309; margin-left: 5px; font-weight: 700; }
+.search-container { background: var(--white); border-radius: 8px; display: flex; align-items: center; padding: 10px 15px; gap: 10px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
 .search-container input { border: none; outline: none; width: 100%; font-size: 14px; }
 
 /* Tabs */
 .top-tabs { display: flex; justify-content: space-between; padding: 12px 15px; gap: 10px; overflow-x: auto; scrollbar-width: none; background: white; border-bottom: 1px solid #eee;}
-.tab-box { background: var(--white); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; align-items: center; min-width: 75px; box-shadow: var(--shadow); cursor: pointer; transition: var(--smooth); }
-.tab-box:active { transform: scale(0.95); }
+.tab-box { background: var(--white); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; align-items: center; min-width: 75px; box-shadow: var(--shadow); cursor: pointer; }
 .tab-box img { width: 32px; height: 32px; object-fit: contain; margin-bottom: 6px; }
 .tab-box span { font-size: 11px; font-weight: 600; color: var(--text-dark); }
 
 /* Banner */
-.banner-container { position: relative; width: 100%; height: 220px; overflow: hidden; margin-bottom: 10px; background: #e0e0e0; }
+.banner-container { position: relative; width: 100%; height: 200px; overflow: hidden; margin-bottom: 10px; background: #e0e0e0; }
 .banner-slider { display: flex; height: 100%; transition: transform 0.4s ease-in-out; }
 .banner-slider img { min-width: 100%; height: 100%; object-fit: cover; }
 
-/* ================= MEESHO STYLE PRODUCT GRID ================= */
+/* Meesho Style Grid */
 .section-title { background: var(--white); padding: 15px; font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-bottom: 2px;}
 .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; background: #f1f3f6; padding: 8px; width: 100%; }
 .card { background: var(--white); display: flex; flex-direction: column; cursor: pointer; position: relative; overflow: hidden; width: 100%; border-radius: 8px; }
-
 .card-img-container { position: relative; width: 100%; height: 220px; background: #f9f9f9; }
 .card-img { width: 100%; height: 100%; object-fit: cover; }
-
 .floating-icons { position: absolute; top: 8px; right: 8px; display: flex; flex-direction: column; gap: 8px; z-index: 5; }
 .float-btn { background: white; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.2); cursor: pointer; }
 .float-btn svg { width: 16px; height: 16px; fill: none; stroke: #333; stroke-width: 2; }
 .float-btn.liked svg { fill: #e53935; stroke: #e53935; }
-
-.multi-product { position: absolute; bottom: 8px; left: 8px; background: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 12px; display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.multi-product { position: absolute; bottom: 8px; left: 8px; background: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 12px; display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; }
 .multi-product svg { width: 14px; height: 14px; fill: #333; }
-
 .best-seller-tag { position: absolute; top: 0; left: 0; background: #f47216; color: white; padding: 4px 8px; font-size: 10px; font-weight: bold; border-bottom-right-radius: 8px; z-index: 5; }
 
 .card-details { padding: 8px; display: flex; flex-direction: column; flex: 1; }
 .brand-name { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px; }
 .card-title { font-size: 12px; color: #666; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
 .rating-row { display: flex; align-items: center; gap: 4px; font-size: 11px; margin-bottom: 4px; }
 .rating { background: #388e3c; color: white; padding: 1px 4px; border-radius: 3px; font-weight: bold; display: flex; align-items: center; gap: 2px; }
 .rating svg { width: 10px; height: 10px; fill: white; }
 .review-count { color: #878787; }
 .bought-text { font-size: 11px; color: #878787; margin-bottom: 6px; }
-
-/* LIVE TIMER */
 .timer { background: #c62828; color: white; padding: 3px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 6px; width: fit-content; }
-
 .price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px; }
 .price { font-size: 16px; font-weight: 700; color: #212121; }
 .old-price { font-size: 11px; color: #878787; text-decoration: line-through; }
 .discount { font-size: 11px; color: #388e3c; font-weight: 600; }
 
-/* PILL-SHAPED BUTTONS */
+/* Pill Buttons */
 .card-btn-group { display: flex; gap: 4px; margin-top: auto; width: 100%; padding: 0 4px 4px 4px;}
-.btn-add-meesho { flex: 1; background: #ffc107; color: #000; border: none; padding: 8px 2px; border-radius: 50px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; transition: 0.2s; white-space: nowrap; }
-.btn-buy-meesho { flex: 1; background: #0b2240; color: #fff; border: none; padding: 8px 2px; border-radius: 50px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; transition: 0.2s; white-space: nowrap; }
-.btn-add-meesho:active, .btn-buy-meesho:active { transform: scale(0.95); }
+.btn-add-meesho { flex: 1; background: #ffc107; color: #000; border: none; padding: 8px 2px; border-radius: 50px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; white-space: nowrap; }
+.btn-buy-meesho { flex: 1; background: #0b2240; color: #fff; border: none; padding: 8px 2px; border-radius: 50px; font-weight: 600; font-size: 11px; cursor: pointer; text-align: center; white-space: nowrap; }
 
 /* Bottom Nav */
 .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--white); display: flex; justify-content: space-around; padding: 8px 0; z-index: 500; box-shadow: 0 -2px 10px rgba(0,0,0,0.08); }
@@ -107,15 +90,14 @@ body { background-color: var(--bg-color); overflow-x: hidden; padding-bottom: 70
 .page-header { display: flex; align-items: center; padding: 15px; background: var(--white); gap: 15px; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 .page-header span { font-weight: 600; font-size: 16px; color: var(--text-dark); }
 
-/* Fix Category Page Layout */
+/* Category Page */
 .cat-layout { display: flex; flex: 1; overflow: hidden; background: #f1f3f6; height: calc(100vh - 60px); width: 100%; }
 .cat-sidebar { width: 90px; background: #f8f9fa; border-right: 1px solid #eee; overflow-y: auto; flex-shrink: 0;}
 .cat-menu-item { padding: 18px 10px; text-align: center; font-size: 12px; color: #666; font-weight: 500; cursor: pointer; }
 .cat-menu-item.active { background: white; color: var(--primary-blue); font-weight: 700; border-left: 3px solid var(--accent-gold); }
 .cat-content { flex: 1; overflow-y: auto; width: 100%; } 
-.cat-content .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 8px; width: 100%; box-sizing: border-box;}
 
-/* ================= PROFILE & ORDERS PAGE ================= */
+/* Profile & Orders */
 #profile-page { background: #f1f3f6; padding-bottom: 80px; }
 .prof-header { background: linear-gradient(135deg, #0b2240, #1a3b66); padding: 40px 20px 60px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; position: relative; }
 .prof-user { display: flex; align-items: center; gap: 20px; position: relative; z-index: 2; }
@@ -135,7 +117,7 @@ body { background-color: var(--bg-color); overflow-x: hidden; padding-bottom: 70
 .prof-list-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; justify-content: center; align-items: center; }
 .prof-list-text { font-size: 16px; font-weight: 500; color: #333; }
 
-/* Orders Page Premium UI */
+/* Orders Page */
 .sub-page-content { padding: 15px; background: #f1f3f6; min-height: 100vh; }
 .order-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eee; }
 .order-header { display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 10px; margin-bottom: 12px; font-size: 13px; color: #555; }

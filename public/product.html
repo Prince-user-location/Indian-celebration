@@ -80,18 +80,11 @@
     </div>
     
     <div class="pd-image-section">
-        <div class="pd-main-image-container">
-            <img id="pdMainImage" class="pd-main-image" src="">
-        </div>
+        <div class="pd-main-image-container"><img id="pdMainImage" class="pd-main-image" src=""></div>
         <div class="pd-slider-dots" id="pdSliderDots"></div>
-        
         <div class="pd-floating-icons">
-            <div class="pd-float-icon" id="likeBtn" onclick="toggleLike()">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            </div>
-            <div class="pd-float-icon" onclick="shareProduct()">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
-            </div>
+            <div class="pd-float-icon" id="likeBtn" onclick="toggleLike()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
+            <div class="pd-float-icon" onclick="shareProduct()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg></div>
         </div>
     </div>
 
@@ -127,7 +120,6 @@
 
         <div class="pd-delivery-box">
             <div class="pd-delivery-title">Delivery & Services</div>
-            <!-- DYNAMIC DELIVERY DATE -->
             <div class="pd-delivery-text">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="#333"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg>
                 Delivery by <b id="pdDeliveryDate">Loading...</b> | <span style="color:#388e3c;">Free Delivery</span>
@@ -188,7 +180,6 @@
             const discount = Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100);
             document.getElementById('pdDiscount').innerText = `${discount}% off`;
 
-            // DYNAMIC DELIVERY DATE SETUP
             const delDateText = product.deliveryDate ? new Date(product.deliveryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Will be updated soon';
             document.getElementById('pdDeliveryDate').innerText = delDateText;
 
@@ -212,9 +203,7 @@
             const similar = allProducts.filter(p => p._id !== product._id && p.category === product.category).slice(0, 5);
             document.getElementById('pdSimilarList').innerHTML = similar.map(p => `
                 <div class="pd-sim-card" onclick="window.location.href='product.html?id=${p._id}'">
-                    <img src="${p.imageUrl}">
-                    <div class="pd-sim-card-title">${p.name}</div>
-                    <div class="pd-sim-card-price">₹${p.price}</div>
+                    <img src="${p.imageUrl}"><div class="pd-sim-card-title">${p.name}</div><div class="pd-sim-card-price">₹${p.price}</div>
                 </div>
             `).join('');
         }
@@ -235,16 +224,8 @@
         
         function goToImage(index) { currentImageIndex = index; updateMainImage(); }
 
-        function toggleLike() {
-            isLiked = !isLiked;
-            document.getElementById('likeBtn').classList.toggle('liked', isLiked);
-        }
-
-        function shareProduct() {
-            if (navigator.share) { navigator.share({ title: product.name, url: window.location.href }).catch(console.error); } 
-            else { alert("Link copied!"); }
-        }
-
+        function toggleLike() { isLiked = !isLiked; document.getElementById('likeBtn').classList.toggle('liked', isLiked); }
+        function shareProduct() { if (navigator.share) { navigator.share({ title: product.name, url: window.location.href }).catch(console.error); } else { alert("Link copied!"); } }
         function getCart() { return JSON.parse(localStorage.getItem('diwali_cart')) || []; }
         function saveCart(cart) { localStorage.setItem('diwali_cart', JSON.stringify(cart)); }
 

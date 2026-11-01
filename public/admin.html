@@ -9,27 +9,12 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: #f8fafc; color: #333; padding-bottom: 50px; }
         
-        /* LOGIN SCREEN */
-        #login-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0b2240; display: flex; justify-content: center; align-items: center;
-            z-index: 9999;
-        }
-        .login-box {
-            background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px;
-            text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b2240; display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        .login-box { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .login-box h2 { color: #0b2240; margin-bottom: 20px; }
-        .login-box input {
-            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px;
-            margin-bottom: 15px; outline: none; font-size: 16px; text-align: center;
-        }
-        .login-box button {
-            width: 100%; padding: 12px; background: #6366f1; color: white; border: none;
-            border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;
-        }
+        .login-box input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px; outline: none; font-size: 16px; text-align: center; }
+        .login-box button { width: 100%; padding: 12px; background: #6366f1; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
 
-        /* MAIN CONTENT */
         #admin-content { display: none; }
         .top-header { background: white; padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;}
         .top-header h2 { font-size: 22px; font-weight: 700; color: #1e293b; }
@@ -86,7 +71,6 @@
 </head>
 <body>
 
-    <!-- LOGIN SCREEN -->
     <div id="login-screen">
         <div class="login-box">
             <h2>🔒 Admin Login</h2>
@@ -95,7 +79,6 @@
         </div>
     </div>
 
-    <!-- ADMIN CONTENT -->
     <div id="admin-content">
         <div class="top-header">
             <div>
@@ -123,34 +106,15 @@
                     <input type="hidden" id="itemId">
                     <input type="hidden" id="itemType" value="banner">
                     
-                    <div class="form-group" id="nameGroup" style="display:none;">
-                        <label>Product Name</label>
-                        <input type="text" id="pName" placeholder="e.g. Premium Pataka">
-                    </div>
+                    <div class="form-group" id="nameGroup" style="display:none;"><label>Product Name</label><input type="text" id="pName" placeholder="e.g. Premium Pataka"></div>
                     <div class="form-group" id="priceGroup" style="display:none; gap:10px;">
                         <div style="flex:1;"><label>Price (₹)</label><input type="number" id="pPrice"></div>
                         <div style="flex:1;"><label>Old Price (₹)</label><input type="number" id="pOldPrice"></div>
                     </div>
-                    <div class="form-group" id="descGroup" style="display:none;">
-                        <label>Description</label>
-                        <textarea id="pDesc" rows="2"></textarea>
-                    </div>
-                    
-                    <div class="form-group" id="timerGroup" style="display:none;">
-                        <label>Offer Timer (Hours) - Leave blank for no timer</label>
-                        <input type="number" id="pTimer" placeholder="e.g. 24">
-                    </div>
-
-                    <div class="form-group" id="deliveryGroup" style="display:none;">
-                        <label>Expected Delivery Date</label>
-                        <input type="date" id="pDeliveryDate">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Upload Image(s)</label>
-                        <input type="file" id="pImageFiles" accept="image/*" multiple>
-                        <div id="imagePreview"></div>
-                    </div>
+                    <div class="form-group" id="descGroup" style="display:none;"><label>Description</label><textarea id="pDesc" rows="2"></textarea></div>
+                    <div class="form-group" id="timerGroup" style="display:none;"><label>Offer Timer (Hours) - Leave blank for no timer</label><input type="number" id="pTimer" placeholder="e.g. 24"></div>
+                    <div class="form-group" id="deliveryGroup" style="display:none;"><label>Expected Delivery Date</label><input type="date" id="pDeliveryDate"></div>
+                    <div class="form-group"><label>Upload Image(s)</label><input type="file" id="pImageFiles" accept="image/*" multiple><div id="imagePreview"></div></div>
 
                     <button type="submit" class="btn-save" id="btnSubmit">Save</button>
                     <button type="button" class="btn-cancel" onclick="hideForm()">Cancel</button>
@@ -186,10 +150,7 @@
             } else { alert("❌ Wrong Password!"); }
         }
 
-        function logout() {
-            sessionStorage.removeItem('isAdminLoggedIn');
-            window.location.reload();
-        }
+        function logout() { sessionStorage.removeItem('isAdminLoggedIn'); window.location.reload(); }
 
         document.getElementById('pImageFiles').addEventListener('change', function(e) {
             const preview = document.getElementById('imagePreview');
@@ -339,7 +300,6 @@
             document.getElementById('itemType').value = currentTab;
         }
 
-        // BASE64 IMAGE UPLOAD LOGIC
         document.getElementById('itemForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('itemId').value;
@@ -359,14 +319,9 @@
 
             if(type === 'banner') {
                 if(!id && base64Images.length === 0) return alert("Select banner image");
-                
                 const payload = { image: base64Images[0] };
                 const url = `${API_URL}/api/admin/banner`;
-                await fetch(url, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload) 
-                });
+                await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
             } else {
                 const payload = {
                     name: document.getElementById('pName').value,
@@ -381,18 +336,10 @@
 
                 if(id) {
                     if(base64Images.length === 0) delete payload.images;
-                    await fetch(`${API_URL}/api/admin/product/${id}`, { 
-                        method: 'PUT', 
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload) 
-                    });
+                    await fetch(`${API_URL}/api/admin/product/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 } else {
                     if(base64Images.length === 0) return alert("Select at least 1 image");
-                    await fetch(`${API_URL}/api/admin/product`, { 
-                        method: 'POST', 
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload) 
-                    });
+                    await fetch(`${API_URL}/api/admin/product`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 }
             }
             alert("✅ Saved Successfully to DB!");
