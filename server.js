@@ -2,184 +2,189 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const multer = require('multer');
 const fs = require('fs');
+const mongoose = require('mongoose');
 
 const app = express();
 app.use(cors());
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '50mb' })); // Base64 images ke liye limit badhayi
 app.use(express.static(path.join(__dirname, 'public')));
 
-const uploadDir = path.join(__dirname, 'public', 'uploads');
-const dataDir = path.join(__dirname, 'data');
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+// --- MONGODB CONNECTION ---
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("✅ MongoDB Connected Successfully!"))
+    .catch(err => console.log("❌ DB Error:", err.message));
 
-const productsFile = path.join(dataDir, 'products.json');
-const bannersFile = path.join(dataDir, 'banners.json');
-const ordersFile = path.join(dataDir, 'orders.json');
+// --- MODELS ---
+const Product = mongoose.model('Product', new mongoose.Schema({
+    name: String, price: Number, oldPrice: Number, category: String, 
+    description: String, timerEnd: Number, deliveryDate: String, 
+    imageUrl: String, // Ab yahan Base64 string save hogi
+    additionalImages: [String]
+}));
 
-if (!fs.existsSync(productsFile)) fs.writeFileSync(productsFile, '[]');
-if (!fs.existsSync(bannersFile)) fs.writeFileSync(bannersFile, '[]');
-if (!fs.existsSync(ordersFile)) fs.writeFileSync(ordersFile, '[]');
+const Banner = mongoose.model('Banner', new mongoose.Schema({
+    imageUrl: String // Base64 string
+}));
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) { cb(null, uploadDir) },
-    filename: function (req, file, cb) { cb(null, 'img_' + Date.now() + path.extname(file.originalname)) }
+const Order = mongoose.model('Order', new mongoose.Schema({
+    id: String, user: Object, address: String, items: Array, 
+    total: Number, utr: String, paymentProof: String, exactTime: String, 
+    status: { type: String, default: 'Pending Verification' },
+    tracking: { type: Object, default: {} }
+}));
+
+// --- APIs ---
+
+// 1. Products & Banners
+app.get('/api/products', async (req, res) => {
+    try { res.json(await Product.find().sort({ _id: -1 })); } 
+    catch (err) { res.status(500).json({ error: err.message }); }
 });
-const upload = multer({ storage: storage });
 
-const readData = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
-const writeData = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 2));
+app.get('/api/banners', async (req, res) => {
+    try { res.json(await Banner.find()); } 
+    catch (err) { res.status(500).json({ error: err.message }); }
+});
 
-app.get('/api/products', (req, res) => res.json(readData(productsFile)));
-app.get('/api/banners', (req, res) => res.json(readData(bannersFile)));
-app.get('/api/orders', (req, res) => res.json(readData(ordersFile)));
+app.get('/api/orders', async (req, res) => {
+    try { res.json(await Order.find().sort({ _id: -1 })); } 
+    catch (err) { res.status(500).json({ error: err.message }); }
+});
 
-app.post('/api/admin/product', upload.array('imageFiles', 5), (req, res) => {
+// 2. Add Product (Base64 Images)
+app.post('/api/admin/product', async (req, res) => {
     try {
-        const { name, price, oldPrice, category, description, timerHours, deliveryDate } = req.body;
-        let images = [];
-        if (req.files && req.files.length > 0) images = req.files.map(f => `/uploads/${f.filename}`);
-        else if (req.body.imageUrl) images.push(req.body.imageUrl);
-        if (images.length === 0) return res.status(400).json({ error: "Image required" });
+        const { name, price, oldPrice, category, description, timerHours, deliveryDate, images } = req.body;
+        
+        if (!images || images.length === 0) return res.status(400).json({ error: "Image required" });
 
         const hours = Number(timerHours) || 0;
         const timerEnd = hours > 0 ? Date.now() + (hours * 60 * 60 * 1000) : null;
 
-        const products = readData(productsFile);
-        const newProduct = { 
-            _id: 'prod_' + Date.now(), 
+        const newProduct = new Product({ 
             name, price: Number(price), oldPrice: Number(oldPrice), 
             category, description, timerEnd, deliveryDate,
             imageUrl: images[0], additionalImages: images.slice(1) 
-        };
-        products.unshift(newProduct);
-        writeData(productsFile, products);
-        res.json({ success: true, message: "Product Saved!" });
+        });
+        
+        await newProduct.save();
+        res.json({ success: true, message: "Product Saved to DB!" });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-app.put('/api/admin/product/:id', upload.array('imageFiles', 5), (req, res) => {
+// 3. Edit Product
+app.put('/api/admin/product/:id', async (req, res) => {
     try {
-        const { name, price, oldPrice, category, description, existingImages, timerHours, deliveryDate } = req.body;
-        let products = readData(productsFile);
-        const index = products.findIndex(p => p._id === req.params.id);
-        if (index === -1) return res.status(404).json({ error: "Product not found" });
+        const { name, price, oldPrice, category, description, timerHours, deliveryDate, images } = req.body;
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).json({ error: "Product not found" });
 
-        let images = existingImages ? JSON.parse(existingImages) : [];
-        if (req.files && req.files.length > 0) images = [...req.files.map(f => `/uploads/${f.filename}`), ...images];
-
-        let timerEnd = products[index].timerEnd; 
+        let timerEnd = product.timerEnd; 
         if (timerHours !== undefined) {
             const hours = Number(timerHours) || 0;
             timerEnd = hours > 0 ? Date.now() + (hours * 60 * 60 * 1000) : null; 
         }
 
-        products[index] = { 
-            ...products[index], 
-            name, price: Number(price), oldPrice: Number(oldPrice), 
-            category, description, timerEnd, deliveryDate,
-            imageUrl: images[0] || products[index].imageUrl, 
-            additionalImages: images.slice(1) 
-        };
-        writeData(productsFile, products);
+        product.name = name;
+        product.price = Number(price);
+        product.oldPrice = Number(oldPrice);
+        product.category = category;
+        product.description = description;
+        product.timerEnd = timerEnd;
+        product.deliveryDate = deliveryDate;
+        
+        if (images && images.length > 0) {
+            product.imageUrl = images[0];
+            product.additionalImages = images.slice(1);
+        }
+
+        await product.save();
         res.json({ success: true, message: "Product Updated!" });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-app.delete('/api/admin/product/:id', (req, res) => {
+// 4. Delete Product
+app.delete('/api/admin/product/:id', async (req, res) => {
     try {
-        let products = readData(productsFile);
-        products = products.filter(p => p._id !== req.params.id);
-        writeData(productsFile, products);
+        await Product.findByIdAndDelete(req.params.id);
         res.json({ success: true, message: "Product Deleted!" });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ORDER CREATION (With Tracking Object)
-app.post('/api/order', upload.single('paymentProof'), (req, res) => {
+// 5. Add Banner (Base64)
+app.post('/api/admin/banner', async (req, res) => {
     try {
-        const { user, cart, total, address, utr } = req.body;
-        if(!req.file) return res.status(400).json({ error: "Payment screenshot is required." });
+        const { image } = req.body;
+        if (!image) return res.status(400).json({ error: "Image required" });
+        
+        const newBanner = new Banner({ imageUrl: image });
+        await newBanner.save();
+        res.json({ success: true, message: "Banner Saved to DB!" });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete('/api/admin/banner/:id', async (req, res) => {
+    try {
+        await Banner.findByIdAndDelete(req.params.id);
+        res.json({ success: true, message: "Banner Deleted!" });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// 6. Place Order (Base64 Image)
+app.post('/api/order', async (req, res) => {
+    try {
+        const { user, cart, total, address, utr, paymentProof } = req.body;
+        if(!paymentProof) return res.status(400).json({ error: "Payment screenshot is required." });
         if(!utr) return res.status(400).json({ error: "UTR is required." });
 
-        const orders = readData(ordersFile);
         const now = new Date();
         const exactTime = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
         
-        // Real Tracking Object
-        const tracking = {
-            "Order Placed": exactTime
-        };
-
-        const newOrder = {
+        const newOrder = new Order({
             id: 'ORD' + Date.now(),
             user: JSON.parse(user), address: address, items: JSON.parse(cart),
-            total: Number(total), utr: utr, paymentProof: `/uploads/${req.file.filename}`,
-            exactTime: exactTime, status: 'Pending Verification',
-            tracking: tracking
-        };
-        orders.unshift(newOrder);
-        writeData(ordersFile, orders);
+            total: Number(total), utr: utr, paymentProof: paymentProof,
+            exactTime: exactTime, 
+            tracking: { "Order Placed": exactTime }
+        });
+        
+        await newOrder.save();
         res.json({ success: true, orderId: newOrder.id });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// VERIFY ORDER (Adds Time to Packed)
-app.put('/api/admin/order/:id/verify', (req, res) => {
+// 7. Verify Order
+app.put('/api/admin/order/:id/verify', async (req, res) => {
     try {
-        let orders = readData(ordersFile);
-        const index = orders.findIndex(o => o.id === req.params.id);
-        if(index === -1) return res.status(404).json({ error: "Order not found" });
-        
-        const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-        orders[index].status = 'Paid / Verified';
-        
-        if(!orders[index].tracking) orders[index].tracking = {};
-        orders[index].tracking["Order Placed"] = orders[index].exactTime || now;
-        orders[index].tracking["Packed"] = now;
+        const order = await Order.findOne({ id: req.params.id });
+        if(!order) return res.status(404).json({ error: "Order not found" });
 
-        writeData(ordersFile, orders);
+        const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+        order.status = 'Paid / Verified';
+        
+        if(!order.tracking) order.tracking = {};
+        order.tracking["Packed"] = now;
+
+        await order.save();
         res.json({ success: true, message: "Order Verified!" });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// LIVE TRACKING UPDATE
-app.put('/api/admin/order/:id/tracking', (req, res) => {
+// 8. Update Tracking
+app.put('/api/admin/order/:id/tracking', async (req, res) => {
     try {
         const { trackingStatus } = req.body;
-        let orders = readData(ordersFile);
-        const index = orders.findIndex(o => o.id === req.params.id);
-        if(index === -1) return res.status(404).json({ error: "Order not found" });
-        
+        const order = await Order.findOne({ id: req.params.id });
+        if(!order) return res.status(404).json({ error: "Order not found" });
+
         const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
         
-        if(!orders[index].tracking) orders[index].tracking = {};
-        orders[index].tracking[trackingStatus] = now; // Save real timestamp
+        if(!order.tracking) order.tracking = {};
+        order.tracking[trackingStatus] = now;
         
-        writeData(ordersFile, orders);
+        await order.save();
         res.json({ success: true, message: "Tracking Updated!" });
-    } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-app.post('/api/admin/banner', upload.single('imageFile'), (req, res) => {
-    try {
-        let finalImage = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
-        if (!finalImage) return res.status(400).json({ error: "Image required" });
-        const banners = readData(bannersFile);
-        banners.push({ _id: 'ban_' + Date.now(), imageUrl: finalImage });
-        writeData(bannersFile, banners);
-        res.json({ success: true, message: "Banner Saved!" });
-    } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-app.delete('/api/admin/banner/:id', (req, res) => {
-    try {
-        let banners = readData(bannersFile);
-        banners = banners.filter(b => b._id !== req.params.id);
-        writeData(bannersFile, banners);
-        res.json({ success: true, message: "Banner Deleted!" });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 

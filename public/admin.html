@@ -29,12 +29,10 @@
             border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;
         }
 
-        /* MAIN CONTENT (Hidden by default) */
+        /* MAIN CONTENT */
         #admin-content { display: none; }
-
         .top-header { background: white; padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;}
         .top-header h2 { font-size: 22px; font-weight: 700; color: #1e293b; }
-        .top-header p { font-size: 13px; color: #64748b; margin-top: 4px; }
         .btn-logout { background: #fee2e2; color: #dc2626; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
         .tabs-container { display: flex; background: white; border-bottom: 1px solid #e2e8f0; padding: 0 20px; gap: 20px; overflow-x: auto; }
@@ -55,7 +53,6 @@
         .btn-edit { background: #f1f5f9; color: #334155; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
         .btn-del { background: #fee2e2; color: #dc2626; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
 
-        /* Order Card Specific */
         .order-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; font-size: 13px; color: #555; }
         .order-user { font-weight: 700; color: #1e293b; font-size: 14px; margin-bottom: 5px; }
@@ -121,7 +118,6 @@
                 <button class="btn-add" id="addBtn" onclick="showForm()" style="display:none;">+ Add New</button>
             </div>
 
-            <!-- FORM MODAL -->
             <div class="form-modal" id="addForm">
                 <form id="itemForm">
                     <input type="hidden" id="itemId">
@@ -161,19 +157,17 @@
                 </form>
             </div>
 
-            <!-- LIST CONTAINER -->
             <div class="list-container" id="listContainer"></div>
         </div>
     </div>
 
     <script>
         const API_URL = "";
-        const ADMIN_PASSWORD = "prince123"; // Yahan apna password set karein
+        const ADMIN_PASSWORD = "prince123"; 
         let currentTab = 'orders';
         let allProducts = [];
         let allBanners = [];
 
-        // --- LOGIN LOGIC ---
         window.onload = () => {
             if(sessionStorage.getItem('isAdminLoggedIn') === 'true') {
                 document.getElementById('login-screen').style.display = 'none';
@@ -189,9 +183,7 @@
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
                 switchTab('orders');
-            } else {
-                alert("❌ Wrong Password!");
-            }
+            } else { alert("❌ Wrong Password!"); }
         }
 
         function logout() {
@@ -199,7 +191,6 @@
             window.location.reload();
         }
 
-        // --- MAIN LOGIC ---
         document.getElementById('pImageFiles').addEventListener('change', function(e) {
             const preview = document.getElementById('imagePreview');
             preview.innerHTML = '';
@@ -275,7 +266,6 @@
                             </div>
                             <div class="order-total">Total: ₹${o.total}</div>
                             
-                            <!-- TRACKING CONTROLS -->
                             <div class="admin-controls">
                                 ${o.status === 'Pending Verification' 
                                     ? `<button class="btn-verify" onclick="verifyOrder('${o.id}')">Mark as Paid (Verify)</button>` 
@@ -349,43 +339,63 @@
             document.getElementById('itemType').value = currentTab;
         }
 
+        // BASE64 IMAGE UPLOAD LOGIC
         document.getElementById('itemForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('itemId').value;
             const type = document.getElementById('itemType').value;
-            const formData = new FormData();
             
+            const getBase64 = (file) => new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.readAsDataURL(file);
+            });
+
             const fileInput = document.getElementById('pImageFiles');
+            let base64Images = [];
             for(let i=0; i<fileInput.files.length; i++) {
-                if(type === 'banner') formData.append('imageFile', fileInput.files[i]);
-                else formData.append('imageFiles', fileInput.files[i]);
+                base64Images.push(await getBase64(fileInput.files[i]));
             }
 
             if(type === 'banner') {
-                if(!id && fileInput.files.length === 0) return alert("Select banner image");
-                const method = id ? 'PUT' : 'POST';
-                const url = id ? `${API_URL}/api/admin/banner/${id}` : `${API_URL}/api/admin/banner`;
-                await fetch(url, { method: method, body: formData });
+                if(!id && base64Images.length === 0) return alert("Select banner image");
+                
+                const payload = { image: base64Images[0] };
+                const url = `${API_URL}/api/admin/banner`;
+                await fetch(url, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload) 
+                });
             } else {
-                formData.append('name', document.getElementById('pName').value);
-                formData.append('price', document.getElementById('pPrice').value);
-                formData.append('oldPrice', document.getElementById('pOldPrice').value);
-                formData.append('category', type);
-                formData.append('description', document.getElementById('pDesc').value);
-                formData.append('timerHours', document.getElementById('pTimer').value);
-                formData.append('deliveryDate', document.getElementById('pDeliveryDate').value);
+                const payload = {
+                    name: document.getElementById('pName').value,
+                    price: document.getElementById('pPrice').value,
+                    oldPrice: document.getElementById('pOldPrice').value,
+                    category: type,
+                    description: document.getElementById('pDesc').value,
+                    timerHours: document.getElementById('pTimer').value,
+                    deliveryDate: document.getElementById('pDeliveryDate').value,
+                    images: base64Images
+                };
 
                 if(id) {
-                    const prod = allProducts.find(p => p._id === id);
-                    let existing = [prod.imageUrl, ...(prod.additionalImages||[])];
-                    formData.append('existingImages', JSON.stringify(existing));
-                    await fetch(`${API_URL}/api/admin/product/${id}`, { method: 'PUT', body: formData });
+                    if(base64Images.length === 0) delete payload.images;
+                    await fetch(`${API_URL}/api/admin/product/${id}`, { 
+                        method: 'PUT', 
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload) 
+                    });
                 } else {
-                    if(fileInput.files.length === 0) return alert("Select at least 1 image");
-                    await fetch(`${API_URL}/api/admin/product`, { method: 'POST', body: formData });
+                    if(base64Images.length === 0) return alert("Select at least 1 image");
+                    await fetch(`${API_URL}/api/admin/product`, { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload) 
+                    });
                 }
             }
-            alert("✅ Saved Successfully!");
+            alert("✅ Saved Successfully to DB!");
             hideForm();
             loadList();
         });
@@ -422,4 +432,3 @@
     </script>
 </body>
 </html>
-
