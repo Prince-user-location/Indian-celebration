@@ -1,5 +1,5 @@
 require('dotenv').config();
-const crypto = require('crypto');
+const crypto = require('crypto'); // FIXED: Crypto import
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -20,12 +20,11 @@ mongoose.connect(process.env.MONGO_URI)
 const Product = mongoose.model('Product', new mongoose.Schema({
     name: String, price: Number, oldPrice: Number, category: String, 
     description: String, timerEnd: Number, deliveryDate: String, 
-    imageUrl: String, // Ab yahan Base64 string save hogi
-    additionalImages: [String]
+    imageUrl: String, additionalImages: [String]
 }));
 
 const Banner = mongoose.model('Banner', new mongoose.Schema({
-    imageUrl: String // Base64 string
+    imageUrl: String
 }));
 
 const Order = mongoose.model('Order', new mongoose.Schema({
@@ -53,7 +52,7 @@ app.get('/api/orders', async (req, res) => {
     catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 2. Add Product (Base64 Images)
+// 2. Add Product
 app.post('/api/admin/product', async (req, res) => {
     try {
         const { name, price, oldPrice, category, description, timerHours, deliveryDate, images } = req.body;
@@ -113,7 +112,7 @@ app.delete('/api/admin/product/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 5. Add Banner (Base64)
+// 5. Add Banner
 app.post('/api/admin/banner', async (req, res) => {
     try {
         const { image } = req.body;
@@ -132,7 +131,7 @@ app.delete('/api/admin/banner/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 6. Place Order (Base64 Image)
+// 6. Place Order
 app.post('/api/order', async (req, res) => {
     try {
         const { user, cart, total, address, utr, paymentProof } = req.body;
