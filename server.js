@@ -36,16 +36,14 @@ app.get('/api/products', (req, res) => res.json(readData(productsFile)));
 app.get('/api/banners', (req, res) => res.json(readData(bannersFile)));
 app.get('/api/orders', (req, res) => res.json(readData(ordersFile)));
 
-// ADD/EDIT PRODUCT (With Individual Timer)
 app.post('/api/admin/product', upload.array('imageFiles', 5), (req, res) => {
     try {
-        const { name, price, oldPrice, category, description, timerHours } = req.body;
+        const { name, price, oldPrice, category, description, timerHours, deliveryDate } = req.body;
         let images = [];
         if (req.files && req.files.length > 0) images = req.files.map(f => `/uploads/${f.filename}`);
         else if (req.body.imageUrl) images.push(req.body.imageUrl);
         if (images.length === 0) return res.status(400).json({ error: "Image required" });
 
-        // Calculate Timer End Time
         const hours = Number(timerHours) || 0;
         const timerEnd = hours > 0 ? Date.now() + (hours * 60 * 60 * 1000) : null;
 
@@ -53,7 +51,7 @@ app.post('/api/admin/product', upload.array('imageFiles', 5), (req, res) => {
         const newProduct = { 
             _id: 'prod_' + Date.now(), 
             name, price: Number(price), oldPrice: Number(oldPrice), 
-            category, description, timerEnd, // Save timer
+            category, description, timerEnd, deliveryDate,
             imageUrl: images[0], additionalImages: images.slice(1) 
         };
         products.unshift(newProduct);
@@ -64,7 +62,7 @@ app.post('/api/admin/product', upload.array('imageFiles', 5), (req, res) => {
 
 app.put('/api/admin/product/:id', upload.array('imageFiles', 5), (req, res) => {
     try {
-        const { name, price, oldPrice, category, description, existingImages, timerHours } = req.body;
+        const { name, price, oldPrice, category, description, existingImages, timerHours, deliveryDate } = req.body;
         let products = readData(productsFile);
         const index = products.findIndex(p => p._id === req.params.id);
         if (index === -1) return res.status(404).json({ error: "Product not found" });
@@ -72,17 +70,16 @@ app.put('/api/admin/product/:id', upload.array('imageFiles', 5), (req, res) => {
         let images = existingImages ? JSON.parse(existingImages) : [];
         if (req.files && req.files.length > 0) images = [...req.files.map(f => `/uploads/${f.filename}`), ...images];
 
-        // Calculate Timer End Time
-        let timerEnd = products[index].timerEnd; // Keep old by default
+        let timerEnd = products[index].timerEnd; 
         if (timerHours !== undefined) {
             const hours = Number(timerHours) || 0;
-            timerEnd = hours > 0 ? Date.now() + (hours * 60 * 60 * 1000) : null; // Null means remove timer
+            timerEnd = hours > 0 ? Date.now() + (hours * 60 * 60 * 1000) : null; 
         }
 
         products[index] = { 
             ...products[index], 
             name, price: Number(price), oldPrice: Number(oldPrice), 
-            category, description, timerEnd, // Update timer
+            category, description, timerEnd, deliveryDate,
             imageUrl: images[0] || products[index].imageUrl, 
             additionalImages: images.slice(1) 
         };
@@ -100,7 +97,7 @@ app.delete('/api/admin/product/:id', (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// Order Routes (Same as before)
+// ORDER CREATION (With Tracking Object)
 app.post('/api/order', upload.single('paymentProof'), (req, res) => {
     try {
         const { user, cart, total, address, utr } = req.body;
@@ -109,13 +106,19 @@ app.post('/api/order', upload.single('paymentProof'), (req, res) => {
 
         const orders = readData(ordersFile);
         const now = new Date();
-        const exactTime = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) + `.${now.getMilliseconds()} ms`;
+        const exactTime = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+        
+        // Real Tracking Object
+        const tracking = {
+            "Order Placed": exactTime
+        };
 
         const newOrder = {
             id: 'ORD' + Date.now(),
             user: JSON.parse(user), address: address, items: JSON.parse(cart),
             total: Number(total), utr: utr, paymentProof: `/uploads/${req.file.filename}`,
-            exactTime: exactTime, status: 'Pending Verification' 
+            exactTime: exactTime, status: 'Pending Verification',
+            tracking: tracking
         };
         orders.unshift(newOrder);
         writeData(ordersFile, orders);
@@ -123,14 +126,40 @@ app.post('/api/order', upload.single('paymentProof'), (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// VERIFY ORDER (Adds Time to Packed)
 app.put('/api/admin/order/:id/verify', (req, res) => {
     try {
         let orders = readData(ordersFile);
         const index = orders.findIndex(o => o.id === req.params.id);
         if(index === -1) return res.status(404).json({ error: "Order not found" });
+        
+        const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
         orders[index].status = 'Paid / Verified';
+        
+        if(!orders[index].tracking) orders[index].tracking = {};
+        orders[index].tracking["Order Placed"] = orders[index].exactTime || now;
+        orders[index].tracking["Packed"] = now;
+
         writeData(ordersFile, orders);
         res.json({ success: true, message: "Order Verified!" });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// LIVE TRACKING UPDATE
+app.put('/api/admin/order/:id/tracking', (req, res) => {
+    try {
+        const { trackingStatus } = req.body;
+        let orders = readData(ordersFile);
+        const index = orders.findIndex(o => o.id === req.params.id);
+        if(index === -1) return res.status(404).json({ error: "Order not found" });
+        
+        const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+        
+        if(!orders[index].tracking) orders[index].tracking = {};
+        orders[index].tracking[trackingStatus] = now; // Save real timestamp
+        
+        writeData(ordersFile, orders);
+        res.json({ success: true, message: "Tracking Updated!" });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 

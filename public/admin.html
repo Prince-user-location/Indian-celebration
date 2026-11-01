@@ -3,22 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>Admin Panel - Diwali Celebration</title>
     <style>
-        /* ... (Same CSS as before) ... */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: #f8fafc; color: #333; padding-bottom: 50px; }
-        .top-header { background: white; padding: 20px; border-bottom: 1px solid #e2e8f0; }
+        
+        /* LOGIN SCREEN */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0b2240; display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+        }
+        .login-box {
+            background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px;
+            text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .login-box h2 { color: #0b2240; margin-bottom: 20px; }
+        .login-box input {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px;
+            margin-bottom: 15px; outline: none; font-size: 16px; text-align: center;
+        }
+        .login-box button {
+            width: 100%; padding: 12px; background: #6366f1; color: white; border: none;
+            border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;
+        }
+
+        /* MAIN CONTENT (Hidden by default) */
+        #admin-content { display: none; }
+
+        .top-header { background: white; padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;}
         .top-header h2 { font-size: 22px; font-weight: 700; color: #1e293b; }
         .top-header p { font-size: 13px; color: #64748b; margin-top: 4px; }
+        .btn-logout { background: #fee2e2; color: #dc2626; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+
         .tabs-container { display: flex; background: white; border-bottom: 1px solid #e2e8f0; padding: 0 20px; gap: 20px; overflow-x: auto; }
         .tab-item { padding: 15px 0; font-size: 14px; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
         .tab-item.active { color: #6366f1; border-bottom-color: #6366f1; }
+
         .content-area { padding: 20px; }
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .section-title { font-size: 18px; font-weight: 700; color: #1e293b; }
         .btn-add { background: #6366f1; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+
         .list-container { display: flex; flex-direction: column; gap: 15px; }
         .list-card { background: white; border-radius: 12px; padding: 15px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .list-card-left { display: flex; align-items: center; gap: 15px; flex: 1; overflow: hidden; }
@@ -27,6 +54,8 @@
         .action-btns { display: flex; gap: 8px; flex-shrink: 0; }
         .btn-edit { background: #f1f5f9; color: #334155; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
         .btn-del { background: #fee2e2; color: #dc2626; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+        /* Order Card Specific */
         .order-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; font-size: 13px; color: #555; }
         .order-user { font-weight: 700; color: #1e293b; font-size: 14px; margin-bottom: 5px; }
@@ -40,8 +69,13 @@
         .order-item { display: flex; gap: 10px; align-items: center; font-size: 13px; }
         .order-item img { width: 40px; height: 40px; object-fit: contain; border-radius: 4px; }
         .order-total { text-align: right; font-weight: 700; margin-top: 10px; color: #6366f1; font-size: 16px;}
-        .btn-verify { width: 100%; padding: 12px; background: #388e3c; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 14px; margin-top: 15px; cursor: pointer; }
-        .status-verified { color: #388e3c; font-weight: 800; text-align: center; margin-top: 15px; background: #e8f5e9; padding: 10px; border-radius: 8px; }
+
+        .admin-controls { background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;}
+        .admin-controls select { padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; outline: none; }
+        .btn-verify { background: #388e3c; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .btn-update-track { background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .status-verified { color: #388e3c; font-weight: 800; }
+
         .form-modal { display: none; background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .form-modal.active { display: block; }
         .form-group { margin-bottom: 15px; }
@@ -55,68 +89,117 @@
 </head>
 <body>
 
-    <div class="top-header">
-        <h2>Diwali Admin Panel</h2>
-        <p>Manage Products, Banners & Orders</p>
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen">
+        <div class="login-box">
+            <h2>🔒 Admin Login</h2>
+            <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+            <button onclick="checkPassword()">Login</button>
+        </div>
     </div>
 
-    <div class="tabs-container">
-        <div class="tab-item active" onclick="switchTab('orders')">Orders</div>
-        <div class="tab-item" onclick="switchTab('banner')">Banners</div>
-        <div class="tab-item" onclick="switchTab('patake')">Patake</div>
-        <div class="tab-item" onclick="switchTab('clothes')">Clothes</div>
-    </div>
-
-    <div class="content-area">
-        <div class="section-header">
-            <div class="section-title" id="sectionTitle">Orders</div>
-            <button class="btn-add" id="addBtn" onclick="showForm()" style="display:none;">+ Add New</button>
+    <!-- ADMIN CONTENT -->
+    <div id="admin-content">
+        <div class="top-header">
+            <div>
+                <h2>Diwali Admin Panel</h2>
+                <p>Manage Products, Banners & Orders</p>
+            </div>
+            <button class="btn-logout" onclick="logout()">Logout</button>
         </div>
 
-        <div class="form-modal" id="addForm">
-            <form id="itemForm">
-                <input type="hidden" id="itemId">
-                <input type="hidden" id="itemType" value="banner">
-                
-                <div class="form-group" id="nameGroup" style="display:none;">
-                    <label>Product Name</label>
-                    <input type="text" id="pName" placeholder="e.g. Premium Pataka">
-                </div>
-                <div class="form-group" id="priceGroup" style="display:none; gap:10px;">
-                    <div style="flex:1;"><label>Price (₹)</label><input type="number" id="pPrice"></div>
-                    <div style="flex:1;"><label>Old Price (₹)</label><input type="number" id="pOldPrice"></div>
-                </div>
-                <div class="form-group" id="descGroup" style="display:none;">
-                    <label>Description</label>
-                    <textarea id="pDesc" rows="2"></textarea>
-                </div>
-                
-                <!-- NEW: INDIVIDUAL TIMER -->
-                <div class="form-group" id="timerGroup" style="display:none;">
-                    <label>Offer Timer (Hours) - Leave blank for no timer</label>
-                    <input type="number" id="pTimer" placeholder="e.g. 24">
-                </div>
-
-                <div class="form-group">
-                    <label>Upload Image(s)</label>
-                    <input type="file" id="pImageFiles" accept="image/*" multiple>
-                    <div id="imagePreview"></div>
-                </div>
-
-                <button type="submit" class="btn-save" id="btnSubmit">Save</button>
-                <button type="button" class="btn-cancel" onclick="hideForm()">Cancel</button>
-            </form>
+        <div class="tabs-container">
+            <div class="tab-item active" onclick="switchTab('orders')">Orders</div>
+            <div class="tab-item" onclick="switchTab('banner')">Banners</div>
+            <div class="tab-item" onclick="switchTab('patake')">Patake</div>
+            <div class="tab-item" onclick="switchTab('clothes')">Clothes</div>
         </div>
 
-        <div class="list-container" id="listContainer"></div>
+        <div class="content-area">
+            <div class="section-header">
+                <div class="section-title" id="sectionTitle">Orders</div>
+                <button class="btn-add" id="addBtn" onclick="showForm()" style="display:none;">+ Add New</button>
+            </div>
+
+            <!-- FORM MODAL -->
+            <div class="form-modal" id="addForm">
+                <form id="itemForm">
+                    <input type="hidden" id="itemId">
+                    <input type="hidden" id="itemType" value="banner">
+                    
+                    <div class="form-group" id="nameGroup" style="display:none;">
+                        <label>Product Name</label>
+                        <input type="text" id="pName" placeholder="e.g. Premium Pataka">
+                    </div>
+                    <div class="form-group" id="priceGroup" style="display:none; gap:10px;">
+                        <div style="flex:1;"><label>Price (₹)</label><input type="number" id="pPrice"></div>
+                        <div style="flex:1;"><label>Old Price (₹)</label><input type="number" id="pOldPrice"></div>
+                    </div>
+                    <div class="form-group" id="descGroup" style="display:none;">
+                        <label>Description</label>
+                        <textarea id="pDesc" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="form-group" id="timerGroup" style="display:none;">
+                        <label>Offer Timer (Hours) - Leave blank for no timer</label>
+                        <input type="number" id="pTimer" placeholder="e.g. 24">
+                    </div>
+
+                    <div class="form-group" id="deliveryGroup" style="display:none;">
+                        <label>Expected Delivery Date</label>
+                        <input type="date" id="pDeliveryDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload Image(s)</label>
+                        <input type="file" id="pImageFiles" accept="image/*" multiple>
+                        <div id="imagePreview"></div>
+                    </div>
+
+                    <button type="submit" class="btn-save" id="btnSubmit">Save</button>
+                    <button type="button" class="btn-cancel" onclick="hideForm()">Cancel</button>
+                </form>
+            </div>
+
+            <!-- LIST CONTAINER -->
+            <div class="list-container" id="listContainer"></div>
+        </div>
     </div>
 
     <script>
         const API_URL = "";
+        const ADMIN_PASSWORD = "prince123"; // Yahan apna password set karein
         let currentTab = 'orders';
         let allProducts = [];
         let allBanners = [];
 
+        // --- LOGIN LOGIC ---
+        window.onload = () => {
+            if(sessionStorage.getItem('isAdminLoggedIn') === 'true') {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                switchTab('orders');
+            }
+        }
+
+        function checkPassword() {
+            const pass = document.getElementById('adminPassword').value;
+            if(pass === ADMIN_PASSWORD) {
+                sessionStorage.setItem('isAdminLoggedIn', 'true');
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                switchTab('orders');
+            } else {
+                alert("❌ Wrong Password!");
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('isAdminLoggedIn');
+            window.location.reload();
+        }
+
+        // --- MAIN LOGIC ---
         document.getElementById('pImageFiles').addEventListener('change', function(e) {
             const preview = document.getElementById('imagePreview');
             preview.innerHTML = '';
@@ -147,13 +230,13 @@
                 document.getElementById('priceGroup').style.display = 'none';
                 document.getElementById('descGroup').style.display = 'none';
                 document.getElementById('timerGroup').style.display = 'none';
-                document.getElementById('pImageFiles').removeAttribute('multiple');
+                document.getElementById('deliveryGroup').style.display = 'none';
             } else {
                 document.getElementById('nameGroup').style.display = 'block';
                 document.getElementById('priceGroup').style.display = 'flex';
                 document.getElementById('descGroup').style.display = 'block';
                 document.getElementById('timerGroup').style.display = 'block';
-                document.getElementById('pImageFiles').setAttribute('multiple', 'true');
+                document.getElementById('deliveryGroup').style.display = 'block';
             }
 
             hideForm();
@@ -191,10 +274,24 @@
                                 `).join('')}
                             </div>
                             <div class="order-total">Total: ₹${o.total}</div>
-                            ${o.status === 'Pending Verification' 
-                                ? `<button class="btn-verify" onclick="verifyOrder('${o.id}')">Mark as Paid (Verify)</button>` 
-                                : `<div class="status-verified">✅ Payment Verified</div>`
-                            }
+                            
+                            <!-- TRACKING CONTROLS -->
+                            <div class="admin-controls">
+                                ${o.status === 'Pending Verification' 
+                                    ? `<button class="btn-verify" onclick="verifyOrder('${o.id}')">Mark as Paid (Verify)</button>` 
+                                    : `<span class="status-verified">✅ Paid</span>`
+                                }
+                                <div style="flex:1; display:flex; gap:5px;">
+                                    <select id="track_${o.id}">
+                                        <option value="Order Placed" ${o.tracking && o.tracking['Order Placed'] ? 'selected' : ''}>Order Placed</option>
+                                        <option value="Packed" ${o.tracking && o.tracking['Packed'] ? 'selected' : ''}>Packed</option>
+                                        <option value="Shipped" ${o.tracking && o.tracking['Shipped'] ? 'selected' : ''}>Shipped</option>
+                                        <option value="Out for Delivery" ${o.tracking && o.tracking['Out for Delivery'] ? 'selected' : ''}>Out for Delivery</option>
+                                        <option value="Delivered" ${o.tracking && o.tracking['Delivered'] ? 'selected' : ''}>Delivered</option>
+                                    </select>
+                                    <button class="btn-update-track" onclick="updateTracking('${o.id}')">Update Track</button>
+                                </div>
+                            </div>
                         </div>
                     `).join('');
                 } 
@@ -203,13 +300,8 @@
                     allBanners = await res.json();
                     container.innerHTML = allBanners.map((b, i) => `
                         <div class="list-card">
-                            <div class="list-card-left">
-                                <img src="${b.imageUrl}" class="list-card-img">
-                                <div class="list-card-title">Banner N00${i+1}</div>
-                            </div>
-                            <div class="action-btns">
-                                <button class="btn-del" onclick="deleteItem('banner', '${b._id}')">Del</button>
-                            </div>
+                            <div class="list-card-left"><img src="${b.imageUrl}" class="list-card-img"><div class="list-card-title">Banner N00${i+1}</div></div>
+                            <div class="action-btns"><button class="btn-del" onclick="deleteItem('banner', '${b._id}')">Del</button></div>
                         </div>
                     `).join('') || '<p>No banners found.</p>';
                 } 
@@ -220,10 +312,7 @@
                     
                     container.innerHTML = filtered.map(p => `
                         <div class="list-card">
-                            <div class="list-card-left">
-                                <img src="${p.imageUrl}" class="list-card-img">
-                                <div class="list-card-title">${p.name} <br><span style="font-size:11px; color:#666;">₹${p.price}</span></div>
-                            </div>
+                            <div class="list-card-left"><img src="${p.imageUrl}" class="list-card-img"><div class="list-card-title">${p.name} <br><span style="font-size:11px; color:#666;">₹${p.price}</span></div></div>
                             <div class="action-btns">
                                 <button class="btn-edit" onclick="editItem('${p._id}')">Edit</button>
                                 <button class="btn-del" onclick="deleteItem('product', '${p._id}')">Del</button>
@@ -239,6 +328,16 @@
             await fetch(`${API_URL}/api/admin/order/${id}/verify`, { method: 'PUT' });
             alert("✅ Order Verified!");
             loadList();
+        }
+
+        async function updateTracking(id) {
+            const status = document.getElementById(`track_${id}`).value;
+            await fetch(`${API_URL}/api/admin/order/${id}/tracking`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ trackingStatus: status })
+            });
+            alert("✅ Tracking Updated!");
         }
 
         function showForm() { document.getElementById('addForm').classList.add('active'); }
@@ -273,7 +372,8 @@
                 formData.append('oldPrice', document.getElementById('pOldPrice').value);
                 formData.append('category', type);
                 formData.append('description', document.getElementById('pDesc').value);
-                formData.append('timerHours', document.getElementById('pTimer').value); // Send timer
+                formData.append('timerHours', document.getElementById('pTimer').value);
+                formData.append('deliveryDate', document.getElementById('pDeliveryDate').value);
 
                 if(id) {
                     const prod = allProducts.find(p => p._id === id);
@@ -300,11 +400,14 @@
                 document.getElementById('priceGroup').style.display = 'flex';
                 document.getElementById('descGroup').style.display = 'block';
                 document.getElementById('timerGroup').style.display = 'block';
+                document.getElementById('deliveryGroup').style.display = 'block';
+                
                 document.getElementById('pName').value = p.name;
                 document.getElementById('pPrice').value = p.price;
                 document.getElementById('pOldPrice').value = p.oldPrice;
                 document.getElementById('pDesc').value = p.description;
-                document.getElementById('pTimer').value = ''; // Reset timer field for edit
+                document.getElementById('pDeliveryDate').value = p.deliveryDate || '';
+                document.getElementById('pTimer').value = ''; 
             }
             window.scrollTo(0,0);
         }
@@ -316,8 +419,7 @@
             alert("🗑️ Deleted!");
             loadList();
         }
-
-        switchTab('orders');
     </script>
 </body>
 </html>
+

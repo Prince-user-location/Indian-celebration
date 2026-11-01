@@ -6,10 +6,8 @@ let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 let checkoutAddress = "";
 let wishlist = [];
 
-// Default Banner (Agar Database me banner na ho toh ye dikhega)
 const defaultBanner = "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=800";
 
-// 1. Load All Data
 async function loadData() {
     try {
         const [prodRes, bannerRes] = await Promise.all([
@@ -19,7 +17,6 @@ async function loadData() {
         allProducts = await prodRes.json();
         allBanners = await bannerRes.json();
 
-        // Load User Wishlist if logged in
         if(currentUser) {
             wishlist = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || [];
         }
@@ -27,7 +24,7 @@ async function loadData() {
         renderHomePage(allProducts);
         renderTopBanners();
         updateCartUI();
-        startIndividualTimers(); // Start live timers
+        startIndividualTimers();
     } catch (e) { 
         console.error(e); 
         renderTopBanners();
@@ -35,7 +32,6 @@ async function loadData() {
     }
 }
 
-// 2. Render Top Banners
 function renderTopBanners() {
     const slider = document.getElementById('slider');
     if(!slider) return;
@@ -54,9 +50,7 @@ function renderTopBanners() {
     }, 3000);
 }
 
-// 3. Individual Live Timers
 function startIndividualTimers() {
-    // Purane timers clear karein agar dobara call ho
     if(window.timerInterval) clearInterval(window.timerInterval);
     
     window.timerInterval = setInterval(() => {
@@ -80,7 +74,6 @@ function startIndividualTimers() {
     }, 1000);
 }
 
-// 4. Render Home Page (Meesho Style)
 function renderHomePage(products) {
     const container = document.getElementById('dynamicContent');
     if(!products || products.length === 0) {
@@ -96,7 +89,6 @@ function renderHomePage(products) {
         const discount = Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100);
         const isBestSeller = index === 1;
         
-        // Real Multi Image Count
         const totalImgs = 1 + (p.additionalImages ? p.additionalImages.length : 0);
         const multiImgHtml = totalImgs > 1 ? `
             <div class="multi-product">
@@ -104,11 +96,12 @@ function renderHomePage(products) {
                 ${totalImgs}
             </div>` : '';
 
-        // Individual Timer Logic
         let timerHtml = '';
         if (p.timerEnd && p.timerEnd > Date.now()) {
             timerHtml = `<div class="timer" data-endtime="${p.timerEnd}">Ends in ...</div>`;
         }
+        
+        const brandName = p.category === 'patake' ? 'Fireworks' : 'Fashion';
 
         html += `
             <div class="card">
@@ -127,7 +120,7 @@ function renderHomePage(products) {
                 </div>
 
                 <div class="card-details" onclick="openProductPage('${p._id}')">
-                    <div class="brand-name">Majestic Man</div>
+                    <div class="brand-name">${brandName}</div>
                     <div class="card-title">${p.name}</div>
                     <div class="rating-row">
                         <div class="rating">${rating} <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
@@ -155,7 +148,6 @@ function renderHomePage(products) {
     container.innerHTML = html;
 }
 
-// 5. Category Page Logic (FIXED)
 function openCategoriesPage() {
     document.getElementById('home-page').style.display = 'none';
     document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none');
@@ -170,14 +162,13 @@ function switchCategory(cat, el) {
     el.classList.add('active');
     
     const filtered = allProducts.filter(p => p.category === cat);
-    const grid = document.getElementById('categoryGrid'); // Ye pehle se hi ek <div class="grid"> hai index.html me
+    const grid = document.getElementById('categoryGrid');
     
     if(filtered.length === 0) { 
         grid.innerHTML = '<p style="grid-column: span 2; text-align:center; padding:20px;">No products found.</p>'; 
         return; 
     }
     
-    // THE FIX: Directly assign HTML to the existing grid container without wrapping it in another div
     let html = '';
     filtered.forEach((p, index) => {
         const discount = Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100);
@@ -188,6 +179,8 @@ function switchCategory(cat, el) {
         if (p.timerEnd && p.timerEnd > Date.now()) {
             timerHtml = `<div class="timer" data-endtime="${p.timerEnd}">Ends in ...</div>`;
         }
+        
+        const brandName = p.category === 'patake' ? 'Fireworks' : 'Fashion';
 
         html += `
             <div class="card">
@@ -201,6 +194,7 @@ function switchCategory(cat, el) {
                     ${multiImgHtml}
                 </div>
                 <div class="card-details" onclick="openProductPage('${p._id}')">
+                    <div class="brand-name">${brandName}</div>
                     <div class="card-title">${p.name}</div>
                     ${timerHtml}
                     <div class="price-row">
@@ -217,11 +211,10 @@ function switchCategory(cat, el) {
         `;
     });
     
-    grid.innerHTML = html; // Inject directly
-    startIndividualTimers(); // Start timers for category page
+    grid.innerHTML = html;
+    startIndividualTimers();
 }
 
-// 6. Utility Functions
 function toggleLike(el, id) {
     if(!currentUser) {
         alert("Please login to add items to Wishlist!");
@@ -239,7 +232,7 @@ function toggleLike(el, id) {
         alert("❤️ Added to Wishlist!"); 
     }
     
-    wishlist = userWishlist; // Update local variable
+    wishlist = userWishlist;
     localStorage.setItem('wishlist_' + currentUser.email, JSON.stringify(userWishlist));
 }
 
@@ -255,7 +248,6 @@ function shareProduct(id) {
 function openProductPage(id) { window.location.href = `/product.html?id=${id}`; }
 function goHome() { window.location.href = 'index.html'; }
 
-// 7. Cart Logic
 function addToCart(id) {
     const p = allProducts.find(x => x._id === id);
     const exist = cart.find(x => x._id === id && x.size === "N/A");
@@ -322,7 +314,6 @@ function initiateCartCheckout() {
     document.getElementById('checkout-page').style.display = 'flex'; 
 }
 
-// 8. Auth & Profile Logic
 function handleProfileClick() {
     if(currentUser) { openProfile(); } 
     else { 
@@ -401,7 +392,6 @@ function handleLogout() {
     goHome(); 
 }
 
-// 9. Checkout & Orders Flow
 function processPayment(e) {
     e.preventDefault(); 
     if(!currentUser) { alert("Please login to place an order."); return handleProfileClick(); }
@@ -438,7 +428,14 @@ async function verifyAndPlaceOrder() {
         
         if(data.success) {
             let orders = JSON.parse(localStorage.getItem('orders_' + currentUser.email)) || [];
-            orders.unshift({ id: data.orderId, date: new Date().toLocaleDateString(), items: cart, total: totalAmount, status: 'Pending Verification' });
+            orders.unshift({ 
+                id: data.orderId, 
+                date: new Date().toLocaleDateString(), 
+                items: cart, 
+                total: totalAmount, 
+                status: 'Pending Verification', 
+                tracking: { "Order Placed": new Date().toLocaleString('en-IN') } 
+            });
             localStorage.setItem('orders_' + currentUser.email, JSON.stringify(orders));
             
             document.getElementById('qrModal').classList.remove('open'); 
@@ -457,6 +454,7 @@ async function verifyAndPlaceOrder() {
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
+// --- UPGRADED MY ORDERS PAGE ---
 function openOrders() {
     document.querySelectorAll('.full-page').forEach(el => el.style.display = 'none'); 
     document.getElementById('orders-page').style.display = 'flex';
@@ -469,16 +467,57 @@ function openOrders() {
         return; 
     }
     
-    container.innerHTML = orders.map(order => `
+    container.innerHTML = orders.map(order => {
+        const stages = ['Order Placed', 'Packed', 'Shipped', 'Out for Delivery', 'Delivered'];
+        
+        let trackHtml = `<div class="track-timeline"><div style="font-weight:bold; margin-bottom:15px; color:#0b2240;">Live Tracking</div>`;
+        
+        stages.forEach((stage, i) => {
+            // Check if this stage has a timestamp in the tracking object
+            const timestamp = order.tracking ? order.tracking[stage] : null;
+            const isActive = timestamp ? 'active' : '';
+            
+            trackHtml += `
+                <div class="track-step ${isActive}">
+                    <div class="track-dot"></div>
+                    <div style="flex:1;">
+                        <div class="track-text">${stage}</div>
+                        ${timestamp ? `<div style="font-size:11px; color:#666; margin-top:2px;">${timestamp}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+        trackHtml += `</div>`;
+
+        const delDate = order.items[0]?.deliveryDate ? new Date(order.items[0].deliveryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Will be updated soon';
+
+        return `
         <div class="order-card">
-            <div class="order-header"><span>Order ID: ${order.id}</span><span class="order-status">${order.status}</span></div>
+            <div class="order-header">
+                <span>Order ID: ${order.id}</span>
+                <span class="order-status">${order.status}</span>
+            </div>
             <div style="font-size:12px; color:#666; margin-bottom:10px;">Date: ${order.date}</div>
+            
+            <div style="font-size:13px; font-weight:600; color:#0b2240; margin-bottom:10px; background: #e3f2fd; padding: 8px; border-radius: 6px;">Expected Delivery: <span style="color:#388e3c;">${delDate}</span></div>
+
             ${order.items.map(item => `
-                <div class="order-item"><img src="${item.imageUrl}"><div><div style="font-size:14px; font-weight:600;">${item.name}</div><div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div><div style="font-size:14px; font-weight:700; color:var(--primary-blue);">₹${item.price * item.qty}</div></div></div>
+                <div class="order-item" style="display:flex; gap:10px; margin-bottom:10px;">
+                    <img src="${item.imageUrl}">
+                    <div>
+                        <div style="font-size:14px; font-weight:600;">${item.name}</div>
+                        <div style="font-size:12px; color:#777;">Size: ${item.size} | Qty: ${item.qty}</div>
+                        <div style="font-size:14px; font-weight:700; color:var(--primary-blue);">₹${item.price * item.qty}</div>
+                    </div>
+                </div>
             `).join('')}
-            <div style="text-align:right; font-weight:bold; margin-top:10px; border-top:1px solid #eee; padding-top:10px;">Total: ₹${order.total}</div>
+            
+            ${trackHtml}
+
+            <div class="order-total">Total: ₹${order.total}</div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function openWishlist() {
@@ -512,6 +551,5 @@ function checkUrlForCheckout() {
     }
 }
 
-// Initialize App
 loadData();
 checkUrlForCheckout();
