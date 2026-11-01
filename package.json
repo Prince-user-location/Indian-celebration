@@ -2,7 +2,7 @@
   "name": "diwali-shop",
   "version": "1.0.0",
   "description": "",
-  "main": "seed.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -11,6 +11,9 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^18.0.9",
