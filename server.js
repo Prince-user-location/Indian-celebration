@@ -1,5 +1,5 @@
 require('dotenv').config();
-const crypto = require('crypto'); // FIXED: Crypto import
+const crypto = require('crypto'); // ✅ FIX: Crypto module import kiya
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 app.use(cors());
-app.use(express.json({ limit: '50mb' })); // Base64 images ke liye limit badhayi
+app.use(express.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- MONGODB CONNECTION ---
