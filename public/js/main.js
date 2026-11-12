@@ -8,6 +8,20 @@ let wishlist = [];
 
 const defaultBanner = "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=800";
 
+// ================= SPLASH SCREEN LOGIC =================
+window.addEventListener('load', () => {
+    // 2.5 second (2500ms) tak splash screen dikhegi
+    setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        if (splash) {
+            splash.classList.add('fade-out'); // Fade out start
+            setTimeout(() => {
+                splash.style.display = 'none'; // Complete gayab
+            }, 500); // 0.5 sec transition ke baad hide
+        }
+    }, 2500); 
+});
+
 async function loadData() {
     try {
         const [prodRes, bannerRes] = await Promise.all([

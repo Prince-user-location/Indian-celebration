@@ -14,7 +14,34 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
 body { background-color: var(--bg-color); overflow-x: hidden; padding-bottom: 70px; color: var(--text-dark); }
 
-/* Sky Blue Header with Red Fort & Tiranga */
+/* ================= WHITE SPLASH SCREEN ================= */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff; /* White Background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#splash-screen img {
+    width: 90%; /* Image ko screen ke hisaab se set kiya */
+    max-width: 400px;
+    height: auto;
+    object-fit: contain;
+}
+
+#splash-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ================= SKY BLUE HEADER (Red Fort + Tiranga) ================= */
 .header { 
     background: linear-gradient(rgba(135, 206, 235, 0.85), rgba(135, 206, 235, 0.95)), 
                 url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Red_Fort_in_Delhi_03-2016.jpg/1200px-Red_Fort_in_Delhi_03-2016.jpg');
