@@ -5,41 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Indian Celebration - Luxury Shopping</title>
     <link rel="stylesheet" href="css/style.css">
+    
+    <!-- CSS FOR AUTO-CHANGING THEMES -->
+    <style>
+        /* Smooth transition jab theme change ho */
+        .header { transition: background-color 1s ease-in-out; }
+        .logo-text, .location-bar span, .search-container svg { transition: color 1s ease-in-out; }
+        
+        /* Theme 1: Default (Flipkart Blue) */
+        body.theme-default { --primary-blue: #2874f0; --bg-color: #f1f3f6; --text-dark: #212121; }
+        
+        /* Theme 2: Festive (Diwali Red/Gold) */
+        body.theme-festive { --primary-blue: #d32f2f; --bg-color: #fff8e1; --text-dark: #4a1414; }
+        body.theme-festive .header { background: #fff3e0; }
+        body.theme-festive .search-container { background: #ffebee; border-color: #ffcdd2; }
+        
+        /* Theme 3: Eco Green */
+        body.theme-green { --primary-blue: #388e3c; --bg-color: #f1f8e9; --text-dark: #1b5e20; }
+        body.theme-green .header { background: #e8f5e9; }
+        
+        /* Theme 4: Dark Mode */
+        body.theme-dark { --primary-blue: #ffb300; --bg-color: #121212; --text-dark: #e0e0e0; }
+        body.theme-dark .header { background: #1e1e1e; border-bottom: 1px solid #333; }
+        body.theme-dark .search-container { background: #2d2d2d; border-color: #444; }
+        body.theme-dark .search-container input { color: #fff; }
+        body.theme-dark .section-title { background: #1e1e1e; color: #fff; }
+        body.theme-dark .card { background: #1e1e1e; }
+        body.theme-dark .card-title, body.theme-dark .price { color: #fff; }
+    </style>
 </head>
-<body>
+<body class="theme-default"> <!-- Default Theme set hai -->
 
-    <!-- ================= SPLASH SCREEN (WHITE BACKGROUND) ================= -->
+    <!-- SPLASH SCREEN -->
     <div id="splash-screen">
-        <img src="https://i.ibb.co/nNS9KMWt/image-cab2eea6.jpg" alt="Indian Celebration">
+        <img src="https://i.ibb.co/gM4tHcvT/image-ea9493de.jpg" alt="Indian Celebration">
     </div>
 
-    <!-- ================= HOME PAGE ================= -->
+    <!-- HOME PAGE -->
     <div id="home-page">
         <div class="header">
-            <div class="header-top">
+            <!-- FLIPKART STYLE TOP TABS (Minutes changed to Weekly) -->
+            <div class="top-tabs">
+                <div class="tab-box" onclick="window.location.href='/minutes.html'">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png">
+                    <span>Weekly</span> <!-- Changed from Minutes to Weekly -->
+                </div>
+                <div class="tab-box" onclick="alert('Travel Page Coming Soon')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3125/3125713.png"><span>Travel</span>
+                </div>
+                <div class="tab-box" onclick="window.location.href='/value365.html'">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"><span>Value 365</span>
+                </div>
+                <div class="tab-box" onclick="alert('Gifts Page Coming Soon')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4213/4213179.png"><span>Gifts</span>
+                </div>
+            </div>
+
+            <div class="header-top" style="margin-top: 10px;">
                 <div>
-                    <div class="logo-text">Indian Celebration</div>
+                    <div class="logo-text" style="color: var(--primary-blue);">Indian Celebration</div>
                     <div class="logo-sub">Explore Plus ⭐</div>
                 </div>
-                <div class="header-icons">
-                    <svg onclick="handleProfileClick()" width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                    <svg onclick="openCart()" width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                <div class="header-icons" style="color: var(--primary-blue);">
+                    <svg onclick="handleProfileClick()" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <svg onclick="openCart()" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
                 </div>
             </div>
-            <div class="location-bar"><svg width="14" height="14" viewBox="0 0 24 24" fill="#ffb300"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> 110006 <span>Select delivery location ></span></div>
+
+            <div class="location-bar" onclick="openLocationModal()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--primary-blue)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span id="headerLocationText">Select delivery location ></span>
+            </div>
+
+            <!-- SEARCH BAR WITH DYNAMIC ID -->
             <div class="search-container">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="#666"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                <input type="text" placeholder="Search for Products...">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--primary-blue)"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" id="mainSearchInput" placeholder="Search for Products, Brands and More...">
             </div>
         </div>
 
-        <div class="top-tabs">
-            <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/2662/2662503.png"><span>Minutes</span></div>
-            <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/7893/7893979.png"><span>Travel</span></div>
-            <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/2693/2693505.png"><span>Value 365</span></div>
-            <div class="tab-box"><img src="https://cdn-icons-png.flaticon.com/512/10706/10706442.png"><span>Gifts</span></div>
-        </div>
-
+        <!-- BANNER -->
         <div class="banner-container">
             <div class="banner-slider" id="slider"></div>
         </div>
@@ -48,7 +93,7 @@
         <div id="dynamicContent"></div>
     </div>
 
-    <!-- ================= CATEGORY PAGE ================= -->
+    <!-- CATEGORY PAGE -->
     <div id="category-page" class="full-page">
         <div class="page-header">
             <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
@@ -59,53 +104,43 @@
                 <div class="cat-menu-item active" onclick="switchCategory('patake', this)">Patake</div>
                 <div class="cat-menu-item" onclick="switchCategory('clothes', this)">Clothes</div>
             </div>
-            <div class="cat-content">
-                <div class="grid" id="categoryGrid"></div>
-            </div>
+            <div class="cat-content"><div class="grid" id="categoryGrid"></div></div>
         </div>
     </div>
 
-    <!-- ================= AUTHENTICATION PAGE ================= -->
+    <!-- AUTHENTICATION PAGE -->
     <div id="auth-page" class="full-page">
         <div class="page-header">
             <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
             <span>Account</span>
         </div>
         <div class="auth-container">
-            <div class="auth-header">
-                <h2>Welcome to Indian Celebration</h2>
-                <p style="color:#666; font-size:14px;">Login or create an account to continue</p>
-            </div>
+            <div class="auth-header"><h2>Welcome to Indian Celebration</h2><p style="color:#666; font-size:14px;">Login or create an account to continue</p></div>
             <div class="auth-tabs">
                 <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</div>
                 <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Register</div>
             </div>
-            
             <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="auth-form-group"><label>Email Address</label><input type="email" id="loginEmail" required placeholder="Enter email"></div>
-                <div class="auth-form-group"><label>Password</label><input type="password" id="loginPassword" required placeholder="Enter password"></div>
+                <div class="auth-form-group"><label>Email Address</label><input type="email" id="loginEmail" required></div>
+                <div class="auth-form-group"><label>Password</label><input type="password" id="loginPassword" required></div>
                 <button type="submit" class="btn-auth">Login</button>
             </form>
-
             <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
-                <div class="auth-form-group"><label>Full Name</label><input type="text" id="regName" required placeholder="Enter your name"></div>
-                <div class="auth-form-group"><label>Phone Number</label><input type="tel" id="regPhone" required placeholder="Enter phone number"></div>
-                <div class="auth-form-group"><label>Email Address</label><input type="email" id="regEmail" required placeholder="Enter email"></div>
-                <div class="auth-form-group"><label>Password</label><input type="password" id="regPassword" required placeholder="Create password"></div>
+                <div class="auth-form-group"><label>Full Name</label><input type="text" id="regName" required></div>
+                <div class="auth-form-group"><label>Phone Number</label><input type="tel" id="regPhone" required></div>
+                <div class="auth-form-group"><label>Email Address</label><input type="email" id="regEmail" required></div>
+                <div class="auth-form-group"><label>Password</label><input type="password" id="regPassword" required></div>
                 <button type="submit" class="btn-auth">Register</button>
             </form>
         </div>
     </div>
 
-    <!-- ================= USER PROFILE PAGE ================= -->
+    <!-- USER PROFILE PAGE -->
     <div id="profile-page" class="full-page">
         <div class="prof-header">
             <div class="prof-user">
                 <div class="prof-avatar" id="profAvatar">U</div>
-                <div class="prof-info">
-                    <h3 id="profName">User Name</h3>
-                    <p id="profEmail">user@example.com</p>
-                </div>
+                <div class="prof-info"><h3 id="profName">User Name</h3><p id="profEmail">user@example.com</p></div>
             </div>
         </div>
         <div class="prof-stats">
@@ -113,7 +148,6 @@
             <div class="prof-stat-item" onclick="openWishlist()"><h4 id="statWishlist">0</h4><p>Wishlist</p></div>
             <div class="prof-stat-item"><h4>0</h4><p>Coupons</p></div>
         </div>
-        
         <div class="prof-menu-container">
             <div class="prof-menu-card">
                 <div class="prof-list-item" onclick="openOrders()"><div class="prof-list-left"><div class="prof-list-icon" style="background:#e3f2fd; color:#1976d2;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div><div class="prof-list-text">My Orders</div></div></div>
@@ -123,78 +157,76 @@
         </div>
     </div>
 
-    <!-- ================= ORDERS PAGE ================= -->
+    <!-- ORDERS & WISHLIST PAGE -->
     <div id="orders-page" class="full-page">
         <div class="page-header"><svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Orders</span></div>
         <div class="sub-page-content" id="ordersList"></div>
     </div>
 
-    <!-- ================= WISHLIST PAGE ================= -->
     <div id="wishlist-page" class="full-page">
         <div class="page-header"><svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Wishlist</span></div>
         <div class="sub-page-content"><div class="grid" id="wishlistGrid"></div></div>
     </div>
 
-    <!-- ================= CHECKOUT FORM PAGE ================= -->
+    <!-- CHECKOUT FORM -->
     <div id="checkout-page" class="full-page">
         <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>Delivery Address</span></div>
         <div class="page-content" style="padding: 20px;">
             <form id="checkoutForm" onsubmit="processPayment(event)">
-                <div class="form-group-full"><label>Full Name</label><input type="text" id="chkName" required placeholder="Enter your name"></div>
-                <div class="form-group-full"><label>Full Address</label><input type="text" id="chkAddress" required placeholder="House No, Street, Area"></div>
+                <div class="form-group-full"><label>Full Name</label><input type="text" id="chkName" required></div>
+                <div class="form-group-full"><label>Full Address</label><input type="text" id="chkAddress" required></div>
                 <div class="form-group-full" style="display:flex; gap:10px;">
-                    <div style="flex:1;"><label>State</label><input type="text" required placeholder="State"></div>
-                    <div style="flex:1;"><label>PIN Code</label><input type="number" required placeholder="110006"></div>
+                    <div style="flex:1;"><label>State</label><input type="text" required></div>
+                    <div style="flex:1;"><label>PIN Code</label><input type="number" required></div>
                 </div>
                 <button type="submit" class="btn-submit-full" style="background:#ffb300;">Proceed to Payment</button>
             </form>
         </div>
     </div>
 
-    <!-- ================= CART MODAL ================= -->
+    <!-- CART MODAL -->
     <div class="cart-modal" id="cartModal">
         <div class="cart-header"><svg onclick="closeCart()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> My Cart</div>
-        <div class="cart-scroll-area">
-            <div class="cart-items-container" id="cartList"></div>
-            <div class="cart-price-details"><div class="price-row total"><span>Total Amount</span><span id="cartTotal">₹0</span></div></div>
-        </div>
+        <div class="cart-scroll-area"><div class="cart-items-container" id="cartList"></div><div class="cart-price-details"><div class="price-row total"><span>Total Amount</span><span id="cartTotal">₹0</span></div></div></div>
         <div class="cart-footer"><button class="btn-pay" onclick="initiateCartCheckout()">Pay Now</button></div>
     </div>
 
-    <!-- ================= QR SCANNER MODAL ================= -->
+    <!-- QR SCANNER MODAL -->
     <div class="overlay-modal" id="qrModal">
         <div class="modal-content">
             <div class="modal-title">Scan & Pay</div>
             <p style="font-size:12px; color:#666; margin-bottom: 10px;">Scan with GPay, PhonePe, Paytm</p>
             <img src="https://i.ibb.co/Cs49YGDd/IMG-20261024-WA0003.jpg" class="qr-img" alt="Scanner">
-            
-            <div style="background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 10px; margin: 10px 0; text-align: left;">
-                <p style="font-size: 11px; color: #b26a00; margin: 0; font-weight: 500;">Payment ke baad UTR ID aur Screenshot daalein:</p>
-            </div>
-
+            <div style="background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 10px; margin: 10px 0; text-align: left;"><p style="font-size: 11px; color: #b26a00; margin: 0; font-weight: 500;">Payment ke baad UTR ID aur Screenshot daalein:</p></div>
             <input type="text" id="utrInput" placeholder="Enter 12-digit UTR ID" style="width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; margin-bottom: 10px; outline: none; font-size: 14px; text-align: center; font-weight: bold;">
-            
-            <div style="text-align: left; margin-bottom: 15px;">
-                <label style="font-size: 12px; font-weight: 600; color: #555;">Upload Payment Screenshot:</label>
-                <input type="file" id="proofImage" accept="image/*" style="width: 100%; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; margin-top: 5px; background: #fafafa;">
-            </div>
-            
-            <button class="btn-submit-full" style="background:#388e3c; margin-top: 0; font-size: 16px; box-shadow: 0 4px 10px rgba(56, 142, 60, 0.3);" onclick="verifyAndPlaceOrder()">Submit Proof & Place Order</button>
+            <div style="text-align: left; margin-bottom: 15px;"><label style="font-size: 12px; font-weight: 600; color: #555;">Upload Payment Screenshot:</label><input type="file" id="proofImage" accept="image/*" style="width: 100%; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; margin-top: 5px; background: #fafafa;"></div>
+            <button class="btn-submit-full" style="background:#388e3c; margin-top: 0; font-size: 16px;" onclick="verifyAndPlaceOrder()">Submit Proof & Place Order</button>
             <button style="background:none; border:none; margin-top:15px; color:#d32f2f; cursor:pointer; font-weight: 600; font-size: 14px;" onclick="closeModal('qrModal')">Cancel</button>
         </div>
     </div>
 
-    <!-- ================= SUCCESS MODAL ================= -->
+    <!-- SUCCESS MODAL -->
     <div class="overlay-modal" id="successModal">
         <div class="modal-content" style="overflow:hidden;">
             <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
             <div class="modal-title" style="color:#388e3c; font-size:22px;">Order Placed!</div>
-            <p style="color:#666; margin-bottom:20px; font-size: 14px;">Aapka order place ho gaya hai. Admin aapke payment proof ko verify karke order dispatch karega.</p>
+            <p style="color:#666; margin-bottom:20px; font-size: 14px;">Aapka order place ho gaya hai. Admin verify karke dispatch karega.</p>
             <button class="btn-submit-full" onclick="closeModal('successModal'); goHome();">Continue Shopping</button>
         </div>
     </div>
 
-    <!-- ================= BOTTOM NAVIGATION ================= -->
+    <!-- LOCATION MODAL -->
+    <div class="overlay-modal" id="locationModal">
+        <div class="modal-content" style="text-align: left;">
+            <div class="modal-title" style="text-align: center;">Choose your location</div>
+            <div class="form-group-full" style="padding: 10px;"><label>Pincode</label><input type="number" id="locPincode" placeholder="Enter Pincode"></div>
+            <div class="form-group-full" style="padding: 10px;"><label>City / State</label><input type="text" id="locCity" placeholder="e.g. Delhi"></div>
+            <button class="btn-submit-full" style="margin-top: 10px; background: var(--primary-blue);" onclick="saveLocation()">Save Location</button>
+            <button style="background:none; border:none; margin-top:15px; width: 100%; text-align: center; color:#d32f2f; cursor:pointer; font-weight: 600; font-size: 14px;" onclick="closeModal('locationModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
     <div class="bottom-nav">
         <div class="nav-item active" id="nav-home" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</div>
         <div class="nav-item" id="nav-cat" onclick="openCategoriesPage()"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories</div>
@@ -203,5 +235,6 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script src="js/search.js"></script> <!-- Nayi file linked -->
 </body>
 </html>
