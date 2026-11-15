@@ -238,3 +238,95 @@ body { background-color: var(--bg-color); color: var(--text-dark); padding-botto
 .qr-img { width: 220px; height: 220px; margin: 15px auto; border: 2px solid #eee; padding: 10px; border-radius: 12px; object-fit: contain; }
 .success-icon { width: 80px; height: 80px; background: #e8f5e9; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; }
 .success-icon svg { width: 40px; height: 40px; fill: #43a047; }
+
+/* ========================================= */
+/* MID AD BANNERS                            */
+/* ========================================= */
+.mid-ad-banner {
+    width: calc(100% - 30px);
+    margin: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    height: 90px; /* Chota banner */
+}
+
+.mid-ad-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ========================================= */
+/* CATEGORY SECTIONS & HORIZONTAL SCROLL     */
+/* ========================================= */
+.category-section {
+    background: transparent;
+    margin-bottom: 15px;
+    padding: 10px 0;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    margin-bottom: 10px;
+}
+
+.category-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.category-header span {
+    font-size: 13px;
+    color: var(--primary-blue);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Horizontal Scroll Container */
+.h-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 0 15px 10px 15px;
+    scrollbar-width: none; /* Hide scrollbar */
+}
+
+.h-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* Horizontal Scroll Cards Size Fix */
+.h-scroll .card {
+    min-width: 140px;
+    max-width: 140px;
+    margin-bottom: 0;
+}
+
+.h-scroll .card-img-container {
+    height: 140px;
+}
+
+.h-scroll .brand-name {
+    display: none; /* Chote card mein brand name hide kardo */
+}
+
+.h-scroll .card-title {
+    font-size: 12px;
+}
+
+.h-scroll .price {
+    font-size: 14px;
+}
+
+.h-scroll .card-btn-group button {
+    padding: 6px 2px;
+    font-size: 11px;
+}

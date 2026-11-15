@@ -46,10 +46,7 @@ async function loadData() {
 
         if(currentUser) { wishlist = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || []; }
 
-        // FIX: Home page par sirf purane products dikhao. Minutes/Value365 ko hide karo.
-        const homeProducts = allProducts.filter(p => p.category !== 'minutes' && p.category !== 'value365');
-        renderHomePage(homeProducts);
-        
+        renderHomePage(allProducts);
         renderTopBanners();
         updateCartUI();
         startIndividualTimers();
@@ -61,77 +58,130 @@ async function loadData() {
     }
 }
 
-function renderRecommendations() {
-    let recentIds = JSON.parse(localStorage.getItem('recently_viewed')) || [];
-    if(recentIds.length === 0) return;
-
-    const recentProducts = allProducts.filter(p => recentIds.includes(p._id));
-    const categories = [...new Set(recentProducts.map(p => p.category))];
-    
-    // Recommended products mein bhi minutes/value365 ko hata diya
-    const recommended = allProducts.filter(p => 
-        categories.includes(p.category) && 
-        !recentIds.includes(p._id) && 
-        p.category !== 'minutes' && 
-        p.category !== 'value365'
-    ).slice(0, 6);
-
-    if(recommended.length > 0) {
-        let recHtml = `<div class="section-title">Recommended For You</div>`;
-        recHtml += `<div class="grid">`;
-        recommended.forEach(p => { recHtml += generateCardHtml(p, false); });
-        recHtml += `</div>`;
-
-        const dynamicContent = document.getElementById('dynamicContent');
-        if(dynamicContent) dynamicContent.innerHTML = recHtml + dynamicContent.innerHTML;
-    }
-}
-
-// ================= BANNER LOGIC (CLICK FIXED) =================
-function renderTopBanners() {
-    const slider = document.getElementById('slider');
-    if(!slider) return;
-    
-    if(!allBanners || allBanners.length === 0) { 
-        slider.innerHTML = `<img src="${defaultBanner}" alt="Diwali Banner" onclick="redirectToProduct()" style="cursor:pointer;">`; 
-        return; 
-    }
-    
-    // Banner image pe onclick lagaya gaya hai
-    slider.innerHTML = allBanners.map(b => `<img src="${b.imageUrl}" alt="Banner" onclick="redirectToProduct()" style="cursor:pointer;">`).join('');
-    
-    if(allBanners.length <= 1) return;
-    let idx = 0;
-    setInterval(() => {
-        idx = (idx + 1) % allBanners.length;
-        slider.style.transform = `translateX(-${idx * 100}%)`;
-    }, 3000);
-}
-
-// Banner click karne par product page open karne ka function
-function redirectToProduct() {
-    // Agar database mein products hain, toh pehle product par bhej de (Flipkart style)
-    if (allProducts && allProducts.length > 0) {
-        window.location.href = `/product.html?id=${allProducts[0]._id}`;
-    } else {
-        // Agar products nahi hain toh category page par bhej de
-        window.location.href = 'category.html';
-    }
-}
-
-// ================= RENDER HOME PAGE =================
+// ================= HOME PAGE RENDERING (Flipkart Style) =================
 function renderHomePage(products) {
     const container = document.getElementById('dynamicContent');
     if(!container) return;
     if(!products || products.length === 0) { container.innerHTML = '<p style="text-align:center; padding:20px;">No products found.</p>'; return; }
 
-    let html = `<div class="grid">`;
-    products.forEach((p, index) => {
-        html += generateCardHtml(p, index === 1); // 2nd product ko Best Seller banaya hai
+    // 1. Data Filtering
+    const homeProducts = products.filter(p => p.category !== 'minutes' && p.category !== 'value365');
+    const clothesProducts = products.filter(p => p.category === 'clothes');
+    const groceryProducts = products.filter(p => p.category === 'minutes');
+
+    let html = '';
+
+    // 2. Top 10 Products Grid
+    html += `<div class="grid">`;
+    homeProducts.slice(0, 10).forEach((p, index) => {
+        html += generateCardHtml(p, index === 1); 
     });
     html += `</div>`;
+
+    // 3. Ad Banner 1 (Half Banner fetched from Database)
+    let halfBannerUrl = "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800"; // Default Fallback
+    
+    // Find half banner from allBanners
+    if(allBanners && allBanners.length > 0) {
+        const halfBanner = allBanners.find(b => b.type === 'half');
+        if(halfBanner && halfBanner.imageUrl) {
+            halfBannerUrl = halfBanner.imageUrl;
+        }
+    }
+
+    html += `
+        <div class="mid-ad-banner" onclick="redirectToProduct()" style="cursor:pointer;">
+            <img src="${halfBannerUrl}" alt="Ad Banner">
+        </div>
+    `;
+
+    // 4. Women's Clothes Section
+    if(clothesProducts.length > 0) {
+        html += `
+            <div class="category-section">
+                <div class="category-header">
+                    <h3>Women's Clothes</h3>
+                    <span onclick="window.location.href='category.html'">View All <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></span>
+                </div>
+                <div class="h-scroll">
+                    ${clothesProducts.slice(0, 6).map(p => generateCardHtml(p, false)).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    // 5. Grocery Section (Weekly)
+    if(groceryProducts.length > 0) {
+        html += `
+            <div class="category-section">
+                <div class="category-header">
+                    <h3>Grocery Essentials</h3>
+                    <span onclick="window.location.href='minutes.html'">View All <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></span>
+                </div>
+                <div class="h-scroll">
+                    ${groceryProducts.slice(0, 6).map(p => generateCardHtml(p, false)).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    // 6. Ad Banner 2 (Optional second Half Banner)
+    let halfBanner2Url = "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=800";
+    // If you have more than one half banner, you can fetch the second one here
+    if(allBanners) {
+         const halfBanners = allBanners.filter(b => b.type === 'half');
+         if(halfBanners.length > 1) halfBanner2Url = halfBanners[1].imageUrl;
+    }
+
+    html += `
+        <div class="mid-ad-banner" style="margin-top: 15px;" onclick="redirectToProduct()" style="cursor:pointer;">
+            <img src="${halfBanner2Url}" alt="Ad Banner">
+        </div>
+    `;
+
+    // 7. Remaining Products (After 10)
+    if(homeProducts.length > 10) {
+        html += `<div class="section-title" style="margin-top:10px;">Recommended For You</div>`;
+        html += `<div class="grid">`;
+        homeProducts.slice(10).forEach(p => {
+            html += generateCardHtml(p, false);
+        });
+        html += `</div>`;
+    }
+
     container.innerHTML = html;
-    renderRecommendations(); 
+    startIndividualTimers();
+}
+
+// ================= BANNER LOGIC =================
+function renderTopBanners() {
+    const slider = document.getElementById('slider');
+    if(!slider) return;
+    
+    // Filter Top Banners only
+    const topBanners = allBanners.filter(b => b.type !== 'half');
+
+    if(!topBanners || topBanners.length === 0) { 
+        slider.innerHTML = `<img src="${defaultBanner}" alt="Diwali Banner" onclick="redirectToProduct()" style="cursor:pointer;">`; 
+        return; 
+    }
+    
+    slider.innerHTML = topBanners.map(b => `<img src="${b.imageUrl}" alt="Banner" onclick="redirectToProduct()" style="cursor:pointer;">`).join('');
+    
+    if(topBanners.length <= 1) return;
+    let idx = 0;
+    setInterval(() => {
+        idx = (idx + 1) % topBanners.length;
+        slider.style.transform = `translateX(-${idx * 100}%)`;
+    }, 3000);
+}
+
+function redirectToProduct() {
+    if (allProducts && allProducts.length > 0) {
+        window.location.href = `/product.html?id=${allProducts[0]._id}`;
+    } else {
+        window.location.href = 'category.html';
+    }
 }
 
 // ================= GENERATE CARD HTML =================
@@ -169,7 +219,6 @@ function generateCardHtml(p, isBestSeller) {
     else if (p.category === 'minutes') brandName = 'Grocery';
     else if (p.category === 'value365') brandName = 'Value 365';
     else if (p.category === 'gifts') brandName = 'Gifts';
-    else if (p.category) brandName = p.category.charAt(0).toUpperCase() + p.category.slice(1);
 
     return `
         <div class="card">
@@ -204,7 +253,6 @@ function openMinutesPage() { window.location.href = 'minutes.html'; }
 function openValue365Page() { window.location.href = 'value365.html'; }
 function openCategoriesPage() { window.location.href = 'category.html'; }
 
-// Fallback for old category layout
 function switchCategory(cat, el) { 
     document.querySelectorAll('.cat-menu-item').forEach(c => c.classList.remove('active')); 
     if(el) el.classList.add('active'); 

@@ -1,68 +1,70 @@
 require('dotenv').config();
-const crypto = require('crypto');
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const fs = require('fs');
-const mongoose = require('mongoose');
 
 const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Middleware
 app.use(cors());
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: '50mb' })); // Increased limit for base64 images
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("✅ MongoDB Connected Successfully!"))
-    .catch(err => console.log("❌ DB Error:", err.message));
+    .catch(err => console.log("❌ DB Error:", err));
 
-// --- MODELS ---
+// ================= SCHEMAS =================
 const Product = mongoose.model('Product', new mongoose.Schema({
-    name: String, price: Number, oldPrice: Number, category: String, 
-    description: String, timerEnd: Number, deliveryDate: String, 
-    imageUrl: String, additionalImages: [String],
-    stock: { type: Number, default: 10 }, // NEW: Stock system
-    views: { type: Number, default: 0 }   // NEW: Dynamic Demand (Views)
+    name: String, 
+    price: Number, 
+    oldPrice: Number, 
+    category: String,
+    description: String, 
+    timerEnd: Number, 
+    deliveryDate: String,
+    imageUrl: String, 
+    additionalImages: [String],
+    stock: { type: Number, default: 10 },
+    views: { type: Number, default: 0 }
 }));
 
+// UPDATED: Added 'type' field for Half Banners
 const Banner = mongoose.model('Banner', new mongoose.Schema({
     imageUrl: String,
-    startTime: { type: Date, default: Date.now }, // NEW: Schedule Start
-    endTime: { type: Date, default: null }        // NEW: Schedule End
+    type: { type: String, default: 'top' }, // 'top' or 'half'
+    startTime: Date,
+    endTime: Date
 }));
 
 const Order = mongoose.model('Order', new mongoose.Schema({
-    id: String, user: Object, address: String, items: Array, 
-    total: Number, utr: String, paymentProof: String, exactTime: String, 
+    id: String,
+    user: String,
+    cart: String,
+    total: Number,
+    address: String,
+    utr: String,
+    paymentProof: String,
     status: { type: String, default: 'Pending Verification' },
-    tracking: { type: Object, default: {} }
+    tracking: { type: Object, default: { "Order Placed": new Date().toLocaleString('en-IN') } },
+    exactTime: { type: String, default: new Date().toLocaleString('en-IN') }
 }));
 
-// --- APIs ---
+// ================= FRONTEND API ROUTES =================
 
+// Get All Products
 app.get('/api/products', async (req, res) => {
-    try { res.json(await Product.find().sort({ _id: -1 })); } 
-    catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-// NEW: Get only active banners (Scheduled Banners Logic)
-app.get('/api/banners', async (req, res) => {
     try {
-        const now = new Date();
-        const banners = await Banner.find({
-            startTime: { $lte: now },
-            $or: [{ endTime: null }, { endTime: { $gte: now } }]
-        });
-        res.json(banners); 
-    } 
-    catch (err) { res.status(500).json({ error: err.message }); }
+        const products = await Product.find().sort({ _id: -1 });
+        res.json(products);
+    } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-app.get('/api/orders', async (req, res) => {
-    try { res.json(await Order.find().sort({ _id: -1 })); } 
-    catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-// NEW: Track Product Views (For Dynamic Demand)
+// Track Product View
 app.post('/api/product/view/:id', async (req, res) => {
     try {
         await Product.findByIdAndUpdate(req.params.id, { $inc: { views: 1 } });
@@ -70,150 +72,166 @@ app.post('/api/product/view/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-app.post('/api/admin/product', async (req, res) => {
+// Get Active Banners (Top & Half)
+app.get('/api/banners', async (req, res) => {
     try {
-        const { name, price, oldPrice, category, description, timerHours, deliveryDate, images, stock } = req.body;
-        if (!images || images.length === 0) return res.status(400).json({ error: "Image required" });
-
-        const hours = Number(timerHours) || 0;
-        const timerEnd = hours > 0 ? Date.now() + (hours * 60 * 60 * 1000) : null;
-
-        const newProduct = new Product({ 
-            name, price: Number(price), oldPrice: Number(oldPrice), 
-            category, description, timerEnd, deliveryDate,
-            imageUrl: images[0], additionalImages: images.slice(1),
-            stock: Number(stock) || 0
+        const now = new Date();
+        // Fetch banners that are either not scheduled or currently active
+        const banners = await Banner.find({
+            $or: [
+                { startTime: null, endTime: null },
+                { startTime: { $lte: now }, endTime: { $gte: now } },
+                { startTime: { $lte: now }, endTime: null },
+                { startTime: null, endTime: { $gte: now } }
+            ]
         });
-        
-        await newProduct.save();
-        res.json({ success: true, message: "Product Saved to DB!" });
+        res.json(banners);
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-app.put('/api/admin/product/:id', async (req, res) => {
-    try {
-        const { name, price, oldPrice, category, description, timerHours, deliveryDate, images, stock } = req.body;
-        const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).json({ error: "Product not found" });
-
-        let timerEnd = product.timerEnd; 
-        if (timerHours !== undefined) {
-            const hours = Number(timerHours) || 0;
-            timerEnd = hours > 0 ? Date.now() + (hours * 60 * 60 * 1000) : null; 
-        }
-
-        product.name = name;
-        product.price = Number(price);
-        product.oldPrice = Number(oldPrice);
-        product.category = category;
-        product.description = description;
-        product.timerEnd = timerEnd;
-        product.deliveryDate = deliveryDate;
-        product.stock = Number(stock) || 0;
-        
-        if (images && images.length > 0) {
-            product.imageUrl = images[0];
-            product.additionalImages = images.slice(1);
-        }
-
-        await product.save();
-        res.json({ success: true, message: "Product Updated!" });
-    } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-app.delete('/api/admin/product/:id', async (req, res) => {
-    try {
-        await Product.findByIdAndDelete(req.params.id);
-        res.json({ success: true, message: "Product Deleted!" });
-    } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-// Schedule Banner Add
-app.post('/api/admin/banner', async (req, res) => {
-    try {
-        const { image, startTime, endTime } = req.body;
-        if (!image) return res.status(400).json({ error: "Image required" });
-        
-        const newBanner = new Banner({ 
-            imageUrl: image,
-            startTime: startTime ? new Date(startTime) : new Date(),
-            endTime: endTime ? new Date(endTime) : null
-        });
-        await newBanner.save();
-        res.json({ success: true, message: "Banner Saved to DB!" });
-    } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-app.delete('/api/admin/banner/:id', async (req, res) => {
-    try {
-        await Banner.findByIdAndDelete(req.params.id);
-        res.json({ success: true, message: "Banner Deleted!" });
-    } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-// Order Place (Inventory Update Logic)
+// Place Order
 app.post('/api/order', async (req, res) => {
     try {
         const { user, cart, total, address, utr, paymentProof } = req.body;
-        if(!paymentProof) return res.status(400).json({ error: "Payment screenshot is required." });
-        if(!utr) return res.status(400).json({ error: "UTR is required." });
+        const orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
 
+        const newOrder = new Order({
+            id: orderId, user, cart, total, address, utr, paymentProof
+        });
+        await newOrder.save();
+
+        // Reduce Stock
         const parsedCart = JSON.parse(cart);
-        
-        // Check Stock and Decrement
-        for(let item of parsedCart) {
-            const product = await Product.findById(item._id);
-            if(product && product.stock > 0) {
-                product.stock -= item.qty; // Auto Inventory Management
-                await product.save();
-            }
+        for (let item of parsedCart) {
+            await Product.findByIdAndUpdate(item._id, { $inc: { stock: -item.qty } });
         }
 
-        const now = new Date();
-        const exactTime = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-        
-        const newOrder = new Order({
-            id: 'ORD' + Date.now(),
-            user: JSON.parse(user), address: address, items: parsedCart,
-            total: Number(total), utr: utr, paymentProof: paymentProof,
-            exactTime: exactTime, 
-            tracking: { "Order Placed": exactTime }
-        });
-        
-        await newOrder.save();
-        res.json({ success: true, orderId: newOrder.id });
+        res.json({ success: true, orderId: orderId });
+    } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+// ================= ADMIN API ROUTES =================
+
+// Get All Orders
+app.get('/api/orders', async (req, res) => {
+    try {
+        const orders = await Order.find().sort({ _id: -1 });
+        res.json(orders);
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// Verify Order Payment
 app.put('/api/admin/order/:id/verify', async (req, res) => {
     try {
-        const order = await Order.findOne({ id: req.params.id });
-        if(!order) return res.status(404).json({ error: "Order not found" });
-
-        const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-        order.status = 'Paid / Verified';
-        if(!order.tracking) order.tracking = {};
-        order.tracking["Packed"] = now;
-
-        await order.save();
-        res.json({ success: true, message: "Order Verified!" });
+        await Order.findOneAndUpdate({ id: req.params.id }, { status: 'Paid / Verified' });
+        res.json({ success: true });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// Update Tracking Status
 app.put('/api/admin/order/:id/tracking', async (req, res) => {
     try {
         const { trackingStatus } = req.body;
         const order = await Order.findOne({ id: req.params.id });
-        if(!order) return res.status(404).json({ error: "Order not found" });
-
-        const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-        if(!order.tracking) order.tracking = {};
-        order.tracking[trackingStatus] = now;
         
-        await order.save();
-        res.json({ success: true, message: "Tracking Updated!" });
+        let tracking = order.tracking || {};
+        tracking[trackingStatus] = new Date().toLocaleString('en-IN');
+        
+        await Order.findOneAndUpdate({ id: req.params.id }, { tracking: tracking });
+        res.json({ success: true });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// Add New Product
+app.post('/api/admin/product', async (req, res) => {
+    try {
+        const { name, price, oldPrice, category, description, timerHours, deliveryDate, stock, images } = req.body;
+        
+        let timerEnd = null;
+        if (timerHours && timerHours > 0) {
+            timerEnd = Date.now() + (timerHours * 60 * 60 * 1000);
+        }
+
+        const newProduct = new Product({
+            name, price, oldPrice, category, description, deliveryDate, stock,
+            imageUrl: images[0],
+            additionalImages: images.slice(1),
+            timerEnd: timerEnd
+        });
+
+        await newProduct.save();
+        res.json({ success: true });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Edit Product
+app.put('/api/admin/product/:id', async (req, res) => {
+    try {
+        const { name, price, oldPrice, category, description, timerHours, deliveryDate, stock, images } = req.body;
+        
+        let updateData = { name, price, oldPrice, category, description, deliveryDate, stock };
+        
+        if (timerHours && timerHours > 0) {
+            updateData.timerEnd = Date.now() + (timerHours * 60 * 60 * 1000);
+        } else {
+             updateData.timerEnd = null;
+        }
+
+        if (images && images.length > 0) {
+            updateData.imageUrl = images[0];
+            updateData.additionalImages = images.slice(1);
+        }
+
+        await Product.findByIdAndUpdate(req.params.id, updateData);
+        res.json({ success: true });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Delete Product
+app.delete('/api/admin/product/:id', async (req, res) => {
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        res.json({ success: true });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Add New Banner (FIXED: Saving 'type' field)
+app.post('/api/admin/banner', async (req, res) => {
+    try {
+        const { image, type, startTime, endTime } = req.body;
+        
+        const newBanner = new Banner({
+            imageUrl: image,
+            type: type || 'top', // 'top' or 'half'
+            startTime: startTime ? new Date(startTime) : null,
+            endTime: endTime ? new Date(endTime) : null
+        });
+
+        await newBanner.save();
+        res.json({ success: true });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Delete Banner
+app.delete('/api/admin/banner/:id', async (req, res) => {
+    try {
+        await Banner.findByIdAndDelete(req.params.id);
+        res.json({ success: true });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// ==========================================
+// FIXED: Catch-all route for Express 5+
+// ==========================================
+app.get(/.*/, (req, res) => {
+    // Agar request API ke liye nahi hai, toh index.html bhej do (SPA routing ke liye)
+    if (!req.path.startsWith('/api')) {
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    } else {
+        res.status(404).json({ error: "API route not found" });
+    }
+});
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+});

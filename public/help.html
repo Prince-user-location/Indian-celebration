@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Help & Support - Indian Celebration</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .help-container { padding: 20px; background: #f1f3f6; min-height: 100vh; }
+        .chat-box { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; height: 70vh; position: relative; }
+        .chat-header { background: #2874f0; color: white; padding: 15px; border-radius: 12px 12px 0 0; display: flex; align-items: center; gap: 10px; margin: -15px -15px 15px -15px; }
+        .chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { max-width: 80%; padding: 10px 15px; border-radius: 15px; font-size: 14px; line-height: 1.4; }
+        .msg.bot { background: #f1f3f6; color: #333; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg.user { background: #2874f0; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-input-area { display: flex; gap: 10px; margin-top: 15px; }
+        .chat-input-area input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 20px; outline: none; }
+        .chat-input-area button { background: #2874f0; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        
+        .contact-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .contact-card h2 { font-size: 18px; color: #333; margin-bottom: 10px; }
+        .contact-card p { color: #666; font-size: 14px; margin-bottom: 15px; }
+        .call-btn { display: inline-flex; align-items: center; gap: 10px; background: #388e3c; color: white; text-decoration: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 10px rgba(56, 142, 60, 0.3); }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <svg onclick="window.location.href='index.html'" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        <span>Help & Support</span>
+    </div>
+
+    <div class="help-container">
+        <!-- CALL OPTION -->
+        <div class="contact-card">
+            <h2>Talk to our Executive</h2>
+            <p>Available 24x7 for your help.</p>
+            <a href="tel:7250571546" class="call-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+                Call 7250571546
+            </a>
+        </div>
+
+        <!-- FLIPKART STYLE CHAT BOX -->
+        <div class="chat-box">
+            <div class="chat-header">
+                <div style="width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #2874f0; font-weight: bold; font-size: 20px;">IC</div>
+                <div>
+                    <div style="font-weight: bold; font-size: 16px;">Indian Celebration Support</div>
+                    <div style="font-size: 11px; opacity: 0.8;">Online • Usually replies instantly</div>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="msg bot">Hello! Welcome to Indian Celebration. How can I help you today?</div>
+                <div class="msg bot">For urgent help, you can call us at 7250571546.</div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Type your message here..." onkeypress="handleEnter(event)">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="window.location.href='index.html'"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</div>
+        <div class="nav-item" onclick="window.location.href='category.html'"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories</div>
+        <div class="nav-item" onclick="window.location.href='index.html'"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Account</div>
+        <div class="nav-item" onclick="window.location.href='index.html'"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart</div>
+    </div>
+
+    <script>
+        function handleEnter(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // Add User Message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'msg user';
+            userMsg.innerText = text;
+            chatMessages.appendChild(userMsg);
+            
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Auto Reply from Bot (Flipkart Style)
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'msg bot';
+                botMsg.innerText = "Thank you for reaching out. Our support team has received your query. For immediate assistance, please call 7250571546.";
+                chatMessages.appendChild(botMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
