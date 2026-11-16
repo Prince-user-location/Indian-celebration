@@ -50,6 +50,7 @@ async function loadData() {
         renderTopBanners();
         updateCartUI();
         startIndividualTimers();
+        startVerticalBannerSwipe(); 
     } catch (e) {
         console.error("Data load error:", e);
         renderTopBanners();
@@ -64,82 +65,90 @@ function renderHomePage(products) {
     if(!container) return;
     if(!products || products.length === 0) { container.innerHTML = '<p style="text-align:center; padding:20px;">No products found.</p>'; return; }
 
-    // 1. Data Filtering
-    const homeProducts = products.filter(p => p.category !== 'minutes' && p.category !== 'value365');
-    const clothesProducts = products.filter(p => p.category === 'clothes');
-    const groceryProducts = products.filter(p => p.category === 'minutes');
-
     let html = '';
 
-    // 2. Top 10 Products Grid
-    html += `<div class="grid">`;
-    homeProducts.slice(0, 10).forEach((p, index) => {
-        html += generateCardHtml(p, index === 1); 
-    });
-    html += `</div>`;
-
-    // 3. Ad Banner 1 (Half Banner fetched from Database)
-    let halfBannerUrl = "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800"; // Default Fallback
-    
-    // Find half banner from allBanners
-    if(allBanners && allBanners.length > 0) {
-        const halfBanner = allBanners.find(b => b.type === 'half');
-        if(halfBanner && halfBanner.imageUrl) {
-            halfBannerUrl = halfBanner.imageUrl;
-        }
-    }
-
-    html += `
-        <div class="mid-ad-banner" onclick="redirectToProduct()" style="cursor:pointer;">
-            <img src="${halfBannerUrl}" alt="Ad Banner">
-        </div>
-    `;
-
-    // 4. Women's Clothes Section
-    if(clothesProducts.length > 0) {
-        html += `
+    // 1. Helper function for Category Sections
+    function createCategorySection(title, categoryKey) {
+        const prods = products.filter(p => p.category === categoryKey);
+        if(prods.length === 0) return ''; 
+        return `
             <div class="category-section">
                 <div class="category-header">
-                    <h3>Women's Clothes</h3>
+                    <h3>${title}</h3>
                     <span onclick="window.location.href='category.html'">View All <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></span>
                 </div>
                 <div class="h-scroll">
-                    ${clothesProducts.slice(0, 6).map(p => generateCardHtml(p, false)).join('')}
+                    ${prods.slice(0, 6).map(p => generateCardHtml(p, false)).join('')}
                 </div>
             </div>
         `;
     }
 
-    // 5. Grocery Section (Weekly)
-    if(groceryProducts.length > 0) {
-        html += `
-            <div class="category-section">
-                <div class="category-header">
-                    <h3>Grocery Essentials</h3>
-                    <span onclick="window.location.href='minutes.html'">View All <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></span>
-                </div>
-                <div class="h-scroll">
-                    ${groceryProducts.slice(0, 6).map(p => generateCardHtml(p, false)).join('')}
+    // 2. Half Banners ko 3 hisso mein baanto (Round-Robin)
+    const allHalfBanners = allBanners.filter(b => b.type === 'half');
+    let bannerGroups = [[], [], []]; 
+    
+    allHalfBanners.forEach((b, index) => {
+        bannerGroups[index % 3].push(b); 
+    });
+
+    // 3. Helper function for Vertical Half Banner
+    function createVerticalHalfBanner(groupIndex, delayTime) {
+        const bannersForSlot = bannerGroups[groupIndex];
+        if(bannersForSlot.length === 0) return ''; 
+        
+        let slidesHtml = '';
+        bannersForSlot.forEach(b => {
+            slidesHtml += `<div class="vertical-slide" onclick="redirectToProduct()"><img src="${b.imageUrl}"></div>`;
+        });
+
+        return `
+            <div class="mid-ad-banner vertical-slider-container" data-delay="${delayTime}">
+                <div class="vertical-slider-track">
+                    ${slidesHtml}
                 </div>
             </div>
         `;
     }
 
-    // 6. Ad Banner 2 (Optional second Half Banner)
-    let halfBanner2Url = "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=800";
-    // If you have more than one half banner, you can fetch the second one here
-    if(allBanners) {
-         const halfBanners = allBanners.filter(b => b.type === 'half');
-         if(halfBanners.length > 1) halfBanner2Url = halfBanners[1].imageUrl;
-    }
+    // ==================== PAGE LAYOUT START ====================
 
-    html += `
-        <div class="mid-ad-banner" style="margin-top: 15px;" onclick="redirectToProduct()" style="cursor:pointer;">
-            <img src="${halfBanner2Url}" alt="Ad Banner">
-        </div>
-    `;
+    // 1. Top 10 Products Grid
+    const homeProducts = products.filter(p => p.category !== 'minutes' && p.category !== 'value365');
+    html += `<div class="grid">`;
+    homeProducts.slice(0, 10).forEach((p, index) => {
+        html += generateCardHtml(p, index === 1); // 2nd product is Best Seller
+    });
+    html += `</div>`;
 
-    // 7. Remaining Products (After 10)
+    // 2. First Half Banner (Slot 0)
+    html += createVerticalHalfBanner(0, 3000); 
+
+    // 3. New Categories & Old Categories Mix
+    html += createCategorySection("Boy Fashion", "boy_fashion");
+    html += createCategorySection("Children Fashion", "children_fashion");
+    html += createCategorySection("Man Fashion", "man_fashion");
+    
+    // WAPAS ADD KIYA: Women's Clothes
+    html += createCategorySection("Women's Clothes", "clothes"); 
+
+    // 4. Second Half Banner (Slot 1)
+    html += createVerticalHalfBanner(1, 4500); 
+
+    // 5. More Categories
+    html += createCategorySection("Buy for Electronics", "electronics");
+    html += createCategorySection("Our Festival", "festival");
+
+    // WAPAS ADD KIYA: Grocery Essentials
+    html += createCategorySection("Grocery Essentials", "minutes"); 
+
+    // 6. Third Half Banner (Slot 2)
+    html += createVerticalHalfBanner(2, 6000); 
+
+    // 7. More Categories
+    html += createCategorySection("Daily Uses", "daily_uses");
+
+    // 8. Remaining Products (After 10)
     if(homeProducts.length > 10) {
         html += `<div class="section-title" style="margin-top:10px;">Recommended For You</div>`;
         html += `<div class="grid">`;
@@ -158,7 +167,6 @@ function renderTopBanners() {
     const slider = document.getElementById('slider');
     if(!slider) return;
     
-    // Filter Top Banners only
     const topBanners = allBanners.filter(b => b.type !== 'half');
 
     if(!topBanners || topBanners.length === 0) { 
@@ -174,6 +182,27 @@ function renderTopBanners() {
         idx = (idx + 1) % topBanners.length;
         slider.style.transform = `translateX(-${idx * 100}%)`;
     }, 3000);
+}
+
+// VERTICAL AUTO SWIPE LOGIC (With Custom Times)
+function startVerticalBannerSwipe() {
+    const containers = document.querySelectorAll('.vertical-slider-container');
+    
+    containers.forEach(container => {
+        const track = container.querySelector('.vertical-slider-track');
+        const slides = track.querySelectorAll('.vertical-slide');
+        
+        // Agar us slot mein 1 se zyada banner nahi hain, toh swipe ki zarurat nahi
+        if(slides.length <= 1) return; 
+
+        let index = 0;
+        let delay = parseInt(container.getAttribute('data-delay')) || 3000;
+
+        setInterval(() => {
+            index = (index + 1) % slides.length;
+            track.style.transform = `translateY(-${index * 90}px)`;
+        }, delay);
+    });
 }
 
 function redirectToProduct() {
@@ -219,6 +248,7 @@ function generateCardHtml(p, isBestSeller) {
     else if (p.category === 'minutes') brandName = 'Grocery';
     else if (p.category === 'value365') brandName = 'Value 365';
     else if (p.category === 'gifts') brandName = 'Gifts';
+    else if (p.category) brandName = p.category.replace('_', ' ').toUpperCase();
 
     return `
         <div class="card">
@@ -328,7 +358,7 @@ function buyNowDirect(id) {
     const p = allProducts.find(x => x._id === id); 
     if(!p) return;
     if(p.stock <= 0) return alert("Out of Stock!"); 
-    if(p.category === 'clothes') { 
+    if(p.category === 'clothes' || p.category.includes('fashion')) { 
         alert("Please open the product page to select a size."); 
         return openProductPage(id); 
     } 
