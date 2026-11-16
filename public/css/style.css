@@ -36,12 +36,10 @@ body { background-color: var(--bg-color); color: var(--text-dark); padding-botto
     box-shadow: none; 
     width: 100%;
     overflow: hidden;
-    /* Niche ka border fade karne ke liye mask */
     -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
 }
 
-/* 1. Banner Image Blur (Base Layer) */
 .header::before {
     content: "";
     position: absolute;
@@ -49,14 +47,13 @@ body { background-color: var(--bg-color); color: var(--text-dark); padding-botto
     background-image: var(--current-banner-img, none); 
     background-size: cover;
     background-position: center;
-    filter: blur(50px) brightness(2) saturate(1.5); /* Zyada bright aur blur */
+    filter: blur(50px) brightness(2) saturate(1.5); 
     opacity: 0.7; 
     z-index: -2;
     transition: background-image 1s ease-in-out;
     pointer-events: none;
 }
 
-/* 2. Gemini Liquid Colored Light (Top Layer) */
 .header::after {
     content: "";
     position: absolute;
@@ -71,7 +68,6 @@ body { background-color: var(--bg-color); color: var(--text-dark); padding-botto
     animation: liquidMove 8s infinite alternate ease-in-out;
 }
 
-/* Animation for Liquid Effect */
 @keyframes liquidMove {
     0% { transform: rotate(0deg) scale(1); }
     50% { transform: rotate(180deg) scale(1.2); }
@@ -94,7 +90,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); padding-botto
 .location-bar span { color: #555; margin-left: 5px; }
 .location-bar svg { fill: var(--primary-blue); }
 
-.search-container { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; display: flex; align-items: center; padding: 10px 15px; gap: 10px; margin: 0 15px 10px 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); width: calc(100% - 30px);}
+.search-container { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(0,0,0,0.05); border-radius: 8px; display: flex; align-items: center; padding: 10px 15px; gap: 10px; margin: 0 15px 10px 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); width: calc(100% - 30px);}
 .search-container input { border: none; outline: none; width: 100%; font-size: 14px; background: transparent; color: #333; font-weight: 500; }
 .search-container svg { fill: var(--primary-blue); }
 
@@ -121,7 +117,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); padding-botto
 .section-title { background: transparent; padding: 15px 15px 5px 15px; font-size: 16px; font-weight: 700; color: var(--text-dark); margin: 0; text-align: left; width: 100%;}
 
 /* ========================================= */
-/* PRODUCT GRID                              */
+/* PRODUCT GRID (Global)                     */
 /* ========================================= */
 .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; background: transparent; padding: 8px; width: 100%;}
 .card { background: var(--white); display: flex; flex-direction: column; cursor: pointer; position: relative; border-radius: 8px; overflow: hidden; width: 100%; min-width: 0; box-shadow: var(--shadow);}
@@ -156,12 +152,84 @@ body { background-color: var(--bg-color); color: var(--text-dark); padding-botto
 .btn-buy-meesho { background: var(--primary-blue); color: #fff; }
 
 /* ========================================= */
+/* HOME PAGE SPECIFIC OVERRIDES (NO BORDERS) */
+/* ========================================= */
+/* Sirf Home page (dynamicContent) ke andar wale cards ka white box hatane ke liye */
+#dynamicContent .grid .card {
+    background: transparent !important; 
+    box-shadow: none !important; 
+    border-radius: 0;
+}
+
+/* Image container ko white background aur halki si shadow denge taaki photo clear dikhe */
+#dynamicContent .grid .card-img-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    height: 180px; /* Home page par image thodi badi */
+}
+
+#dynamicContent .grid .card-details {
+    padding: 8px 0; /* Text ka padding adjust kiya */
+}
+
+/* ========================================= */
 /* FLOATING BOTTOM NAVIGATION                */
 /* ========================================= */
 .bottom-nav { position: fixed; bottom: 15px; left: 15px; right: 15px; width: auto; background: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; z-index: 500; border-radius: 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.15), inset 0 -2px 5px rgba(0,0,0,0.05); }
 .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #777; cursor: pointer; font-weight: 500; padding: 8px 18px; border-radius: 30px; transition: all 0.3s ease-in-out; }
 .nav-item.active { background: #e67e22; color: #ffffff; box-shadow: 0 4px 12px rgba(230, 126, 34, 0.4); }
 .nav-item svg { width: 22px; height: 22px; fill: currentColor; margin-bottom: 4px; transition: all 0.3s ease;}
+
+/* ========================================= */
+/* VERTICAL AUTO-SWIPE HALF BANNERS          */
+/* ========================================= */
+.mid-ad-banner.vertical-slider-container {
+    position: relative;
+    width: calc(100% - 30px);
+    height: 90px; 
+    overflow: hidden;
+    margin: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+.vertical-slider-track {
+    display: flex;
+    flex-direction: column; 
+    transition: transform 0.5s ease-in-out; 
+    height: 100%;
+}
+
+.vertical-slide {
+    min-height: 90px; 
+    height: 90px;
+    width: 100%;
+}
+
+.vertical-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ========================================= */
+/* CATEGORY SECTIONS & HORIZONTAL SCROLL     */
+/* ========================================= */
+.category-section { background: transparent; margin-bottom: 15px; padding: 10px 0; }
+.category-header { display: flex; justify-content: space-between; align-items: center; padding: 0 15px; margin-bottom: 10px; }
+.category-header h3 { font-size: 16px; font-weight: 700; color: var(--text-dark); }
+.category-header span { font-size: 13px; color: var(--primary-blue); font-weight: 600; display: flex; align-items: center; cursor: pointer; }
+
+.h-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 0 15px 10px 15px; scrollbar-width: none; }
+.h-scroll::-webkit-scrollbar { display: none; }
+.h-scroll .card { min-width: 140px; max-width: 140px; margin-bottom: 0; }
+.h-scroll .card-img-container { height: 140px; }
+.h-scroll .brand-name { display: none; }
+.h-scroll .card-title { font-size: 12px; }
+.h-scroll .price { font-size: 14px; }
+.h-scroll .card-btn-group button { padding: 6px 2px; font-size: 11px; }
 
 /* Full Pages */
 .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 200; overflow-y: auto; flex-direction: column; }
@@ -238,128 +306,3 @@ body { background-color: var(--bg-color); color: var(--text-dark); padding-botto
 .qr-img { width: 220px; height: 220px; margin: 15px auto; border: 2px solid #eee; padding: 10px; border-radius: 12px; object-fit: contain; }
 .success-icon { width: 80px; height: 80px; background: #e8f5e9; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; }
 .success-icon svg { width: 40px; height: 40px; fill: #43a047; }
-
-/* ========================================= */
-/* MID AD BANNERS                            */
-/* ========================================= */
-.mid-ad-banner {
-    width: calc(100% - 30px);
-    margin: 15px;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    cursor: pointer;
-    height: 90px; /* Chota banner */
-}
-
-.mid-ad-banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* ========================================= */
-/* CATEGORY SECTIONS & HORIZONTAL SCROLL     */
-/* ========================================= */
-.category-section {
-    background: transparent;
-    margin-bottom: 15px;
-    padding: 10px 0;
-}
-
-.category-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
-    margin-bottom: 10px;
-}
-
-.category-header h3 {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text-dark);
-}
-
-.category-header span {
-    font-size: 13px;
-    color: var(--primary-blue);
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-/* Horizontal Scroll Container */
-.h-scroll {
-    display: flex;
-    overflow-x: auto;
-    gap: 10px;
-    padding: 0 15px 10px 15px;
-    scrollbar-width: none; /* Hide scrollbar */
-}
-
-.h-scroll::-webkit-scrollbar {
-    display: none;
-}
-
-/* Horizontal Scroll Cards Size Fix */
-.h-scroll .card {
-    min-width: 140px;
-    max-width: 140px;
-    margin-bottom: 0;
-}
-
-.h-scroll .card-img-container {
-    height: 140px;
-}
-
-.h-scroll .brand-name {
-    display: none; /* Chote card mein brand name hide kardo */
-}
-
-.h-scroll .card-title {
-    font-size: 12px;
-}
-
-.h-scroll .price {
-    font-size: 14px;
-}
-
-.h-scroll .card-btn-group button {
-    padding: 6px 2px;
-    font-size: 11px;
-}
-
-/* ========================================= */
-/* VERTICAL AUTO-SWIPE HALF BANNERS          */
-/* ========================================= */
-.mid-ad-banner.vertical-slider-container {
-    position: relative;
-    width: calc(100% - 30px);
-    height: 90px; /* Fixed height for vertical slide */
-    overflow: hidden;
-    margin: 15px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    cursor: pointer;
-}
-
-.vertical-slider-track {
-    display: flex;
-    flex-direction: column; /* Vertical stack */
-    transition: transform 0.5s ease-in-out; /* Smooth slide animation */
-    height: 100%;
-}
-
-.vertical-slide {
-    min-height: 90px; /* Same as container height */
-    height: 90px;
-    width: 100%;
-}
-
-.vertical-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
