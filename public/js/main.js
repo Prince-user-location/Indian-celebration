@@ -59,7 +59,7 @@ async function loadData() {
     }
 }
 
-// ================= HOME PAGE RENDERING (Flipkart Style) =================
+// ================= HOME PAGE RENDERING =================
 function renderHomePage(products) {
     const container = document.getElementById('dynamicContent');
     if(!container) return;
@@ -67,7 +67,7 @@ function renderHomePage(products) {
 
     let html = '';
 
-    // 1. Helper function for Category Sections
+    // Helper function for Category Sections
     function createCategorySection(title, categoryKey) {
         const prods = products.filter(p => p.category === categoryKey);
         if(prods.length === 0) return ''; 
@@ -84,15 +84,13 @@ function renderHomePage(products) {
         `;
     }
 
-    // 2. Half Banners ko 3 hisso mein baanto (Round-Robin)
+    // Half Banners Logic
     const allHalfBanners = allBanners.filter(b => b.type === 'half');
     let bannerGroups = [[], [], []]; 
-    
     allHalfBanners.forEach((b, index) => {
         bannerGroups[index % 3].push(b); 
     });
 
-    // 3. Helper function for Vertical Half Banner
     function createVerticalHalfBanner(groupIndex, delayTime) {
         const bannersForSlot = bannerGroups[groupIndex];
         if(bannersForSlot.length === 0) return ''; 
@@ -117,38 +115,47 @@ function renderHomePage(products) {
     const homeProducts = products.filter(p => p.category !== 'minutes' && p.category !== 'value365');
     html += `<div class="grid">`;
     homeProducts.slice(0, 10).forEach((p, index) => {
-        html += generateCardHtml(p, index === 1); // 2nd product is Best Seller
+        html += generateCardHtml(p, index === 1); 
     });
     html += `</div>`;
 
-    // 2. First Half Banner (Slot 0)
+    // 2. AMAZON AUTO SECTION 1 (Auto Swipe + Auto Color)
+    // Yahan function ka naam getAmazonAutoHTML hai kyunki teri file ke andar yahi naam hai
+    if (typeof getAmazonAutoHTML === 'function') {
+        html += getAmazonAutoHTML(products); 
+    } else {
+        console.log("India-Auto.js mein getAmazonAutoHTML function nahi mila!");
+    }
+
+    // 3. First Half Banner
     html += createVerticalHalfBanner(0, 3000); 
 
-    // 3. New Categories & Old Categories Mix
+    // 4. Categories
     html += createCategorySection("Boy Fashion", "boy_fashion");
     html += createCategorySection("Children Fashion", "children_fashion");
     html += createCategorySection("Man Fashion", "man_fashion");
-    
-    // WAPAS ADD KIYA: Women's Clothes
     html += createCategorySection("Women's Clothes", "clothes"); 
 
-    // 4. Second Half Banner (Slot 1)
+    // 5. AMAZON AUTO SECTION 2 (Auto Swipe + Auto Color)
+    if (typeof getAmazonAutoHTML === 'function') {
+        html += getAmazonAutoHTML(products); 
+    }
+
+    // 6. Second Half Banner
     html += createVerticalHalfBanner(1, 4500); 
 
-    // 5. More Categories
+    // 7. More Categories
     html += createCategorySection("Buy for Electronics", "electronics");
     html += createCategorySection("Our Festival", "festival");
-
-    // WAPAS ADD KIYA: Grocery Essentials
     html += createCategorySection("Grocery Essentials", "minutes"); 
 
-    // 6. Third Half Banner (Slot 2)
+    // 8. Third Half Banner
     html += createVerticalHalfBanner(2, 6000); 
 
-    // 7. More Categories
+    // 9. More Categories
     html += createCategorySection("Daily Uses", "daily_uses");
 
-    // 8. Remaining Products (After 10)
+    // 10. Remaining Products (After 10)
     if(homeProducts.length > 10) {
         html += `<div class="section-title" style="margin-top:10px;">Recommended For You</div>`;
         html += `<div class="grid">`;
@@ -184,15 +191,12 @@ function renderTopBanners() {
     }, 3000);
 }
 
-// VERTICAL AUTO SWIPE LOGIC (With Custom Times)
+// VERTICAL AUTO SWIPE LOGIC (Half Banners)
 function startVerticalBannerSwipe() {
     const containers = document.querySelectorAll('.vertical-slider-container');
-    
     containers.forEach(container => {
         const track = container.querySelector('.vertical-slider-track');
         const slides = track.querySelectorAll('.vertical-slide');
-        
-        // Agar us slot mein 1 se zyada banner nahi hain, toh swipe ki zarurat nahi
         if(slides.length <= 1) return; 
 
         let index = 0;

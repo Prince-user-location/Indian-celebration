@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Indian Celebration - Luxury Shopping</title>
+    
+    <!-- MAIN STYLES -->
     <link rel="stylesheet" href="css/style.css">
+    <!-- AMAZON STYLE DEALS (Light Theme) -->
+    <link rel="stylesheet" href="css/home-extras.css">
+    <!-- NEW: INDIA AUTO SWIPE & COLOR CHANGE STYLES -->
+    <link rel="stylesheet" href="css/india-auto.css">
 </head>
 <body class="theme-default">
 
@@ -15,7 +21,7 @@
 
     <!-- HOME PAGE -->
     <div id="home-page">
-        <!-- DYNAMIC HEADER -->
+        <!-- DYNAMIC LIQUID HEADER -->
         <div class="header">
             <!-- TOP TABS -->
             <div class="top-tabs">
@@ -29,7 +35,6 @@
                 <div class="tab-box" onclick="window.location.href='value365.html'">
                     <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"><span>Value 365</span>
                 </div>
-                <!-- FIXED: Gift Box Icon -->
                 <div class="tab-box" onclick="alert('Gifts Page Coming Soon')">
                     <img src="https://cdn-icons-png.flaticon.com/512/2885/2885408.png"><span>Gifts</span>
                 </div>
@@ -40,7 +45,7 @@
                     <div class="logo-text">Indian Celebration</div>
                     <div class="logo-sub">Explore Plus ⭐</div>
                 </div>
-                <!-- ICONS: ACCOUNT, HELP, CART -->
+                <!-- HEADER ICONS -->
                 <div class="header-icons">
                     <svg onclick="handleProfileClick()" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" title="Account"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                     <svg onclick="window.location.href='help.html'" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" title="Help"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
@@ -59,17 +64,19 @@
             </div>
         </div>
 
-        <!-- BANNER -->
+        <!-- MAIN BANNER -->
         <div class="banner-container">
             <div class="banner-slider" id="slider"></div>
         </div>
 
-        <!-- HEADINGS -->
+        <!-- MAIN TITLE -->
         <div class="section-title">Indian celebration Shopping</div>
+        
+        <!-- DYNAMIC CONTENT (Products, Auto-Deals, Categories) -->
         <div id="dynamicContent"></div>
     </div>
 
-    <!-- CATEGORY PAGE -->
+    <!-- CATEGORY PAGE (Hidden) -->
     <div id="category-page" class="full-page">
         <div class="page-header">
             <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
@@ -84,7 +91,7 @@
         </div>
     </div>
 
-    <!-- AUTHENTICATION PAGE -->
+    <!-- AUTHENTICATION PAGE (Hidden) -->
     <div id="auth-page" class="full-page">
         <div class="page-header">
             <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
@@ -111,7 +118,7 @@
         </div>
     </div>
 
-    <!-- USER PROFILE PAGE -->
+    <!-- USER PROFILE PAGE (Hidden) -->
     <div id="profile-page" class="full-page">
         <div class="prof-header">
             <div class="prof-user">
@@ -133,7 +140,7 @@
         </div>
     </div>
 
-    <!-- ORDERS & WISHLIST PAGE -->
+    <!-- ORDERS & WISHLIST PAGES (Hidden) -->
     <div id="orders-page" class="full-page">
         <div class="page-header"><svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Orders</span></div>
         <div class="sub-page-content" id="ordersList"></div>
@@ -144,7 +151,7 @@
         <div class="sub-page-content"><div class="grid" id="wishlistGrid"></div></div>
     </div>
 
-    <!-- CHECKOUT FORM -->
+    <!-- CHECKOUT FORM (Hidden) -->
     <div id="checkout-page" class="full-page">
         <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>Delivery Address</span></div>
         <div class="page-content" style="padding: 20px;">
@@ -160,14 +167,13 @@
         </div>
     </div>
 
-    <!-- CART MODAL -->
+    <!-- MODALS (Cart, QR, Success, Location) -->
     <div class="cart-modal" id="cartModal">
         <div class="cart-header"><svg onclick="closeCart()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> My Cart</div>
         <div class="cart-scroll-area"><div class="cart-items-container" id="cartList"></div><div class="cart-price-details"><div class="price-row total"><span>Total Amount</span><span id="cartTotal">₹0</span></div></div></div>
         <div class="cart-footer"><button class="btn-pay" onclick="initiateCartCheckout()">Pay Now</button></div>
     </div>
 
-    <!-- QR SCANNER MODAL -->
     <div class="overlay-modal" id="qrModal">
         <div class="modal-content">
             <div class="modal-title">Scan & Pay</div>
@@ -181,7 +187,6 @@
         </div>
     </div>
 
-    <!-- SUCCESS MODAL -->
     <div class="overlay-modal" id="successModal">
         <div class="modal-content" style="overflow:hidden;">
             <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
@@ -191,7 +196,6 @@
         </div>
     </div>
 
-    <!-- LOCATION MODAL -->
     <div class="overlay-modal" id="locationModal">
         <div class="modal-content" style="text-align: left;">
             <div class="modal-title" style="text-align: center;">Choose your location</div>
@@ -210,7 +214,20 @@
         <div class="nav-item" onclick="openCart()"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart</div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- SCRIPTS (Order is Important)               -->
+    <!-- ========================================== -->
+    
+    <!-- 1. India Auto (Dynamic Color + Swipe) -->
+    <script src="js/india-auto.js"></script>
+    
+    <!-- 2. Home Extras (Light/Dark Deals Layout) -->
+    <script src="js/home-extras.js"></script>
+    
+    <!-- 3. Main Logic -->
     <script src="js/main.js"></script>
+    
+    <!-- 4. Utilities -->
     <script src="js/search.js"></script>
     <script src="js/theme-color.js"></script>
 </body>

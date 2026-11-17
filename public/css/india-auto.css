@@ -1,0 +1,93 @@
+/* ========================================= */
+/* AMAZON AUTO-SWIPE & COLOR-CHANGE STYLES   */
+/* ========================================= */
+
+.amazon-auto-container {
+    background-color: #f1f3f6; /* Default */
+    border-radius: 12px;
+    margin: 15px;
+    padding: 15px;
+    transition: background-color 1.5s ease-in-out; /* Smooth color change */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #e0e0e0;
+}
+
+.amazon-auto-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.amazon-auto-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f1111;
+    margin: 0;
+}
+
+.amazon-auto-header span {
+    font-size: 13px;
+    color: #2874f0;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* 2x2 Grid */
+.amazon-auto-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+/* Transparent Card */
+.auto-deal-card {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+/* White Image Box */
+.auto-img-box {
+    background: #ffffff;
+    border-radius: 8px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    padding: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+/* Image Animation (Fade Effect) */
+.auto-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.4s ease-in-out;
+}
+
+/* Red Badge */
+.auto-badge {
+    background: #cc0c39;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    width: fit-content;
+    margin-bottom: 4px;
+}
+
+/* Limited Time Text */
+.auto-deal-text {
+    color: #cc0c39;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+}
