@@ -6,123 +6,50 @@
     <title>All Categories - Indian Celebration</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        /* PREMIUM FLIPKART STYLE CSS */
         body { background-color: #f1f3f6; margin: 0; padding: 0; padding-bottom: 80px; }
-        
-        .cat-header { 
-            background: #fff; padding: 15px; display: flex; align-items: center; justify-content: space-between;
-            position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,0.1); 
-        }
+        .cat-header { background: #fff; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
         .cat-header-left { display: flex; align-items: center; gap: 15px; }
         .cat-header-left span { font-size: 18px; font-weight: 600; color: #212121; }
         .cat-header-icons { display: flex; gap: 15px; }
         .cat-header-icons svg { width: 24px; height: 24px; fill: #333; cursor: pointer; }
-
         .cat-container { display: flex; height: calc(100vh - 65px); overflow: hidden; }
-
+        
         /* SIDEBAR */
-        .cat-sidebar { 
-            width: 90px; background: #f1f3f6; overflow-y: auto; flex-shrink: 0; 
-            scrollbar-width: none; border-right: 1px solid #e0e0e0;
-        }
+        .cat-sidebar { width: 90px; background: #f1f3f6; overflow-y: auto; flex-shrink: 0; scrollbar-width: none; border-right: 1px solid #e0e0e0; }
         .cat-sidebar::-webkit-scrollbar { display: none; }
-        
-        .cat-menu-item { 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 15px 5px; text-align: center; font-size: 11px; color: #666; 
-            font-weight: 500; cursor: pointer; border-left: 3px solid transparent; transition: 0.2s;
-        }
+        .cat-menu-item { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px 5px; text-align: center; font-size: 11px; color: #666; font-weight: 500; cursor: pointer; border-left: 3px solid transparent; transition: 0.2s; }
         .cat-menu-item img { width: 30px; height: 30px; margin-bottom: 8px; object-fit: contain; }
+        .cat-menu-item svg { width: 30px; height: 30px; margin-bottom: 8px; }
+        .cat-menu-item.active { background: #fff; color: #2874f0; font-weight: 700; border-left: 3px solid #2874f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        .cat-menu-item.active { 
-            background: #fff; color: #2874f0; font-weight: 700; 
-            border-left: 3px solid #2874f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
         /* MAIN CONTENT */
         .cat-content { flex: 1; background: #fff; overflow-y: auto; padding: 15px; width: 100%; box-sizing: border-box;}
+        .section-heading { font-size: 16px; font-weight: 700; color: #212121; margin-bottom: 15px; margin-top: 10px; display: flex; align-items: center; }
         
-        .section-heading { 
-            font-size: 16px; font-weight: 700; color: #212121; 
-            margin-bottom: 15px; margin-top: 10px; display: flex; align-items: center; 
-        }
-
-        /* FLIPKART STYLE GRID FOR 'FOR YOU' TAB */
-        .premium-grid { 
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; 
-        }
-        
-        .premium-card { 
-            display: flex; flex-direction: column; align-items: center; 
-            text-align: center; cursor: pointer; text-decoration: none;
-        }
-        
-        .premium-card-img-box { 
-            width: 100%; aspect-ratio: 1/1; background: #f9f9f9; border-radius: 12px; 
-            display: flex; align-items: center; justify-content: center; 
-            margin-bottom: 8px; padding: 10px; transition: transform 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
+        /* FOR YOU TAB */
+        .premium-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; }
+        .premium-card { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; text-decoration: none; }
+        .premium-card-img-box { width: 100%; aspect-ratio: 1/1; background: #f9f9f9; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; padding: 10px; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .premium-card:active .premium-card-img-box { transform: scale(0.95); }
-        
         .premium-card-img-box img { width: 100%; height: 100%; object-fit: contain; }
-        
         .premium-card-title { font-size: 11px; font-weight: 600; color: #333; line-height: 1.2; }
-        
         .badge-new { background: #388e3c; color: white; font-size: 8px; font-weight: bold; padding: 2px 4px; border-radius: 4px; margin-bottom: 4px; display: inline-block;}
-
-        /* DYNAMIC PRODUCTS GRID (WHITE BORDER REMOVED) */
+        
+        /* DYNAMIC PRODUCTS TAB */
         .dynamic-products-container { display: none; width: 100%; }
+        .dynamic-products-container .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
         
-        .dynamic-products-container .grid { 
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%;
-        }
-        
-        /* NO WHITE BORDER FOR PRODUCTS */
-        .dynamic-products-container .card {
-            background: transparent !important;
-            box-shadow: none !important;
-            border: none !important;
-            display: flex;
-            flex-direction: column;
-        }
-        .dynamic-products-container .card-img-container {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            height: 160px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-bottom: 8px;
-        }
-        .dynamic-products-container .card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 8px;
-        }
-        .dynamic-products-container .card-details {
-            padding: 0;
-        }
-        .dynamic-products-container .card-title {
-            font-size: 13px; font-weight: 500; color: #333; margin-bottom: 4px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .dynamic-products-container .price-row {
-            font-size: 15px; font-weight: 700; color: #212121; margin-bottom: 8px;
-        }
-        .dynamic-products-container .card-btn-group {
-            display: flex; gap: 5px; margin-top: auto;
-        }
-        .dynamic-products-container .btn-add-meesho {
-            background: #ffc107; color: #000; border: none; padding: 8px; border-radius: 6px; font-weight: 600; font-size: 12px; width: 100%; cursor: pointer;
-        }
+        .dynamic-products-container .card { background: transparent !important; box-shadow: none !important; border: none !important; display: flex; flex-direction: column; }
+        .dynamic-products-container .card-img-container { background: #ffffff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 160px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 8px; }
+        .dynamic-products-container .card-img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+        .dynamic-products-container .card-details { padding: 0; }
+        .dynamic-products-container .card-title { font-size: 13px; font-weight: 500; color: #333; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dynamic-products-container .price-row { font-size: 15px; font-weight: 700; color: #212121; margin-bottom: 8px; }
+        .dynamic-products-container .card-btn-group { display: flex; gap: 5px; margin-top: auto; }
+        .dynamic-products-container .btn-add-meesho { background: #ffc107; color: #000; border: none; padding: 8px; border-radius: 6px; font-weight: 600; font-size: 12px; width: 100%; cursor: pointer; }
     </style>
 </head>
 <body>
-    <!-- HEADER -->
     <div class="cat-header">
         <div class="cat-header-left">
             <svg onclick="window.location.href='index.html'" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
@@ -130,70 +57,61 @@
         </div>
         <div class="cat-header-icons">
             <svg onclick="window.location.href='index.html'" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <svg onclick="window.location.href='index.html'" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            <svg onclick="window.location.href='index.html?cart=true'" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
         </div>
     </div>
 
-    <!-- MAIN LAYOUT -->
     <div class="cat-container">
         <!-- SIDEBAR -->
         <div class="cat-sidebar">
             <div class="cat-menu-item active" onclick="switchTab('for-you', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/10043/10043941.png" style="filter: invert(34%) sepia(93%) saturate(1963%) hue-rotate(202deg) brightness(97%) contrast(95%);"> For You
+                <svg viewBox="0 0 24 24" fill="#2874f0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg> For You
             </div>
             
-            <div class="cat-menu-item" onclick="switchTab('grocery', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png"> Grocery
+            <div class="cat-menu-item" onclick="switchTab('minutes', this)">
+                <img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png" class="cat-icon" data-key="catGrocery"> Grocery
             </div>
             
             <div class="cat-menu-item" onclick="switchTab('boy_fashion', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3003/3003354.png"> Boy
+                <img src="https://cdn-icons-png.flaticon.com/512/3003/3003354.png" class="cat-icon" data-key="catBoy"> Boy
             </div>
             
             <div class="cat-menu-item" onclick="switchTab('children_fashion', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3011/3011270.png"> Children
+                <img src="https://cdn-icons-png.flaticon.com/512/3011/3011270.png" class="cat-icon" data-key="catChildren"> Children
             </div>
             
             <div class="cat-menu-item" onclick="switchTab('man_fashion', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3003/3003354.png"> Man
+                <img src="https://cdn-icons-png.flaticon.com/512/3003/3003354.png" class="cat-icon" data-key="catMan"> Man
             </div>
             
             <div class="cat-menu-item" onclick="switchTab('electronics', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3659/3659899.png"> Electronics
+                <img src="https://cdn-icons-png.flaticon.com/512/3659/3659899.png" class="cat-icon" data-key="catElectronics"> Electronics
             </div>
             
             <div class="cat-menu-item" onclick="switchTab('festival', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/4213/4213179.png"> Festival
+                <img src="https://cdn-icons-png.flaticon.com/512/4213/4213179.png" class="cat-icon" data-key="catFestival"> Festival
             </div>
             
             <div class="cat-menu-item" onclick="switchTab('daily_uses', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"> Daily Uses
+                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="cat-icon" data-key="catDailyUses"> Daily Uses
             </div>
         </div>
 
         <!-- MAIN CONTENT -->
         <div class="cat-content">
-            
-            <!-- 1. FOR YOU PAGE (Static Premium Layout) -->
             <div id="tab-for-you" class="category-products active">
                 <div class="section-heading">Popular Store</div>
                 <div class="premium-grid">
                     <div class="premium-card" onclick="window.location.href='value365.html'">
-                        <div class="premium-card-img-box" style="background:#fff3e0;">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
-                        </div>
+                        <div class="premium-card-img-box" style="background:#fff3e0;"><img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"></div>
                         <div class="premium-card-title">Value 365</div>
                     </div>
                     <div class="premium-card" onclick="alert('Flights Coming Soon!')">
-                        <div class="premium-card-img-box" style="background:#e3f2fd;">
-                            <img src="https://cdn-icons-png.flaticon.com/512/7893/7893979.png">
-                        </div>
+                        <div class="premium-card-img-box" style="background:#e3f2fd;"><img src="https://cdn-icons-png.flaticon.com/512/7893/7893979.png"></div>
                         <div class="premium-card-title">Flights</div>
                     </div>
                     <div class="premium-card" onclick="window.location.href='minutes.html'">
-                        <div class="premium-card-img-box" style="background:#e8f5e9;">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png">
-                        </div>
+                        <div class="premium-card-img-box" style="background:#e8f5e9;"><img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png"></div>
                         <div class="premium-card-title">Grocery</div>
                     </div>
                 </div>
@@ -201,64 +119,53 @@
                 <div class="section-heading">New & Upcoming Launches</div>
                 <div class="premium-grid">
                     <div class="premium-card">
-                        <div class="premium-card-img-box">
-                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200">
-                        </div>
+                        <div class="premium-card-img-box"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200"></div>
                         <span class="badge-new">NEW LAUNCH</span>
                         <div class="premium-card-title">Nike Vegan Run</div>
                     </div>
                     <div class="premium-card">
-                        <div class="premium-card-img-box">
-                            <img src="https://images.unsplash.com/photo-1598327105666-5b89351cb31b?w=200">
-                        </div>
+                        <div class="premium-card-img-box"><img src="https://images.unsplash.com/photo-1598327105666-5b89351cb31b?w=200"></div>
                         <span class="badge-new">BUY NOW</span>
                         <div class="premium-card-title">Oppo Find X10</div>
                     </div>
                     <div class="premium-card">
-                        <div class="premium-card-img-box">
-                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200">
-                        </div>
+                        <div class="premium-card-img-box"><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200"></div>
                         <span class="badge-new" style="background:#d32f2f;">SALE LIVE</span>
                         <div class="premium-card-title">Motorola Buds</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. DYNAMIC PRODUCTS PAGE (Loads when category clicked) -->
             <div id="tab-dynamic" class="dynamic-products-container">
                 <div class="section-heading" id="dynamicTitle">Products</div>
                 <div class="grid" id="dynamicGrid"></div>
             </div>
-
-        </div>
-    </div>
-
-    <!-- BOTTOM NAVIGATION -->
-    <div class="bottom-nav">
-        <div class="nav-item" onclick="window.location.href='index.html'">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
-        </div>
-        <div class="nav-item active">
-            <svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories
-        </div>
-        <div class="nav-item" onclick="window.location.href='index.html'">
-            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Account
-        </div>
-        <div class="nav-item" onclick="window.location.href='index.html'">
-            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart
         </div>
     </div>
 
     <script>
         let allProducts = [];
 
-        // Fetch all products once when page loads
         async function init() {
             try {
-                const res = await fetch('/api/products');
-                allProducts = await res.json();
+                const [prodRes, settingsRes] = await Promise.all([
+                    fetch('/api/products'),
+                    fetch('/api/settings')
+                ]);
+                allProducts = await prodRes.json();
+                const appSettings = await settingsRes.json();
+
+                // APPLY DYNAMIC ICONS TO SIDEBAR
+                const icons = document.querySelectorAll('.cat-icon');
+                icons.forEach(img => {
+                    const key = img.getAttribute('data-key');
+                    if(appSettings[key]) {
+                        img.src = appSettings[key];
+                    }
+                });
+
             } catch (e) {
-                console.log("Error fetching products", e);
+                console.log("Error fetching data", e);
             }
         }
         init();
@@ -281,11 +188,9 @@
             const grid = document.getElementById('dynamicGrid');
             const title = document.getElementById('dynamicTitle');
             
-            // Set title nicely
             title.innerText = category.replace('_', ' ').toUpperCase() + " PRODUCTS";
             grid.innerHTML = '<p style="grid-column: span 2; text-align:center; padding:20px;">Loading...</p>';
 
-            // If data isn't loaded yet, wait a bit
             if(allProducts.length === 0) {
                 setTimeout(() => loadDynamicProducts(category), 500);
                 return;
@@ -300,7 +205,6 @@
 
             let html = '';
             filtered.forEach(p => {
-                // Premium clean card without white box
                 html += `
                     <div class="card" onclick="window.location.href='product.html?id=${p._id}'">
                         <div class="card-img-container">

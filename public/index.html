@@ -7,9 +7,7 @@
     
     <!-- MAIN STYLES -->
     <link rel="stylesheet" href="css/style.css">
-    <!-- AMAZON STYLE DEALS (Light Theme) -->
     <link rel="stylesheet" href="css/home-extras.css">
-    <!-- NEW: INDIA AUTO SWIPE & COLOR CHANGE STYLES -->
     <link rel="stylesheet" href="css/india-auto.css">
 </head>
 <body class="theme-default">
@@ -26,17 +24,20 @@
             <!-- TOP TABS -->
             <div class="top-tabs">
                 <div class="tab-box" onclick="window.location.href='minutes.html'">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png" class="dynamic-tab-icon">
                     <span>Weekly</span>
                 </div>
                 <div class="tab-box" onclick="alert('Travel Page Coming Soon')">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3125/3125713.png"><span>Travel</span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3125/3125713.png" class="dynamic-tab-icon">
+                    <span>Travel</span>
                 </div>
                 <div class="tab-box" onclick="window.location.href='value365.html'">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"><span>Value 365</span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="dynamic-tab-icon">
+                    <span>Value 365</span>
                 </div>
                 <div class="tab-box" onclick="alert('Gifts Page Coming Soon')">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2885/2885408.png"><span>Gifts</span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/2885/2885408.png" class="dynamic-tab-icon">
+                    <span>Gifts</span>
                 </div>
             </div>
 
@@ -45,11 +46,17 @@
                     <div class="logo-text">Indian Celebration</div>
                     <div class="logo-sub">Explore Plus ⭐</div>
                 </div>
-                <!-- HEADER ICONS -->
+                <!-- HEADER ICONS (Wrapped in divs for dynamic replacement) -->
                 <div class="header-icons">
-                    <svg onclick="handleProfileClick()" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" title="Account"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                    <svg onclick="window.location.href='help.html'" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" title="Help"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
-                    <svg onclick="openCart()" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" title="Cart"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    <div id="headerAccountBtn" onclick="handleProfileClick()" style="cursor:pointer; display:flex; background: transparent;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </div>
+                    <div id="headerHelpBtn" onclick="window.location.href='help.html'" style="cursor:pointer; display:flex; background: transparent;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                    </div>
+                    <div id="headerCartBtn" onclick="openCart()" style="cursor:pointer; display:flex; background: transparent;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    </div>
                 </div>
             </div>
 
@@ -118,36 +125,14 @@
         </div>
     </div>
 
-    <!-- USER PROFILE PAGE (Hidden) -->
-    <div id="profile-page" class="full-page">
-        <div class="prof-header">
-            <div class="prof-user">
-                <div class="prof-avatar" id="profAvatar">U</div>
-                <div class="prof-info"><h3 id="profName">User Name</h3><p id="profEmail">user@example.com</p></div>
-            </div>
-        </div>
-        <div class="prof-stats">
-            <div class="prof-stat-item" onclick="openOrders()"><h4 id="statOrders">0</h4><p>Orders</p></div>
-            <div class="prof-stat-item" onclick="openWishlist()"><h4 id="statWishlist">0</h4><p>Wishlist</p></div>
-            <div class="prof-stat-item"><h4>0</h4><p>Coupons</p></div>
-        </div>
-        <div class="prof-menu-container">
-            <div class="prof-menu-card">
-                <div class="prof-list-item" onclick="openOrders()"><div class="prof-list-left"><div class="prof-list-icon" style="background:#e3f2fd; color:#1976d2;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div><div class="prof-list-text">My Orders</div></div></div>
-                <div class="prof-list-item" onclick="openWishlist()"><div class="prof-list-left"><div class="prof-list-icon" style="background:#ffebee; color:#e53935;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div><div class="prof-list-text">My Wishlist</div></div></div>
-                <div class="prof-list-item" onclick="handleLogout()"><div class="prof-list-left"><div class="prof-list-icon" style="background:#ffebee; color:#d32f2f;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg></div><div class="prof-list-text" style="color:#d32f2f;">Logout</div></div></div>
-            </div>
-        </div>
-    </div>
-
     <!-- ORDERS & WISHLIST PAGES (Hidden) -->
     <div id="orders-page" class="full-page">
-        <div class="page-header"><svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Orders</span></div>
+        <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Orders</span></div>
         <div class="sub-page-content" id="ordersList"></div>
     </div>
 
     <div id="wishlist-page" class="full-page">
-        <div class="page-header"><svg onclick="openProfile()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Wishlist</span></div>
+        <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Wishlist</span></div>
         <div class="sub-page-content"><div class="grid" id="wishlistGrid"></div></div>
     </div>
 
@@ -209,25 +194,15 @@
     <!-- FLOATING BOTTOM NAVIGATION -->
     <div class="bottom-nav">
         <div class="nav-item active" id="nav-home" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</div>
-        <div class="nav-item" id="nav-cat" onclick="openCategoriesPage()"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories</div>
-        <div class="nav-item" id="nav-acc" onclick="handleProfileClick()"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Account</div>
+        <div class="nav-item" id="nav-cat" onclick="window.location.href='category.html'"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories</div>
+        <div class="nav-item" id="nav-acc" onclick="window.location.href='profile.html'"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Account</div>
         <div class="nav-item" onclick="openCart()"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart</div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- SCRIPTS (Order is Important)               -->
-    <!-- ========================================== -->
-    
-    <!-- 1. India Auto (Dynamic Color + Swipe) -->
+    <!-- SCRIPTS -->
     <script src="js/india-auto.js"></script>
-    
-    <!-- 2. Home Extras (Light/Dark Deals Layout) -->
     <script src="js/home-extras.js"></script>
-    
-    <!-- 3. Main Logic -->
     <script src="js/main.js"></script>
-    
-    <!-- 4. Utilities -->
     <script src="js/search.js"></script>
     <script src="js/theme-color.js"></script>
 </body>
