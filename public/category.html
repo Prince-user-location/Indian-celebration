@@ -6,25 +6,25 @@
     <title>All Categories - Indian Celebration</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        body { background-color: #f1f3f6; margin: 0; padding: 0; padding-bottom: 80px; }
+        body { background-color: #f1f3f6; margin: 0; padding: 0; padding-bottom: 20px; }
         .cat-header { background: #fff; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
         .cat-header-left { display: flex; align-items: center; gap: 15px; }
-        .cat-header-left span { font-size: 18px; font-weight: 600; color: #212121; }
+        .cat-header-left span { font-size: 18px; font-weight: 700; color: #212121; font-family: var(--font-sans); }
         .cat-header-icons { display: flex; gap: 15px; }
         .cat-header-icons svg { width: 24px; height: 24px; fill: #333; cursor: pointer; }
-        .cat-container { display: flex; height: calc(100vh - 65px); overflow: hidden; }
+        .cat-container { display: flex; min-height: calc(100vh - 65px); overflow: hidden; }
         
         /* SIDEBAR */
         .cat-sidebar { width: 90px; background: #f1f3f6; overflow-y: auto; flex-shrink: 0; scrollbar-width: none; border-right: 1px solid #e0e0e0; }
         .cat-sidebar::-webkit-scrollbar { display: none; }
-        .cat-menu-item { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px 5px; text-align: center; font-size: 11px; color: #666; font-weight: 500; cursor: pointer; border-left: 3px solid transparent; transition: 0.2s; }
-        .cat-menu-item img { width: 30px; height: 30px; margin-bottom: 8px; object-fit: contain; }
+        .cat-menu-item { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px 5px; text-align: center; font-size: 11px; color: #666; font-weight: 600; cursor: pointer; border-left: 3px solid transparent; transition: 0.2s; font-family: var(--font-sans);}
+        .cat-menu-item img { width: 32px; height: 32px; margin-bottom: 8px; object-fit: contain; }
         .cat-menu-item svg { width: 30px; height: 30px; margin-bottom: 8px; }
         .cat-menu-item.active { background: #fff; color: #2874f0; font-weight: 700; border-left: 3px solid #2874f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
         /* MAIN CONTENT */
         .cat-content { flex: 1; background: #fff; overflow-y: auto; padding: 15px; width: 100%; box-sizing: border-box;}
-        .section-heading { font-size: 16px; font-weight: 700; color: #212121; margin-bottom: 15px; margin-top: 10px; display: flex; align-items: center; }
+        .section-heading { font-size: 18px; font-weight: 700; color: #212121; margin-bottom: 15px; margin-top: 10px; display: flex; align-items: center; font-family: var(--font-sans);}
         
         /* FOR YOU TAB */
         .premium-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; }
@@ -32,21 +32,20 @@
         .premium-card-img-box { width: 100%; aspect-ratio: 1/1; background: #f9f9f9; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; padding: 10px; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .premium-card:active .premium-card-img-box { transform: scale(0.95); }
         .premium-card-img-box img { width: 100%; height: 100%; object-fit: contain; }
-        .premium-card-title { font-size: 11px; font-weight: 600; color: #333; line-height: 1.2; }
+        .premium-card-title { font-size: 11px; font-weight: 600; color: #333; line-height: 1.2; font-family: var(--font-sans);}
         .badge-new { background: #388e3c; color: white; font-size: 8px; font-weight: bold; padding: 2px 4px; border-radius: 4px; margin-bottom: 4px; display: inline-block;}
         
         /* DYNAMIC PRODUCTS TAB */
         .dynamic-products-container { display: none; width: 100%; }
         .dynamic-products-container .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
-        
         .dynamic-products-container .card { background: transparent !important; box-shadow: none !important; border: none !important; display: flex; flex-direction: column; }
         .dynamic-products-container .card-img-container { background: #ffffff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 160px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 8px; }
         .dynamic-products-container .card-img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
         .dynamic-products-container .card-details { padding: 0; }
-        .dynamic-products-container .card-title { font-size: 13px; font-weight: 500; color: #333; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .dynamic-products-container .price-row { font-size: 15px; font-weight: 700; color: #212121; margin-bottom: 8px; }
+        .dynamic-products-container .card-title { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: var(--font-serif);}
+        .dynamic-products-container .price-row { font-size: 16px; font-weight: 800; color: #212121; margin-bottom: 8px; }
         .dynamic-products-container .card-btn-group { display: flex; gap: 5px; margin-top: auto; }
-        .dynamic-products-container .btn-add-meesho { background: #ffc107; color: #000; border: none; padding: 8px; border-radius: 6px; font-weight: 600; font-size: 12px; width: 100%; cursor: pointer; }
+        .dynamic-products-container .btn-add-meesho { background: #ffc107; color: #000; border: none; padding: 8px; border-radius: 6px; font-weight: 700; font-size: 12px; width: 100%; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -57,7 +56,6 @@
         </div>
         <div class="cat-header-icons">
             <svg onclick="window.location.href='index.html'" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <svg onclick="window.location.href='index.html?cart=true'" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
         </div>
     </div>
 
@@ -67,34 +65,13 @@
             <div class="cat-menu-item active" onclick="switchTab('for-you', this)">
                 <svg viewBox="0 0 24 24" fill="#2874f0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg> For You
             </div>
-            
-            <div class="cat-menu-item" onclick="switchTab('minutes', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png" class="cat-icon" data-key="catGrocery"> Grocery
-            </div>
-            
-            <div class="cat-menu-item" onclick="switchTab('boy_fashion', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3003/3003354.png" class="cat-icon" data-key="catBoy"> Boy
-            </div>
-            
-            <div class="cat-menu-item" onclick="switchTab('children_fashion', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3011/3011270.png" class="cat-icon" data-key="catChildren"> Children
-            </div>
-            
-            <div class="cat-menu-item" onclick="switchTab('man_fashion', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3003/3003354.png" class="cat-icon" data-key="catMan"> Man
-            </div>
-            
-            <div class="cat-menu-item" onclick="switchTab('electronics', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3659/3659899.png" class="cat-icon" data-key="catElectronics"> Electronics
-            </div>
-            
-            <div class="cat-menu-item" onclick="switchTab('festival', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/4213/4213179.png" class="cat-icon" data-key="catFestival"> Festival
-            </div>
-            
-            <div class="cat-menu-item" onclick="switchTab('daily_uses', this)">
-                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="cat-icon" data-key="catDailyUses"> Daily Uses
-            </div>
+            <div class="cat-menu-item" onclick="switchTab('minutes', this)"><img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png" class="cat-icon" data-key="catGrocery"> Grocery</div>
+            <div class="cat-menu-item" onclick="switchTab('boy_fashion', this)"><img src="https://cdn-icons-png.flaticon.com/512/3003/3003354.png" class="cat-icon" data-key="catBoy"> Boy</div>
+            <div class="cat-menu-item" onclick="switchTab('children_fashion', this)"><img src="https://cdn-icons-png.flaticon.com/512/3011/3011270.png" class="cat-icon" data-key="catChildren"> Children</div>
+            <div class="cat-menu-item" onclick="switchTab('man_fashion', this)"><img src="https://cdn-icons-png.flaticon.com/512/3003/3003354.png" class="cat-icon" data-key="catMan"> Man</div>
+            <div class="cat-menu-item" onclick="switchTab('electronics', this)"><img src="https://cdn-icons-png.flaticon.com/512/3659/3659899.png" class="cat-icon" data-key="catElectronics"> Electronics</div>
+            <div class="cat-menu-item" onclick="switchTab('festival', this)"><img src="https://cdn-icons-png.flaticon.com/512/4213/4213179.png" class="cat-icon" data-key="catFestival"> Festival</div>
+            <div class="cat-menu-item" onclick="switchTab('daily_uses', this)"><img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="cat-icon" data-key="catDailyUses"> Daily Uses</div>
         </div>
 
         <!-- MAIN CONTENT -->
@@ -117,22 +94,9 @@
                 </div>
 
                 <div class="section-heading">New & Upcoming Launches</div>
-                <div class="premium-grid">
-                    <div class="premium-card">
-                        <div class="premium-card-img-box"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200"></div>
-                        <span class="badge-new">NEW LAUNCH</span>
-                        <div class="premium-card-title">Nike Vegan Run</div>
-                    </div>
-                    <div class="premium-card">
-                        <div class="premium-card-img-box"><img src="https://images.unsplash.com/photo-1598327105666-5b89351cb31b?w=200"></div>
-                        <span class="badge-new">BUY NOW</span>
-                        <div class="premium-card-title">Oppo Find X10</div>
-                    </div>
-                    <div class="premium-card">
-                        <div class="premium-card-img-box"><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200"></div>
-                        <span class="badge-new" style="background:#d32f2f;">SALE LIVE</span>
-                        <div class="premium-card-title">Motorola Buds</div>
-                    </div>
+                <!-- YAHAN PRODUCTS AAYENGE (Static hata kar dynamic kiya) -->
+                <div class="grid" id="newLaunchesGrid" style="grid-template-columns: repeat(3, 1fr);">
+                    <!-- JS se load hoga -->
                 </div>
             </div>
 
@@ -142,6 +106,8 @@
             </div>
         </div>
     </div>
+
+    <!-- BOTTOM NAVBAR HATA DIYA GAYA HAI -->
 
     <script>
         let allProducts = [];
@@ -155,14 +121,30 @@
                 allProducts = await prodRes.json();
                 const appSettings = await settingsRes.json();
 
-                // APPLY DYNAMIC ICONS TO SIDEBAR
+                // APPLY DYNAMIC ICONS
                 const icons = document.querySelectorAll('.cat-icon');
                 icons.forEach(img => {
                     const key = img.getAttribute('data-key');
-                    if(appSettings[key]) {
-                        img.src = appSettings[key];
-                    }
+                    if(appSettings[key]) img.src = appSettings[key];
                 });
+
+                // RENDER NEW LAUNCHES IN "FOR YOU" TAB
+                const newGrid = document.getElementById('newLaunchesGrid');
+                const recentProducts = allProducts.slice(0, 6); // First 6 products
+                
+                if(recentProducts.length > 0) {
+                    newGrid.innerHTML = recentProducts.map(p => `
+                        <div class="premium-card" onclick="window.location.href='product.html?id=${p._id}'">
+                            <div class="premium-card-img-box" style="background:#fff; border:1px solid #eee;">
+                                <img src="${p.imageUrl}" style="object-fit:contain; width:100%; height:100%;">
+                            </div>
+                            <span class="badge-new" style="background:#f57c00;">TRENDING</span>
+                            <div class="premium-card-title" style="font-family: var(--font-serif); font-size:12px;">${p.name}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    newGrid.innerHTML = '<p style="font-size:12px; color:#777; grid-column: span 3; text-align:center;">No new launches yet.</p>';
+                }
 
             } catch (e) {
                 console.log("Error fetching data", e);
