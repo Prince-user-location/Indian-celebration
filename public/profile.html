@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Account - Indian Celebration</title>
-    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- FIX: Absolute Path for CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    
     <style>
-        body { background: #f1f3f6; font-family: var(--font-main); margin: 0; padding: 0; padding-bottom: 80px; }
-        
+        /* FIX: Improved padding so content doesn't hide behind bottom nav */
+        body { background: #f1f3f6; font-family: var(--font-main, 'Inter', sans-serif); margin: 0; padding: 0; padding-bottom: 120px; }
+
+        /* HEADER */
         .profile-header { background: #fff; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
         .profile-header h2 { font-size: 18px; font-weight: 700; margin: 0; color: #212121; }
 
@@ -16,7 +21,7 @@
             width: 100%;
             height: 160px;
             background-color: #e0e0e0;
-            background-image: url('https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=800'); /* Default */
+            background-image: url('https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=800');
             background-size: cover;
             background-position: center;
             position: relative;
@@ -33,14 +38,12 @@
         .logged-in-top { background: transparent; padding: 15px 20px; display: flex; justify-content: space-between; align-items: flex-end; margin-top: -30px; position: relative; z-index: 2; }
         .user-greeting { font-size: 26px; font-weight: 800; color: #0f1111; margin: 0; }
         .help-btn { display: flex; align-items: center; gap: 5px; border: 1px solid #ccc; padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; background: #fff; color: #333; margin-bottom: 5px; }
-        .help-btn svg { width: 16px !important; height: 16px !important; fill: #333; }
 
-        /* SECTIONS (No Borders / Shadows) */
+        /* SECTIONS */
         .section-box { background: #fff; margin-bottom: 10px; padding: 15px 20px; border-radius: 12px; margin-left: 15px; margin-right: 15px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
         .row-cards { display: flex; gap: 10px; }
         .action-card { flex: 1; border: 1px solid #e0e0e0; border-radius: 12px; padding: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; background: #fff; transition: 0.2s; }
         .action-card:active { background: #f9f9f9; }
-        .action-card svg { width: 28px !important; height: 28px !important; }
         .action-card span { font-size: 14px; font-weight: 700; color: #212121; }
 
         .section-title { font-size: 18px; font-weight: 700; color: #0f1111; margin-bottom: 15px; }
@@ -48,10 +51,19 @@
         .list-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
         .list-item:last-child { border-bottom: none; }
         .list-left { display: flex; align-items: center; gap: 15px; flex: 1; }
-        .list-left svg { width: 22px !important; height: 22px !important; fill: #2874f0; }
         .list-left span { font-size: 15px; color: #212121; font-weight: 500; }
-        .list-item svg.arrow { width: 16px !important; height: 16px !important; fill: #878787; }
         .sub-text { font-size: 12px; color: #878787; margin-top: 2px; }
+
+        /* --- FIX: FORM INPUT STYLES (Screenshot 1 Fix) --- */
+        .form-container { padding: 20px; background: #fff; border-radius: 12px; margin: 15px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+        .form-container h3 { margin: 0 0 15px 0; font-size: 18px; color: #212121; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 5px; }
+        .input-group input { width: 100%; padding: 12px 15px; border: 1px solid #dcdcdc; border-radius: 8px; font-size: 14px; font-family: inherit; background: #fafafa; box-sizing: border-box; }
+        .input-group input:focus { border-color: #2874f0; background: #fff; outline: none; }
+        
+        .btn-blue-login { width: 100%; padding: 14px; background: #2874f0; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 5px; }
+        .btn-blue-login:active { background: #1a5bbf; }
     </style>
 </head>
 <body>
@@ -65,8 +77,8 @@
         <div style="width:24px;"></div>
     </div>
 
-    <div id="loggedInView">
-        <!-- DYNAMIC BANNER -->
+    <!-- LOGGED IN VIEW -->
+    <div id="loggedInView" style="display: none;">
         <div class="profile-banner-container" id="profileBannerImg"></div>
 
         <div class="logged-in-top">
@@ -90,38 +102,12 @@
         </div>
 
         <div class="section-box">
-            <div class="section-title">Finance Options</div>
-            <div class="list-item" onclick="window.location.href='coming-soon.html'">
-                <div class="list-left">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="#388e3c"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
-                    <div>
-                        <span>Instant Loan upto ₹15,00,000</span>
-                        <div class="sub-text">Loan Mela is Live: FREE ₹250 Voucher</div>
-                    </div>
-                </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="#878787"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-            </div>
-            <div class="list-item" onclick="window.location.href='coming-soon.html'">
-                <div class="list-left">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="#1e88e5"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-                    <div>
-                        <span>Pre-Approved Supermoney Card</span>
-                        <div class="sub-text">1% cashback on UPI & Non-UPI</div>
-                    </div>
-                </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="#878787"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-            </div>
-        </div>
-
-        <div class="section-box">
             <div class="section-title">Profile Settings</div>
             <div class="list-item" onclick="window.location.href='edit-profile.html'">
-                <div class="list-left"><svg width="22" height="22" viewBox="0 0 24 24" fill="#2874f0"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Edit profile</span></div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="#878787"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-            </div>
-            <div class="list-item" onclick="window.location.href='coming-soon.html'">
-                <div class="list-left"><svg width="22" height="22" viewBox="0 0 24 24" fill="#2874f0"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><span>Saved addresses</span></div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="#878787"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                <div class="list-left">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="#2874f0"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <span>Edit profile</span>
+                </div>
             </div>
         </div>
 
@@ -132,12 +118,57 @@
         </div>
     </div>
 
-    <!-- LOGGED OUT VIEW -->
-    <div id="loggedOutView" style="display:none;">
-        <div class="login-banner" style="background:#fff; padding:20px; text-align:center;">
-            <p style="margin-bottom:10px; font-weight:600;">Log in to get exclusive offers</p>
-            <button class="btn-blue-login" onclick="window.location.href='index.html?login=true'" style="width:100%; padding:12px; background:#2874f0; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Log In</button>
+    <!-- LOGGED OUT VIEW (Screenshot 1 FIX) -->
+    <!-- Yahan humne proper Login Form aur Address Form daal diya hai jo pehle raw dikh raha tha -->
+    <div id="loggedOutView" style="display: none;">
+        
+        <div class="form-container">
+            <h3>Welcome to Indian Celebration</h3>
+            <p style="font-size:13px; color:#777; margin-bottom:15px;">Login or create an account to continue</p>
+            
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password">
+            </div>
+            <button class="btn-blue-login" onclick="handleLogin()">Login</button>
+            <button class="btn-blue-login" style="background:#fff; color:#2874f0; border:1px solid #2874f0; margin-top:10px;">Register</button>
         </div>
+
+        <!-- My Orders & Wishlist Links -->
+        <div class="section-box">
+            <div class="list-item" onclick="window.location.href='my-orders.html'">
+                <div class="list-left"><span>← My Orders</span></div>
+            </div>
+            <div class="list-item" onclick="window.location.href='my-wishlist.html'">
+                <div class="list-left"><span>← My Wishlist</span></div>
+            </div>
+        </div>
+
+        <!-- Delivery Address Section -->
+        <div class="form-container">
+            <h3>Delivery Address</h3>
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" placeholder="Full Name">
+            </div>
+            <div class="input-group">
+                <label>Full Address</label>
+                <input type="text" placeholder="House no, Street, Area">
+            </div>
+            <div class="input-group">
+                <label>State</label>
+                <input type="text" placeholder="State">
+            </div>
+            <div class="input-group">
+                <label>PIN Code</label>
+                <input type="text" placeholder="PIN Code">
+            </div>
+        </div>
+
     </div>
 
     <!-- BOTTOM NAVIGATION -->
@@ -152,11 +183,13 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             if (currentUser) {
+                // User Logged In
                 document.getElementById('loggedOutView').style.display = 'none';
                 document.getElementById('loggedInView').style.display = 'block';
                 const firstName = currentUser.name ? currentUser.name.split(' ')[0] : 'User';
                 document.getElementById('greetingText').innerText = `Hey, ${firstName}`;
             } else {
+                // User Logged Out
                 document.getElementById('loggedOutView').style.display = 'block';
                 document.getElementById('loggedInView').style.display = 'none';
             }
@@ -171,11 +204,23 @@
             } catch(e) { console.log("Error fetching banner settings", e); }
         });
 
+        // Fake Login Function (Aap isko apne backend login API se replace karein)
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            if(!email) { alert("Please enter email"); return; }
+            
+            // Demo User Save in LocalStorage
+            const user = { name: "Demo User", email: email };
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            alert("Logged in successfully!");
+            window.location.reload(); 
+        }
+
         function handleLogout() {
             if(confirm("Kya aap logout karna chahte hain?")) {
                 localStorage.removeItem('currentUser');
                 alert("Logged out successfully!");
-                window.location.href = 'index.html';
+                window.location.reload();
             }
         }
     </script>
