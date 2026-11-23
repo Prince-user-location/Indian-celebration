@@ -1,9 +1,14 @@
 const API_URL = "";
-let allProducts = [], allBanners = [], appSettings = {};
+let allProducts = [];
+let allBanners = [];
+let appSettings = {}; 
 let cart = JSON.parse(localStorage.getItem('diwali_cart')) || [];
 let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 let wishlist = [];
 const defaultBanner = "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=800";
+
+// Offline Check
+window.addEventListener('offline', () => { window.location.href = 'offline.html'; });
 
 window.addEventListener('load', () => {
     let savedLoc = localStorage.getItem('user_location');
@@ -74,18 +79,75 @@ function renderHomePage(products) {
     if(!container || !products) return;
 
     let html = '';
+
+    function createCategorySection(title, categoryKey) {
+        const prods = products.filter(p => p.category === categoryKey);
+        if(prods.length === 0) return ''; 
+        return `
+            <div class="category-section" style="margin-bottom: 20px;">
+                <div class="category-header" style="display:flex; justify-content:space-between; padding: 0 15px; margin-bottom: 10px;">
+                    <h3 style="font-size:18px; margin:0; font-weight:700;">${title}</h3>
+                    <span onclick="window.location.href='category.html'" style="font-size:13px; color:var(--primary-blue); font-weight:600;">View All ></span>
+                </div>
+                <div class="h-scroll" style="display:flex; overflow-x:auto; gap:10px; padding: 0 15px 10px 15px; scrollbar-width:none;">
+                    ${prods.slice(0, 6).map(p => `<div style="min-width: 140px; max-width: 140px;">${generateCardHtml(p, false)}</div>`).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    const allHalfBanners = allBanners.filter(b => b.type === 'half');
+    let bannerGroups = [[], [], []]; 
+    allHalfBanners.forEach((b, index) => { bannerGroups[index % 3].push(b); });
+
+    function createVerticalHalfBanner(groupIndex, delayTime) {
+        const bannersForSlot = bannerGroups[groupIndex];
+        if(bannersForSlot.length === 0) return ''; 
+        let slidesHtml = '';
+        bannersForSlot.forEach(b => {
+            if(b.mediaType === 'video') {
+                slidesHtml += `<div class="vertical-slide" onclick="redirectToProduct()"><video src="${b.imageUrl}" autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;"></video></div>`;
+            } else {
+                slidesHtml += `<div class="vertical-slide" onclick="redirectToProduct()"><img src="${b.imageUrl}" style="width:100%; height:100%; object-fit:cover;"></div>`;
+            }
+        });
+        return `
+            <div class="mid-ad-banner vertical-slider-container" data-delay="${delayTime}" style="width:calc(100% - 30px); margin: 10px 15px; height:90px; overflow:hidden; border-radius:12px; position:relative;">
+                <div class="vertical-slider-track" style="display:flex; flex-direction:column; transition:transform 0.5s ease-in-out;">${slidesHtml}</div>
+            </div>
+        `;
+    }
+
     const homeProducts = products.filter(p => p.category !== 'minutes' && p.category !== 'value365');
     
-    // 1. Top 10 Products
     html += `<div class="grid">`;
     homeProducts.slice(0, 10).forEach((p, index) => { html += generateCardHtml(p, index === 1); });
     html += `</div>`;
 
-    // 2. Recommendations (Amazon Style Header)
-    html += `<div class="section-title">Recommended deals for you</div>`;
-    html += `<div class="grid">`;
-    homeProducts.slice(10, 20).forEach(p => { html += generateCardHtml(p, false); });
-    html += `</div>`;
+    if (typeof getAmazonAutoHTML === 'function') { html += getAmazonAutoHTML(products); }
+    html += createVerticalHalfBanner(0, 3000); 
+
+    html += createCategorySection("Boy Fashion", "boy_fashion");
+    html += createCategorySection("Children Fashion", "children_fashion");
+    html += createCategorySection("Man Fashion", "man_fashion");
+    html += createCategorySection("Women's Clothes", "clothes"); 
+
+    if (typeof getAmazonAutoHTML === 'function') { html += getAmazonAutoHTML(products); }
+    html += createVerticalHalfBanner(1, 4500); 
+
+    html += createCategorySection("Buy for Electronics", "electronics");
+    html += createCategorySection("Our Festival", "festival");
+    html += createCategorySection("Grocery Essentials", "minutes"); 
+
+    html += createVerticalHalfBanner(2, 6000); 
+    html += createCategorySection("Daily Uses", "daily_uses");
+
+    if(homeProducts.length > 10) {
+        html += `<div class="section-title">Recommended deals for you</div>`;
+        html += `<div class="grid">`;
+        homeProducts.slice(10).forEach(p => { html += generateCardHtml(p, false); });
+        html += `</div>`;
+    }
 
     container.innerHTML = html;
     startIndividualTimers();
@@ -117,14 +179,27 @@ function renderTopBanners() {
     }, 3000);
 }
 
-// MAGIC: Video rendering in Product Cards
+function startVerticalBannerSwipe() {
+    const containers = document.querySelectorAll('.vertical-slider-container');
+    containers.forEach(container => {
+        const track = container.querySelector('.vertical-slider-track');
+        const slides = track.querySelectorAll('.vertical-slide');
+        if(slides.length <= 1) return; 
+        let index = 0;
+        let delay = parseInt(container.getAttribute('data-delay')) || 3000;
+        setInterval(() => {
+            index = (index + 1) % slides.length;
+            track.style.transform = `translateY(-${index * 90}px)`;
+        }, delay);
+    });
+}
+
 function generateCardHtml(p, isBestSeller) {
     const rating = (Math.random() * (4.5 - 3.5) + 3.5).toFixed(1);
     const reviews = Math.floor(Math.random() * 2000) + 50;
     const oldPrice = p.oldPrice || p.price;
     const discount = Math.round(((oldPrice - p.price) / oldPrice) * 100) || 0;
     
-    // Check Media Type (Video or Image)
     let mediaHtml = '';
     if (p.mediaType === 'video') {
         mediaHtml = `<video src="${p.imageUrl}" class="card-video" autoplay muted loop playsinline></video>`;
@@ -141,7 +216,7 @@ function generateCardHtml(p, isBestSeller) {
     }
 
     return `
-        <div class="card">
+        <div class="card" style="align-self: start;">
             <div class="card-img-container" onclick="openProductPage('${p._id}')">
                 ${mediaHtml}
                 ${isBestSeller ? '<div class="best-seller-tag">Best seller</div>' : ''}
@@ -157,19 +232,18 @@ function generateCardHtml(p, isBestSeller) {
     `;
 }
 
-// ... (Baaki main.js ka code - Cart, Modals, Auth, Timers waise hi rahenge jo pehle the)
-// Note: Main space bachane ke liye yahan short kar raha hu, purana baaki code same rakho.
+// ================= UTILITIES =================
 function openProductPage(id) { window.location.href = `/product.html?id=${id}`; }
-function addToCart(id) { const p = allProducts.find(x => x._id === id); if(!p) return; const exist = cart.find(x => x._id === id); if(exist) exist.qty++; else cart.push({...p, qty: 1}); localStorage.setItem('diwali_cart', JSON.stringify(cart)); alert("Added!"); updateCartUI(); }
-function buyNowDirect(id) { addToCart(id); window.location.href = 'index.html?checkout=true'; }
-function updateCartUI() { /* Purana code */ }
-function openCart() { document.getElementById('cartModal').classList.add('open'); updateCartUI(); }
-function closeCart() { document.getElementById('cartModal').classList.remove('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function goHome() { window.location.href = 'index.html'; }
 function handleProfileClick() { window.location.href = 'profile.html'; }
-function startIndividualTimers() { /* Purana code */ }
-function startVerticalBannerSwipe() { /* Purana code */ }
-// Baaki functions (Login, Register, Checkout, Orders) waise hi rakho!
+function startVoiceSearch() { alert("🎤 Voice Search: Boliye aap kya dhundhna chahte hain...\n(Abhi ye feature beta me hai)"); }
+function openScanner() { alert("📷 Scanner: Camera on karke barcode/QR scan karein.\n(Abhi ye feature beta me hai)"); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function startIndividualTimers() { /* Timer logic */ }
+function addToCart(id) { const p = allProducts.find(x => x._id === id); if(!p) return; const exist = cart.find(x => x._id === id); if(exist) exist.qty++; else cart.push({...p, qty: 1}); localStorage.setItem('diwali_cart', JSON.stringify(cart)); alert("Added!"); updateCartUI(); }
+function buyNowDirect(id) { addToCart(id); window.location.href = 'index.html?checkout=true'; }
+function updateCartUI() { /* Cart logic */ }
+function openCart() { document.getElementById('cartModal').classList.add('open'); updateCartUI(); }
+function closeCart() { document.getElementById('cartModal').classList.remove('open'); }
 
 loadData();

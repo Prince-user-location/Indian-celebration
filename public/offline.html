@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Internet - Indian Celebration</title>
+    <style>
+        body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; text-align: center; }
+        .container { max-width: 300px; padding: 20px; }
+        .container img { width: 100%; max-width: 200px; margin-bottom: 20px; object-fit: contain; }
+        h1 { font-size: 24px; font-weight: 800; color: #0f1111; margin-bottom: 10px; letter-spacing: 1px; }
+        p { font-size: 16px; color: #333; margin-bottom: 30px; line-height: 1.5; }
+        button { background: #fff; color: #0f1111; border: 1px solid #ccc; padding: 12px 24px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        button:active { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="offlineImage" src="https://cdn-icons-png.flaticon.com/512/5779/5779125.png" alt="No Internet">
+        <h1>OOPS!<br>NO INTERNET</h1>
+        <p>Please check your network connection.</p>
+        <button onclick="window.location.reload()">TRY AGAIN</button>
+    </div>
+    
+    <script>
+        // Fetch the dynamic image from settings
+        fetch('/api/settings').then(res => res.json()).then(data => {
+            if(data.offlineImg) {
+                document.getElementById('offlineImage').src = data.offlineImg;
+            }
+        }).catch(() => {});
+    </script>
+</body>
+</html>

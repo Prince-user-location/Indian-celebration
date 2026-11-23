@@ -29,7 +29,6 @@
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .section-title { font-size: 18px; font-weight: 700; color: #1e293b; }
         
-        /* SETTINGS UI */
         .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; }
         .setting-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
         .setting-card img { width: 40px; height: 40px; object-fit: contain; margin-bottom: 10px; background: transparent; border-radius: 8px; padding: 2px; }
@@ -94,7 +93,7 @@
                 <button class="btn-save-settings" onclick="saveSettings()">Save All Settings</button>
             </div>
 
-            <!-- NORMAL PRODUCT FORM -->
+            <!-- PRODUCT FORM -->
             <div class="form-modal" id="addForm">
                 <form id="itemForm">
                     <input type="hidden" id="itemId">
@@ -109,7 +108,6 @@
                     <div class="form-group" id="deliveryGroup" style="display:none;"><label>Expected Delivery Date</label><input type="date" id="pDeliveryDate"></div>
                     <div class="form-group" id="stockGroup" style="display:none;"><label>Available Stock</label><input type="number" id="pStock"></div>
                     
-                    <!-- NAYA: Accept Video -->
                     <div class="form-group"><label>Upload Image or Video</label><input type="file" id="pImageFiles" accept="image/*,video/*" multiple><div id="imagePreview"></div></div>
                     
                     <button type="submit" class="btn-save" id="btnSubmit">Save</button>
@@ -168,14 +166,14 @@
             }
         }
 
-        // FETCH SETTINGS & SHOW IN UI
         async function fetchSettings() {
             try {
                 const res = await fetch(`${API_URL}/api/settings`);
                 appSettings = await res.json();
                 
                 const iconConfigs = [
-                    { key: 'profileBanner', name: 'Profile Banner' }, // NAYA
+                    { key: 'offlineImg', name: 'Offline Dog Image' }, // NAYA
+                    { key: 'profileBanner', name: 'Profile Banner' },
                     { key: 'tabWeekly', name: 'Weekly Tab' },
                     { key: 'tabTravel', name: 'Travel Tab' },
                     { key: 'tabValue365', name: 'Value 365 Tab' },
@@ -195,7 +193,7 @@
                 let html = '';
                 iconConfigs.forEach(cfg => {
                     const currentImg = appSettings[cfg.key] || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-                    const isBanner = cfg.key === 'profileBanner';
+                    const isBanner = cfg.key === 'profileBanner' || cfg.key === 'offlineImg';
                     
                     html += `
                         <div class="setting-card" style="${isBanner ? 'grid-column: span 2;' : ''}">
@@ -222,7 +220,7 @@
 
         async function saveSettings() {
             const formData = new FormData();
-            const keys = ['profileBanner', 'tabWeekly', 'tabTravel', 'tabValue365', 'tabGifts', 'iconAccount', 'iconHelp', 'iconCart', 'catGrocery', 'catBoy', 'catChildren', 'catMan', 'catElectronics', 'catFestival', 'catDailyUses'];
+            const keys = ['offlineImg', 'profileBanner', 'tabWeekly', 'tabTravel', 'tabValue365', 'tabGifts', 'iconAccount', 'iconHelp', 'iconCart', 'catGrocery', 'catBoy', 'catChildren', 'catMan', 'catElectronics', 'catFestival', 'catDailyUses'];
             
             let hasFile = false;
             keys.forEach(key => {
@@ -246,7 +244,6 @@
             } catch(e) { alert("❌ Server error!"); }
         }
 
-        // Image/Video Preview for Product Upload
         document.getElementById('pImageFiles').addEventListener('change', function(e) {
             const preview = document.getElementById('imagePreview');
             preview.innerHTML = '';
@@ -264,7 +261,6 @@
             });
         });
 
-        // Form Submit for Products/Banners
         document.getElementById('itemForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('itemId').value;
@@ -305,7 +301,81 @@
         function showForm() { document.getElementById('addForm').classList.add('active'); }
         function hideForm() { document.getElementById('addForm').classList.remove('active'); document.getElementById('itemForm').reset(); document.getElementById('imagePreview').innerHTML = ''; }
 
-        function loadList() { document.getElementById('listContainer').innerHTML = '<p>Loading...</p>'; /* Tera purana loadList logic yahan aayega */ }
+        async function loadList() {
+            const container = document.getElementById('listContainer');
+            container.innerHTML = 'Loading...';
+
+            try {
+                if(currentTab === 'orders') {
+                    const res = await fetch(`${API_URL}/api/orders`);
+                    const orders = await res.json();
+                    if(orders.length === 0) { container.innerHTML = '<p style="text-align:center;">No orders yet.</p>'; return; }
+                    
+                    container.innerHTML = orders.map(o => `
+                        <div class="list-card" style="flex-direction: column; align-items: flex-start;">
+                            <div style="display:flex; justify-content:space-between; width:100%; border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:5px;">
+                                <b>ID: ${o.id}</b> <span style="color:${o.status === 'Paid / Verified' ? 'green' : 'orange'}">${o.status}</span>
+                            </div>
+                            <div><b>User:</b> ${o.user}</div>
+                            <div style="font-size:12px; color:#666;"><b>Address:</b> ${o.address}</div>
+                            <div style="margin-top:5px;"><b>Total:</b> ₹${o.total}</div>
+                        </div>
+                    `).join('');
+                } 
+                else if(currentTab === 'banner' || currentTab === 'halfbanner') {
+                    const res = await fetch(`${API_URL}/api/banners`);
+                    let banners = await res.json();
+                    
+                    if(currentTab === 'halfbanner') { banners = banners.filter(b => b.type === 'half'); } 
+                    else { banners = banners.filter(b => b.type !== 'half'); }
+
+                    if(banners.length === 0) { container.innerHTML = '<p style="text-align:center;">No banners found.</p>'; return; }
+
+                    container.innerHTML = banners.map(b => `
+                        <div class="list-card">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                ${b.mediaType === 'video' ? `<video src="${b.imageUrl}" style="width:80px; height:40px; object-fit:cover; border-radius:6px;" muted></video>` : `<img src="${b.imageUrl}" style="width:80px; height:40px; object-fit:cover; border-radius:6px;">`}
+                                <div><b>${currentTab === 'halfbanner' ? 'Half Banner' : 'Top Banner'}</b></div>
+                            </div>
+                            <button onclick="deleteItem('banner', '${b._id}')" style="background:#fee2e2; color:#dc2626; border:none; padding:6px 10px; border-radius:6px; font-weight:bold;">Del</button>
+                        </div>
+                    `).join('');
+                } 
+                else {
+                    const res = await fetch(`${API_URL}/api/products`);
+                    let products = await res.json();
+                    const filtered = products.filter(p => p.category === currentTab);
+
+                    if(filtered.length === 0) { container.innerHTML = '<p style="text-align:center;">No products found.</p>'; return; }
+
+                    container.innerHTML = filtered.map(p => `
+                        <div class="list-card">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <img src="${p.imageUrl}" style="width:50px; height:50px; object-fit:contain; border-radius:6px;">
+                                <div>
+                                    <div style="font-size:14px; font-weight:bold;">${p.name}</div>
+                                    <div style="font-size:12px; color:#666;">₹${p.price} | Stock: ${p.stock}</div>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:5px;">
+                                <button onclick="editItem('${p._id}')" style="background:#f1f5f9; border:none; padding:6px 10px; border-radius:6px; font-weight:bold;">Edit</button>
+                                <button onclick="deleteItem('product', '${p._id}')" style="background:#fee2e2; color:#dc2626; border:none; padding:6px 10px; border-radius:6px; font-weight:bold;">Del</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch(e) { 
+                container.innerHTML = 'Error loading data.'; 
+            }
+        }
+
+        async function deleteItem(type, id) {
+            if(!confirm("Are you sure?")) return;
+            const url = type === 'product' ? `${API_URL}/api/admin/product/${id}` : `${API_URL}/api/admin/banner/${id}`;
+            await fetch(url, { method: 'DELETE' });
+            alert("🗑️ Deleted!");
+            loadList();
+        }
     </script>
 </body>
 </html>
