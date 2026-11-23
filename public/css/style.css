@@ -1,3 +1,6 @@
+/* ========================================= */
+/* GLOBAL FIXES & FONTS                      */
+/* ========================================= */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap');
 
 :root {
@@ -8,61 +11,40 @@
     --text-light: #878787;
     --green: #388e3c;
     --shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    
-    /* TYPOGRAPHY */
     --font-sans: 'Inter', sans-serif;
     --font-serif: 'Playfair Display', serif;
 }
 
 html, body { margin: 0; padding: 0; width: 100%; max-width: 100vw; overflow-x: hidden; box-sizing: border-box; }
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-sans); -webkit-tap-highlight-color: transparent; }
-body { background-color: var(--bg-color); color: var(--text-dark); padding-bottom: 100px; position: relative; }
 
-/* SPLASH SCREEN */
+/* FIX: Bottom Nav ke peeche content chhupne se rokne ke liye padding badhayi hai */
+body { background-color: var(--bg-color); color: var(--text-dark); padding-bottom: 120px; position: relative; }
+
+/* ========================================= */
+/* SPLASH SCREEN                             */
+/* ========================================= */
 #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; display: flex; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease-in-out; }
 #splash-screen img { width: 90%; max-width: 400px; height: auto; object-fit: contain; }
 #splash-screen.fade-out { opacity: 0; pointer-events: none; }
 
 /* ========================================= */
-/* IMMERSIVE EDGE-TO-EDGE HEADER             */
+/* HEADER                                    */
 /* ========================================= */
-.header { 
-    background: transparent; 
-    position: sticky; 
-    top: 0; 
-    z-index: 100; 
-    padding: 10px 0; 
-    display: flex; 
-    flex-direction: column; 
-    border-bottom: none; 
-    box-shadow: none; 
-    width: 100%;
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+.header {
+    background: transparent; position: sticky; top: 0; z-index: 100; padding: 10px 0;
+    display: flex; flex-direction: column; border-bottom: none; box-shadow: none; width: 100%;
+    overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
 }
-
 .header::before {
-    content: "";
-    position: absolute;
-    top: -50px; left: -50px; right: -50px; bottom: -50px; 
-    background-image: var(--current-banner-img, none); 
-    background-size: cover;
-    background-position: center;
-    filter: blur(40px) brightness(2) saturate(1.5); 
-    opacity: 0.8; 
-    z-index: -2;
-    transition: background-image 1s ease-in-out;
-    pointer-events: none;
+    content: ""; position: absolute; top: -50px; left: -50px; right: -50px; bottom: -50px;
+    background-image: var(--current-banner-img, none); background-size: cover; background-position: center;
+    filter: blur(40px) brightness(2) saturate(1.5); opacity: 0.8; z-index: -2; transition: background-image 1s ease-in-out; pointer-events: none;
 }
-
 .header::after {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(255,255,255,0.8));
-    z-index: -1;
-    pointer-events: none;
+    content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(255,255,255,0.8)); z-index: -1; pointer-events: none;
 }
 
 /* TOP TABS */
@@ -88,54 +70,16 @@ body { background-color: var(--bg-color); color: var(--text-dark); padding-botto
 /* ========================================= */
 /* BANNER                                    */
 /* ========================================= */
-.banner-container { 
-    position: relative; 
-    width: calc(100% - 30px); 
-    height: 180px; 
-    overflow: hidden; 
-    margin: 0 15px 15px 15px; 
-    border-radius: 12px; 
-    background: #e0e0e0; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
-    cursor: pointer;
-}
+.banner-container { position: relative; width: calc(100% - 30px); height: 180px; overflow: hidden; margin: 0 15px 15px 15px; border-radius: 12px; background: #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: pointer;}
 .banner-slider { display: flex; height: 100%; transition: transform 0.4s ease-in-out; }
 .banner-slider img { min-width: 100%; height: 100%; object-fit: cover; }
 
 /* ========================================= */
 /* TYPOGRAPHY FOR SECTIONS                   */
 /* ========================================= */
-.section-title { 
-    background: transparent; 
-    padding: 15px 15px 10px 15px; 
-    font-size: 20px; 
-    font-weight: 700; 
-    color: #0f1111; 
-    margin: 0; 
-    text-align: left; 
-    width: 100%; 
-    font-family: var(--font-sans); 
-}
-
-.category-header h3 { 
-    font-size: 18px; 
-    font-weight: 700; 
-    color: #0f1111; 
-    font-family: var(--font-sans); 
-}
-
-/* PRODUCT TITLES (SERIF FONT) */
-.card-title { 
-    font-family: var(--font-serif) !important; 
-    font-size: 15px; 
-    font-weight: 700; 
-    color: #212121; 
-    margin-bottom: 6px; 
-    white-space: nowrap; 
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-    width: 100%; 
-}
+.section-title { background: transparent; padding: 15px 15px 10px 15px; font-size: 20px; font-weight: 700; color: #0f1111; margin: 0; text-align: left; width: 100%; font-family: var(--font-sans); }
+.category-header h3 { font-size: 18px; font-weight: 700; color: #0f1111; font-family: var(--font-sans); }
+.card-title { font-family: var(--font-serif) !important; font-size: 15px; font-weight: 700; color: #212121; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
 
 /* ========================================= */
 /* PRODUCT GRID                              */
@@ -173,6 +117,16 @@ body { background-color: var(--bg-color); color: var(--text-dark); padding-botto
 .btn-buy-meesho { background: var(--primary-blue); color: #fff; }
 
 /* ========================================= */
+/* FORMS (FIX FOR PROFILE/CHECKOUT)          */
+/* ========================================= */
+.form-group-full { margin-bottom: 15px; }
+.form-group-full label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 5px; }
+.form-group-full input, .form-group-full select { width: 100%; padding: 12px 15px; border: 1px solid #dcdcdc; border-radius: 8px; font-size: 14px; font-family: var(--font-sans); background: #fafafa; outline: none; transition: 0.2s; box-sizing: border-box;}
+.form-group-full input:focus { border-color: var(--primary-blue); background: #fff; box-shadow: 0 0 0 3px rgba(40,116,240,0.1); }
+.btn-submit-full { width: 100%; padding: 14px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; font-family: var(--font-sans); }
+.btn-submit-full:active { transform: scale(0.98); }
+
+/* ========================================= */
 /* FLOATING BOTTOM NAVIGATION                */
 /* ========================================= */
 .bottom-nav { position: fixed; bottom: 15px; left: 15px; right: 15px; width: auto; background: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; z-index: 500; border-radius: 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.15), inset 0 -2px 5px rgba(0,0,0,0.05); }
@@ -185,7 +139,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); padding-botto
 .page-header { display: flex; align-items: center; padding: 15px; background: var(--white); gap: 15px; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.05); width: 100%;}
 .page-header span { font-weight: 700; font-size: 18px; color: var(--text-dark); font-family: var(--font-sans); }
 
-/* (Cart, Checkout, Orders, Auth styles same rahenge) */
+/* Cart & Modals */
 .cart-modal { position: fixed; top: 0; left: 100%; width: 100%; height: 100%; background: var(--bg-color); z-index: 1000; transition: left 0.3s; display: flex; flex-direction: column; }
 .cart-modal.open { left: 0; }
 .cart-header { padding: 15px; background: white; display: flex; gap: 15px; font-weight: bold; align-items: center; border-bottom: 1px solid #eee; }

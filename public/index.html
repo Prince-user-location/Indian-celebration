@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Indian Celebration - Luxury Shopping</title>
-    
-    <!-- MAIN STYLES -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/home-extras.css">
-    <link rel="stylesheet" href="css/india-auto.css">
+
+    <!-- FIX: Absolute Paths -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home-extras.css">
+    <link rel="stylesheet" href="/css/india-auto.css">
 </head>
 <body class="theme-default">
 
@@ -19,26 +19,13 @@
 
     <!-- HOME PAGE -->
     <div id="home-page">
-        <!-- DYNAMIC LIQUID HEADER -->
+        <!-- HEADER -->
         <div class="header">
-            <!-- TOP TABS -->
             <div class="top-tabs">
-                <div class="tab-box" onclick="window.location.href='minutes.html'">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png" class="dynamic-tab-icon">
-                    <span>Weekly</span>
-                </div>
-                <div class="tab-box" onclick="alert('Travel Page Coming Soon')">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3125/3125713.png" class="dynamic-tab-icon">
-                    <span>Travel</span>
-                </div>
-                <div class="tab-box" onclick="window.location.href='value365.html'">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="dynamic-tab-icon">
-                    <span>Value 365</span>
-                </div>
-                <div class="tab-box" onclick="alert('Gifts Page Coming Soon')">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2885/2885408.png" class="dynamic-tab-icon">
-                    <span>Gifts</span>
-                </div>
+                <div class="tab-box" onclick="window.location.href='minutes.html'"><img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png"><span>Weekly</span></div>
+                <div class="tab-box" onclick="alert('Coming Soon')"><img src="https://cdn-icons-png.flaticon.com/512/3125/3125713.png"><span>Travel</span></div>
+                <div class="tab-box" onclick="window.location.href='value365.html'"><img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"><span>Value 365</span></div>
+                <div class="tab-box" onclick="alert('Coming Soon')"><img src="https://cdn-icons-png.flaticon.com/512/2885/2885408.png"><span>Gifts</span></div>
             </div>
 
             <div class="header-top" style="margin-top: 10px;">
@@ -46,17 +33,10 @@
                     <div class="logo-text">Indian Celebration</div>
                     <div class="logo-sub">Explore Plus ⭐</div>
                 </div>
-                <!-- HEADER ICONS (Wrapped in divs for dynamic replacement) -->
                 <div class="header-icons">
-                    <div id="headerAccountBtn" onclick="handleProfileClick()" style="cursor:pointer; display:flex; background: transparent;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                    </div>
-                    <div id="headerHelpBtn" onclick="window.location.href='help.html'" style="cursor:pointer; display:flex; background: transparent;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
-                    </div>
-                    <div id="headerCartBtn" onclick="openCart()" style="cursor:pointer; display:flex; background: transparent;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                    </div>
+                    <div id="headerAccountBtn" onclick="handleProfileClick()" style="cursor:pointer; display:flex;"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+                    <div id="headerHelpBtn" onclick="window.location.href='help.html'" style="cursor:pointer; display:flex;"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></div>
+                    <div id="headerCartBtn" onclick="openCart()" style="cursor:pointer; display:flex;"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
                 </div>
             </div>
 
@@ -71,72 +51,30 @@
             </div>
         </div>
 
-        <!-- MAIN BANNER -->
-        <div class="banner-container">
-            <div class="banner-slider" id="slider"></div>
-        </div>
-
-        <!-- MAIN TITLE -->
+        <!-- BANNER -->
+        <div class="banner-container"><div class="banner-slider" id="slider"></div></div>
         <div class="section-title">Indian celebration Shopping</div>
-        
-        <!-- DYNAMIC CONTENT (Products, Auto-Deals, Categories) -->
         <div id="dynamicContent"></div>
     </div>
 
-    <!-- CATEGORY PAGE (Hidden) -->
+    <!-- HIDDEN PAGES (Category, Auth, Orders, Checkout) -->
     <div id="category-page" class="full-page">
-        <div class="page-header">
-            <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span>All Categories</span>
-        </div>
-        <div class="cat-layout">
-            <div class="cat-sidebar">
-                <div class="cat-menu-item active" onclick="switchCategory('patake', this)">Patake</div>
-                <div class="cat-menu-item" onclick="switchCategory('clothes', this)">Clothes</div>
-            </div>
-            <div class="cat-content"><div class="grid" id="categoryGrid"></div></div>
-        </div>
+        <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>All Categories</span></div>
+        <div class="cat-layout"><div class="cat-sidebar"><div class="cat-menu-item active" onclick="switchCategory('patake', this)">Patake</div><div class="cat-menu-item" onclick="switchCategory('clothes', this)">Clothes</div></div><div class="cat-content"><div class="grid" id="categoryGrid"></div></div></div>
     </div>
 
-    <!-- AUTHENTICATION PAGE (Hidden) -->
     <div id="auth-page" class="full-page">
-        <div class="page-header">
-            <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span>Account</span>
-        </div>
-        <div class="auth-container">
-            <div class="auth-header"><h2>Welcome to Indian Celebration</h2><p style="color:#666; font-size:14px;">Login or create an account to continue</p></div>
-            <div class="auth-tabs">
-                <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</div>
-                <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Register</div>
-            </div>
+        <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>Account</span></div>
+        <div class="auth-container" style="padding: 20px;">
+            <div class="auth-header"><h2 style="font-size:24px; font-weight:800;">Welcome</h2><p style="color:#666; font-size:14px; margin-bottom:15px;">Login or create an account</p></div>
             <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="auth-form-group"><label>Email Address</label><input type="email" id="loginEmail" required></div>
-                <div class="auth-form-group"><label>Password</label><input type="password" id="loginPassword" required></div>
-                <button type="submit" class="btn-auth">Login</button>
-            </form>
-            <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
-                <div class="auth-form-group"><label>Full Name</label><input type="text" id="regName" required></div>
-                <div class="auth-form-group"><label>Phone Number</label><input type="tel" id="regPhone" required></div>
-                <div class="auth-form-group"><label>Email Address</label><input type="email" id="regEmail" required></div>
-                <div class="auth-form-group"><label>Password</label><input type="password" id="regPassword" required></div>
-                <button type="submit" class="btn-auth">Register</button>
+                <div class="form-group-full"><label>Email</label><input type="email" id="loginEmail" required></div>
+                <div class="form-group-full"><label>Password</label><input type="password" id="loginPassword" required></div>
+                <button type="submit" class="btn-submit-full">Login</button>
             </form>
         </div>
     </div>
 
-    <!-- ORDERS & WISHLIST PAGES (Hidden) -->
-    <div id="orders-page" class="full-page">
-        <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Orders</span></div>
-        <div class="sub-page-content" id="ordersList"></div>
-    </div>
-
-    <div id="wishlist-page" class="full-page">
-        <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>My Wishlist</span></div>
-        <div class="sub-page-content"><div class="grid" id="wishlistGrid"></div></div>
-    </div>
-
-    <!-- CHECKOUT FORM (Hidden) -->
     <div id="checkout-page" class="full-page">
         <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>Delivery Address</span></div>
         <div class="page-content" style="padding: 20px;">
@@ -162,36 +100,14 @@
     <div class="overlay-modal" id="qrModal">
         <div class="modal-content">
             <div class="modal-title">Scan & Pay</div>
-            <p style="font-size:12px; color:#666; margin-bottom: 10px;">Scan with GPay, PhonePe, Paytm</p>
-            <img src="https://i.ibb.co/Cs49YGDd/IMG-20261024-WA0003.jpg" class="qr-img" alt="Scanner">
-            <div style="background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 10px; margin: 10px 0; text-align: left;"><p style="font-size: 11px; color: #b26a00; margin: 0; font-weight: 500;">Payment ke baad UTR ID aur Screenshot daalein:</p></div>
-            <input type="text" id="utrInput" placeholder="Enter 12-digit UTR ID" style="width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; margin-bottom: 10px; outline: none; font-size: 14px; text-align: center; font-weight: bold;">
-            <div style="text-align: left; margin-bottom: 15px;"><label style="font-size: 12px; font-weight: 600; color: #555;">Upload Payment Screenshot:</label><input type="file" id="proofImage" accept="image/*" style="width: 100%; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; margin-top: 5px; background: #fafafa;"></div>
-            <button class="btn-submit-full" style="background:#388e3c; margin-top: 0; font-size: 16px;" onclick="verifyAndPlaceOrder()">Submit Proof & Place Order</button>
-            <button style="background:none; border:none; margin-top:15px; color:#d32f2f; cursor:pointer; font-weight: 600; font-size: 14px;" onclick="closeModal('qrModal')">Cancel</button>
+            <img src="https://i.ibb.co/Cs49YGDd/IMG-20261024-WA0003.jpg" class="qr-img" style="width:100%; max-width:200px; margin:10px 0;" alt="Scanner">
+            <input type="text" id="utrInput" placeholder="Enter UTR ID" style="width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; margin-bottom: 10px; text-align: center; font-weight: bold;">
+            <button class="btn-submit-full" style="background:#388e3c;" onclick="verifyAndPlaceOrder()">Submit Proof</button>
+            <button style="background:none; border:none; margin-top:15px; color:#d32f2f; cursor:pointer; font-weight: 600;" onclick="closeModal('qrModal')">Cancel</button>
         </div>
     </div>
 
-    <div class="overlay-modal" id="successModal">
-        <div class="modal-content" style="overflow:hidden;">
-            <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-            <div class="modal-title" style="color:#388e3c; font-size:22px;">Order Placed!</div>
-            <p style="color:#666; margin-bottom:20px; font-size: 14px;">Aapka order place ho gaya hai. Admin verify karke dispatch karega.</p>
-            <button class="btn-submit-full" onclick="closeModal('successModal'); goHome();">Continue Shopping</button>
-        </div>
-    </div>
-
-    <div class="overlay-modal" id="locationModal">
-        <div class="modal-content" style="text-align: left;">
-            <div class="modal-title" style="text-align: center;">Choose your location</div>
-            <div class="form-group-full" style="padding: 10px;"><label>Pincode</label><input type="number" id="locPincode" placeholder="Enter Pincode"></div>
-            <div class="form-group-full" style="padding: 10px;"><label>City / State</label><input type="text" id="locCity" placeholder="e.g. Delhi"></div>
-            <button class="btn-submit-full" style="margin-top: 10px; background: var(--primary-blue);" onclick="saveLocation()">Save Location</button>
-            <button style="background:none; border:none; margin-top:15px; width: 100%; text-align: center; color:#d32f2f; cursor:pointer; font-weight: 600; font-size: 14px;" onclick="closeModal('locationModal')">Cancel</button>
-        </div>
-    </div>
-
-    <!-- FLOATING BOTTOM NAVIGATION -->
+    <!-- BOTTOM NAVIGATION -->
     <div class="bottom-nav">
         <div class="nav-item active" id="nav-home" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</div>
         <div class="nav-item" id="nav-cat" onclick="window.location.href='category.html'"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories</div>
@@ -199,11 +115,11 @@
         <div class="nav-item" onclick="openCart()"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart</div>
     </div>
 
-    <!-- SCRIPTS -->
-    <script src="js/india-auto.js"></script>
-    <script src="js/home-extras.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/theme-color.js"></script>
+    <!-- SCRIPTS (FIX: Absolute Paths) -->
+    <script src="/js/india-auto.js"></script>
+    <script src="/js/home-extras.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/theme-color.js"></script>
 </body>
 </html>
