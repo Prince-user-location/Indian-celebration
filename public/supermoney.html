@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Supermoney Card - Indian Celebration</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: #0f1111; color: #fff; margin: 0; padding: 0; font-family: var(--font-main); }
+        
+        /* HEADER */
+        .sm-header { display: flex; align-items: center; padding: 15px; position: sticky; top: 0; z-index: 100; background: #0f1111; }
+        .sm-header svg { fill: #fff; cursor: pointer; margin-right: 15px; }
+        .sm-header h2 { font-size: 18px; font-weight: 600; margin: 0; color: #fff; }
+        
+        /* HERO SECTION */
+        .sm-hero { padding: 20px 15px 40px 15px; text-align: center; }
+        
+        /* 3D CREDIT CARD */
+        .card-visual {
+            width: 100%; max-width: 320px; height: 200px; margin: 0 auto 30px auto;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 20px; padding: 25px; position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: left; overflow: hidden;
+        }
+        .card-visual::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(40,116,240,0.2) 0%, transparent 60%);
+            transform: rotate(30deg); pointer-events: none;
+        }
+        .card-logo { font-size: 20px; font-weight: 800; font-style: italic; color: #fff; margin-bottom: 30px; }
+        .card-chip { width: 40px; height: 30px; background: linear-gradient(135deg, #eab308, #ca8a04); border-radius: 6px; margin-bottom: 20px; position: relative; }
+        .card-chip::before { content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 1px; background: rgba(0,0,0,0.2); }
+        .card-number { font-size: 18px; letter-spacing: 3px; font-weight: 600; color: #f8fafc; margin-bottom: 15px; font-family: monospace; }
+        .card-details { display: flex; justify-content: space-between; font-size: 10px; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;}
+        .card-details div span { display: block; color: #fff; font-size: 12px; font-weight: 600; margin-top: 2px; letter-spacing: normal; }
+
+        .sm-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 10px; line-height: 1.2; }
+        .sm-subtitle { font-size: 14px; color: #94a3b8; margin-bottom: 30px; line-height: 1.5; }
+        
+        .sm-apply-btn { background: linear-gradient(90deg, #2874f0, #1e40af); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(40,116,240,0.3); }
+
+        /* FEATURES SECTION */
+        .sm-features { background: #f8fafc; color: #0f1111; border-radius: 24px 24px 0 0; padding: 30px 20px; min-height: 50vh; }
+        .sm-section-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: #0f1111; }
+        
+        .feature-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 25px; background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; }
+        .feature-icon { width: 40px; height: 40px; background: #e3f2fd; border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+        .feature-icon svg { width: 20px; height: 20px; fill: #2874f0; }
+        .feature-text h4 { font-size: 15px; font-weight: 700; color: #0f1111; margin-bottom: 4px; }
+        .feature-text p { font-size: 12px; color: #565959; line-height: 1.4; margin: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="sm-header">
+        <div onclick="window.location.href='profile.html'"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></div>
+        <h2>Supermoney</h2>
+    </div>
+
+    <div class="sm-hero">
+        <!-- VIRTUAL CREDIT CARD -->
+        <div class="card-visual">
+            <div class="card-logo">Supermoney</div>
+            <div class="card-chip"></div>
+            <div class="card-number">•••• •••• •••• 4921</div>
+            <div class="card-details">
+                <div>Card Holder <span>PRINCE KUMAR</span></div>
+                <div>Valid Thru <span>12/28</span></div>
+            </div>
+        </div>
+
+        <h1 class="sm-title">Get 1% Cashback on Every UPI Transaction.</h1>
+        <p class="sm-subtitle">Pre-approved Supermoney Credit Card with up to ₹2 Lakh limit. No joining fees, lifetime free.</p>
+        
+        <button class="sm-apply-btn" onclick="applyNow()">Apply Now</button>
+    </div>
+
+    <div class="sm-features">
+        <h2 class="sm-section-title">Why choose Supermoney?</h2>
+        
+        <div class="feature-item">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div>
+            <div class="feature-text">
+                <h4>1% Cashback on UPI</h4>
+                <p>Pay via your Supermoney UPI and get instant cashback on every transaction.</p>
+            </div>
+        </div>
+
+        <div class="feature-item">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-8-2h2v-4h4v-2h-4V7h-2v4H7v2h4z"/></svg></div>
+            <div class="feature-text">
+                <h4>Lifetime Free Card</h4>
+                <p>No joining fee, no annual fee. What you earn is 100% yours to keep.</p>
+            </div>
+        </div>
+
+        <div class="feature-item">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+            <div class="feature-text">
+                <h4>100% Secure Transactions</h4>
+                <p>Built with advanced security features to protect your money and data 24/7.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function applyNow() {
+            alert("🎉 Congratulations! Your Supermoney Card application is under process. We will notify you soon.");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+/* AMAZON STYLE SEARCH BAR CSS */
+.amazon-search-wrapper {
+    padding: 5px 15px 12px 15px;
+    width: 100%;
+}
+
+.amazon-search-box {
+    display: flex;
+    align-items: center;
+    background: #f3f3f3; /* Amazon Light Grey */
+    border: 1px solid #d5d9d9;
+    border-radius: 50px; /* Pill Shape */
+    padding: 8px 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+}
+
+.amazon-search-box:focus-within {
+    background: #ffffff;
+    border-color: #2874f0;
+    box-shadow: 0 2px 8px rgba(40, 116, 240, 0.2);
+}
+
+.amazon-search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    color: #0f1111;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.amazon-search-box input::placeholder {
+    color: #777;
+    font-weight: 400;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    fill: #333;
+}
+
+.action-icon {
+    width: 24px;
+    height: 24px;
+    fill: #333;
+    cursor: pointer;
+    margin-left: 12px;
+}
+
+.action-icon:active {
+    fill: #2874f0;
+    transform: scale(0.9);
+}
