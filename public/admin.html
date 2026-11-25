@@ -86,14 +86,12 @@
                 <button id="addBtn" onclick="showForm()" style="background:#6366f1; color:white; border:none; padding:10px 15px; border-radius:6px; font-weight:bold; display:none;">+ Add New</button>
             </div>
 
-            <!-- APP SETTINGS UI -->
             <div id="settingsArea" style="display:none;">
                 <h2 style="font-size:18px; margin-bottom:15px; color:#0b2240;">Update Website Icons & Banners</h2>
                 <div class="settings-grid" id="settingsGrid"></div>
                 <button class="btn-save-settings" onclick="saveSettings()">Save All Settings</button>
             </div>
 
-            <!-- PRODUCT FORM -->
             <div class="form-modal" id="addForm">
                 <form id="itemForm">
                     <input type="hidden" id="itemId">
@@ -172,8 +170,9 @@
                 appSettings = await res.json();
                 
                 const iconConfigs = [
-                    { key: 'offlineImg', name: 'Offline Dog Image' }, // NAYA
-                    { key: 'profileBanner', name: 'Profile Banner' },
+                    { key: 'supermoneyImg', name: 'Supermoney Card Img', isBanner: true }, 
+                    { key: 'offlineImg', name: 'Offline Dog Image', isBanner: true }, 
+                    { key: 'profileBanner', name: 'Profile Banner', isBanner: true },
                     { key: 'tabWeekly', name: 'Weekly Tab' },
                     { key: 'tabTravel', name: 'Travel Tab' },
                     { key: 'tabValue365', name: 'Value 365 Tab' },
@@ -193,11 +192,11 @@
                 let html = '';
                 iconConfigs.forEach(cfg => {
                     const currentImg = appSettings[cfg.key] || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-                    const isBanner = cfg.key === 'profileBanner' || cfg.key === 'offlineImg';
+                    const isBanner = cfg.isBanner || false;
                     
                     html += `
                         <div class="setting-card" style="${isBanner ? 'grid-column: span 2;' : ''}">
-                            <img src="${currentImg}" id="preview_${cfg.key}" style="${isBanner ? 'width:100%; height:80px;' : ''}">
+                            <img src="${currentImg}" id="preview_${cfg.key}" style="${isBanner ? 'width:100%; height:80px; object-fit:cover;' : ''}">
                             <label>${cfg.name}</label>
                             <input type="file" id="input_${cfg.key}" accept="image/*" onchange="previewImage(this, '${cfg.key}')">
                             <div class="btn-upload" onclick="document.getElementById('input_${cfg.key}').click()">Upload</div>
@@ -212,7 +211,11 @@
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById(`preview_${key}`).src = e.target.result;
+                    const img = document.getElementById(`preview_${key}`);
+                    img.src = e.target.result;
+                    if(key === 'supermoneyImg' || key === 'profileBanner' || key === 'offlineImg') {
+                        img.style.objectFit = 'cover';
+                    }
                 }
                 reader.readAsDataURL(input.files[0]);
             }
@@ -220,7 +223,7 @@
 
         async function saveSettings() {
             const formData = new FormData();
-            const keys = ['offlineImg', 'profileBanner', 'tabWeekly', 'tabTravel', 'tabValue365', 'tabGifts', 'iconAccount', 'iconHelp', 'iconCart', 'catGrocery', 'catBoy', 'catChildren', 'catMan', 'catElectronics', 'catFestival', 'catDailyUses'];
+            const keys = ['supermoneyImg', 'offlineImg', 'profileBanner', 'tabWeekly', 'tabTravel', 'tabValue365', 'tabGifts', 'iconAccount', 'iconHelp', 'iconCart', 'catGrocery', 'catBoy', 'catChildren', 'catMan', 'catElectronics', 'catFestival', 'catDailyUses'];
             
             let hasFile = false;
             keys.forEach(key => {
@@ -249,14 +252,9 @@
             preview.innerHTML = '';
             Array.from(e.target.files).forEach(file => {
                 if(file.type.startsWith('image/')) {
-                    const img = document.createElement('img');
-                    img.src = URL.createObjectURL(file);
-                    preview.appendChild(img);
+                    const img = document.createElement('img'); img.src = URL.createObjectURL(file); preview.appendChild(img);
                 } else if(file.type.startsWith('video/')) {
-                    const vid = document.createElement('video');
-                    vid.src = URL.createObjectURL(file);
-                    vid.muted = true;
-                    preview.appendChild(vid);
+                    const vid = document.createElement('video'); vid.src = URL.createObjectURL(file); vid.muted = true; preview.appendChild(vid);
                 }
             });
         });
@@ -304,13 +302,11 @@
         async function loadList() {
             const container = document.getElementById('listContainer');
             container.innerHTML = 'Loading...';
-
             try {
                 if(currentTab === 'orders') {
                     const res = await fetch(`${API_URL}/api/orders`);
                     const orders = await res.json();
                     if(orders.length === 0) { container.innerHTML = '<p style="text-align:center;">No orders yet.</p>'; return; }
-                    
                     container.innerHTML = orders.map(o => `
                         <div class="list-card" style="flex-direction: column; align-items: flex-start;">
                             <div style="display:flex; justify-content:space-between; width:100%; border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:5px;">
@@ -325,12 +321,8 @@
                 else if(currentTab === 'banner' || currentTab === 'halfbanner') {
                     const res = await fetch(`${API_URL}/api/banners`);
                     let banners = await res.json();
-                    
-                    if(currentTab === 'halfbanner') { banners = banners.filter(b => b.type === 'half'); } 
-                    else { banners = banners.filter(b => b.type !== 'half'); }
-
+                    if(currentTab === 'halfbanner') { banners = banners.filter(b => b.type === 'half'); } else { banners = banners.filter(b => b.type !== 'half'); }
                     if(banners.length === 0) { container.innerHTML = '<p style="text-align:center;">No banners found.</p>'; return; }
-
                     container.innerHTML = banners.map(b => `
                         <div class="list-card">
                             <div style="display:flex; align-items:center; gap:10px;">
@@ -345,17 +337,12 @@
                     const res = await fetch(`${API_URL}/api/products`);
                     let products = await res.json();
                     const filtered = products.filter(p => p.category === currentTab);
-
                     if(filtered.length === 0) { container.innerHTML = '<p style="text-align:center;">No products found.</p>'; return; }
-
                     container.innerHTML = filtered.map(p => `
                         <div class="list-card">
                             <div style="display:flex; align-items:center; gap:10px;">
                                 <img src="${p.imageUrl}" style="width:50px; height:50px; object-fit:contain; border-radius:6px;">
-                                <div>
-                                    <div style="font-size:14px; font-weight:bold;">${p.name}</div>
-                                    <div style="font-size:12px; color:#666;">₹${p.price} | Stock: ${p.stock}</div>
-                                </div>
+                                <div><div style="font-size:14px; font-weight:bold;">${p.name}</div><div style="font-size:12px; color:#666;">₹${p.price} | Stock: ${p.stock}</div></div>
                             </div>
                             <div style="display:flex; gap:5px;">
                                 <button onclick="editItem('${p._id}')" style="background:#f1f5f9; border:none; padding:6px 10px; border-radius:6px; font-weight:bold;">Edit</button>
@@ -364,9 +351,7 @@
                         </div>
                     `).join('');
                 }
-            } catch(e) { 
-                container.innerHTML = 'Error loading data.'; 
-            }
+            } catch(e) { container.innerHTML = 'Error loading data.'; }
         }
 
         async function deleteItem(type, id) {

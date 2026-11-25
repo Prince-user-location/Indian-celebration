@@ -8,31 +8,37 @@
     <style>
         body { background: #0f1111; color: #fff; margin: 0; padding: 0; font-family: var(--font-main); }
         
-        /* HEADER */
         .sm-header { display: flex; align-items: center; padding: 15px; position: sticky; top: 0; z-index: 100; background: #0f1111; }
         .sm-header svg { fill: #fff; cursor: pointer; margin-right: 15px; }
         .sm-header h2 { font-size: 18px; font-weight: 600; margin: 0; color: #fff; }
         
-        /* HERO SECTION */
         .sm-hero { padding: 20px 15px 40px 15px; text-align: center; }
         
-        /* 3D CREDIT CARD */
+        /* DYNAMIC CARD CONTAINER */
         .card-visual {
             width: 100%; max-width: 320px; height: 200px; margin: 0 auto 30px auto;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border-radius: 20px; padding: 25px; position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.1);
-            text-align: left; overflow: hidden;
+            border-radius: 20px; position: relative; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(135deg, #1e293b, #0f172a); /* Fallback */
         }
-        .card-visual::after {
+        
+        /* Image inside the card container */
+        .card-visual img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        /* Default CSS Card (Agar Admin image na daale toh ye dikhega) */
+        .css-card {
+            width: 100%; height: 100%; padding: 25px; text-align: left; position: relative;
+        }
+        .css-card::after {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(40,116,240,0.2) 0%, transparent 60%);
             transform: rotate(30deg); pointer-events: none;
         }
         .card-logo { font-size: 20px; font-weight: 800; font-style: italic; color: #fff; margin-bottom: 30px; }
         .card-chip { width: 40px; height: 30px; background: linear-gradient(135deg, #eab308, #ca8a04); border-radius: 6px; margin-bottom: 20px; position: relative; }
-        .card-chip::before { content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 1px; background: rgba(0,0,0,0.2); }
         .card-number { font-size: 18px; letter-spacing: 3px; font-weight: 600; color: #f8fafc; margin-bottom: 15px; font-family: monospace; }
         .card-details { display: flex; justify-content: space-between; font-size: 10px; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;}
         .card-details div span { display: block; color: #fff; font-size: 12px; font-weight: 600; margin-top: 2px; letter-spacing: normal; }
@@ -42,7 +48,6 @@
         
         .sm-apply-btn { background: linear-gradient(90deg, #2874f0, #1e40af); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(40,116,240,0.3); }
 
-        /* FEATURES SECTION */
         .sm-features { background: #f8fafc; color: #0f1111; border-radius: 24px 24px 0 0; padding: 30px 20px; min-height: 50vh; }
         .sm-section-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: #0f1111; }
         
@@ -61,21 +66,24 @@
     </div>
 
     <div class="sm-hero">
-        <!-- VIRTUAL CREDIT CARD -->
-        <div class="card-visual">
-            <div class="card-logo">Supermoney</div>
-            <div class="card-chip"></div>
-            <div class="card-number">•••• •••• •••• 4921</div>
-            <div class="card-details">
-                <div>Card Holder <span>PRINCE KUMAR</span></div>
-                <div>Valid Thru <span>12/28</span></div>
+        <!-- DYNAMIC CARD AREA -->
+        <div class="card-visual" id="cardVisualContainer">
+            <!-- Default CSS Card (Agar image nahi hai) -->
+            <div class="css-card" id="defaultCssCard">
+                <div class="card-logo">Supermoney</div>
+                <div class="card-chip"></div>
+                <div class="card-number">•••• •••• •••• 4921</div>
+                <div class="card-details">
+                    <div>Card Holder <span>PRINCE KUMAR</span></div>
+                    <div>Valid Thru <span>12/28</span></div>
+                </div>
             </div>
         </div>
 
         <h1 class="sm-title">Get 1% Cashback on Every UPI Transaction.</h1>
         <p class="sm-subtitle">Pre-approved Supermoney Credit Card with up to ₹2 Lakh limit. No joining fees, lifetime free.</p>
         
-        <button class="sm-apply-btn" onclick="applyNow()">Apply Now</button>
+        <button class="sm-apply-btn" onclick="alert('🎉 Application submitted!')">Apply Now</button>
     </div>
 
     <div class="sm-features">
@@ -96,20 +104,21 @@
                 <p>No joining fee, no annual fee. What you earn is 100% yours to keep.</p>
             </div>
         </div>
-
-        <div class="feature-item">
-            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
-            <div class="feature-text">
-                <h4>100% Secure Transactions</h4>
-                <p>Built with advanced security features to protect your money and data 24/7.</p>
-            </div>
-        </div>
     </div>
 
     <script>
-        function applyNow() {
-            alert("🎉 Congratulations! Your Supermoney Card application is under process. We will notify you soon.");
-        }
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch('/api/settings');
+                const settings = await res.json();
+                
+                // Agar Admin ne supermoneyImg upload ki hai
+                if(settings.supermoneyImg) {
+                    const container = document.getElementById('cardVisualContainer');
+                    container.innerHTML = `<img src="${settings.supermoneyImg}" alt="Supermoney Card">`;
+                }
+            } catch(e) { console.log("Error fetching card settings", e); }
+        });
     </script>
 </body>
 </html>
