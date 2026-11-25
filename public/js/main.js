@@ -1,4 +1,4 @@
-const API_URL = "";
+const API_URL = ""; 
 let allProducts = [];
 let allBanners = [];
 let appSettings = {};
@@ -7,72 +7,49 @@ let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 let wishlist = [];
 const defaultBanner = "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=800";
 
-// ================= INITIALIZE SEARCH BAR =================
+// ================= INITIALIZE =================
 document.addEventListener('DOMContentLoaded', () => {
     if(typeof renderSearchBar === 'function') {
         renderSearchBar('search-bar-container');
     }
 });
 
-// ================= OFFLINE CHECK =================
 window.addEventListener('offline', () => { window.location.href = '/offline.html'; });
 
 window.addEventListener('load', () => {
-    if (!navigator.onLine) {
-        window.location.href = '/offline.html';
-        return;
-    }
+    if (!navigator.onLine) { window.location.href = '/offline.html'; return; }
     let savedLoc = localStorage.getItem('user_location');
     if(savedLoc && document.getElementById('headerLocationText')) {
         document.getElementById('headerLocationText').innerText = savedLoc + ' >';
     }
 });
 
-// ================= LOCATION =================
-function openLocationModal() { document.getElementById('locationModal').classList.add('open'); }
-
-function saveLocation() {
-    const pin = document.getElementById('locPincode').value;
-    const city = document.getElementById('locCity').value;
-    if(!pin || !city) return alert("Please enter Pincode and City");
-    localStorage.setItem('user_location', `${city} - ${pin}`);
-    document.getElementById('headerLocationText').innerText = `${city} - ${pin} >`;
-    closeModal('locationModal');
-}
-
-// ================= SPLASH SCREEN =================
-setTimeout(() => {
-    const splash = document.getElementById('splash-screen');
-    if (splash) { splash.classList.add('fade-out'); setTimeout(() => { splash.style.display = 'none'; }, 500); }
-}, 2500);
-
-// ================= LOAD DATA (BULLETPROOF) =================
+// ================= LOAD DATA =================
 async function loadData() {
+    console.log("🔄 Fetching data from server...");
     try {
         // 1. Fetch Products
         const prodRes = await fetch(`${API_URL}/api/products?limit=30`);
-        if(prodRes.ok) {
-            let rawProducts = await prodRes.json();
-            allProducts = rawProducts.map(p => {
-                return {
-                    ...p,
-                    _id: p._id || p.id, 
-                    imageUrl: p.imageUrl || p.imageUrl1 || p.imageUrl2 || defaultBanner 
-                };
-            });
-        }
+        if(!prodRes.ok) throw new Error(`Products API failed (Status: ${prodRes.status})`);
+        let rawProducts = await prodRes.json();
+        console.log("✅ Products fetched:", rawProducts.length);
+
+        // Map _id and imageUrl
+        allProducts = rawProducts.map(p => ({
+            ...p,
+            _id: p._id || p.id, 
+            imageUrl: p.imageUrl || p.imageUrl1 || p.imageUrl2 || defaultBanner 
+        }));
 
         // 2. Fetch Banners
         const bannerRes = await fetch(`${API_URL}/api/banners`);
         if(bannerRes.ok) {
             let rawBanners = await bannerRes.json();
-            allBanners = rawBanners.map(b => {
-                return {
-                    ...b,
-                    _id: b._id || b.id,
-                    imageUrl: b.imageUrl || b.imageUrl1
-                };
-            });
+            allBanners = rawBanners.map(b => ({
+                ...b,
+                _id: b._id || b.id,
+                imageUrl: b.imageUrl || b.imageUrl1
+            }));
         }
 
         // 3. Fetch Settings
@@ -81,7 +58,7 @@ async function loadData() {
             appSettings = await settingsRes.json();
         }
 
-        // Apply Tab Icons
+        // Apply Icons
         const tabs = document.querySelectorAll('.tab-box');
         if(tabs.length >= 4 && appSettings) {
             if(appSettings.tabWeekly) tabs[0].querySelector('img').src = appSettings.tabWeekly;
@@ -89,8 +66,6 @@ async function loadData() {
             if(appSettings.tabValue365) tabs[2].querySelector('img').src = appSettings.tabValue365;
             if(appSettings.tabGifts) tabs[3].querySelector('img').src = appSettings.tabGifts;
         }
-
-        // Apply Header Icons
         if(appSettings) {
             const iconStyle = "width:24px; height:24px; object-fit:contain; background:transparent; display:block;";
             if(appSettings.iconAccount && document.getElementById('headerAccountBtn')) 
@@ -101,26 +76,34 @@ async function loadData() {
                 document.getElementById('headerCartBtn').innerHTML = `<img src="${appSettings.iconCart}" style="${iconStyle}">`;
         }
 
-        if(currentUser) { wishlist = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || []; }
-
         // RENDER UI
         if(allProducts.length > 0) {
-            try { renderHomePage(allProducts); } catch(e) { console.error("Home Render Error:", e); }
+            renderHomePage(allProducts);
         } else {
-            const dynamicContent = document.getElementById('dynamicContent');
-            if(dynamicContent) dynamicContent.innerHTML = `<div style="text-align:center; padding:40px; color:#666;">Abhi koi products available nahi hain.</div>`;
+            document.getElementById('dynamicContent').innerHTML = `<div style="text-align:center; padding:40px; color:#666;">Abhi koi products available nahi hain.</div>`;
         }
 
-        try { renderTopBanners(); } catch(e) { console.error("Banner Render Error:", e); }
-        
+        renderTopBanners();
         updateCartUI();
+        
         if (typeof startIndividualTimers === 'function') startIndividualTimers();
         if (typeof startVerticalBannerSwipe === 'function') startVerticalBannerSwipe();
 
     } catch (e) {
         console.error("❌ Data load error:", e);
         const dynamicContent = document.getElementById('dynamicContent');
-        if (dynamicContent) dynamicContent.innerHTML = `<div style="text-align:center; padding:40px 20px; color:red;">Server se connect nahi ho pa raha. Refresh karein.</div>`;
+        if (dynamicContent) {
+            dynamicContent.innerHTML = `
+                <div style="text-align:center; padding:40px 20px; color:red; font-family:sans-serif; background:#fff; border-radius:10px; margin:15px;">
+                    <h3 style="margin-bottom:10px;">Data Load Error!</h3>
+                    <p style="background:#ffe6e6; padding:10px; border-radius:8px; font-size:14px; word-break:break-all;">
+                        <b>${e.message}</b>
+                    </p>
+                    <p style="font-size:12px; color:#666;">Kripya F12 dabakar Console check karein.</p>
+                    <button onclick="window.location.reload()" style="margin-top:15px; padding:10px 20px; background:#2874f0; color:white; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Refresh Karein</button>
+                </div>
+            `;
+        }
     }
 }
 
@@ -175,21 +158,15 @@ function renderHomePage(products) {
     homeProducts.slice(0, 10).forEach((p, index) => { html += generateCardHtml(p, index === 1); });
     html += `</div>`;
 
-    if (typeof getAmazonAutoHTML === 'function') { html += getAmazonAutoHTML(products); }
     html += createVerticalHalfBanner(0, 3000);
-
     html += createCategorySection("Boy Fashion", "boy_fashion");
     html += createCategorySection("Children Fashion", "children_fashion");
     html += createCategorySection("Man Fashion", "man_fashion");
     html += createCategorySection("Women's Clothes", "clothes");
-
-    if (typeof getAmazonAutoHTML === 'function') { html += getAmazonAutoHTML(products); }
     html += createVerticalHalfBanner(1, 4500);
-
     html += createCategorySection("Buy for Electronics", "electronics");
     html += createCategorySection("Our Festival", "festival");
     html += createCategorySection("Grocery Essentials", "minutes");
-
     html += createVerticalHalfBanner(2, 6000);
     html += createCategorySection("Daily Uses", "daily_uses");
 
@@ -201,7 +178,6 @@ function renderHomePage(products) {
     }
 
     container.innerHTML = html;
-    if (typeof startIndividualTimers === 'function') startIndividualTimers();
 }
 
 // ================= CARDS & BANNERS =================
@@ -229,22 +205,6 @@ function renderTopBanners() {
         idx = (idx + 1) % topBanners.length;
         slider.style.transform = `translateX(-${idx * 100}%)`;
     }, 3000);
-}
-
-function startVerticalBannerSwipe() {
-    const containers = document.querySelectorAll('.vertical-slider-container');
-    containers.forEach(container => {
-        const track = container.querySelector('.vertical-slider-track');
-        if(!track) return;
-        const slides = track.querySelectorAll('.vertical-slide');
-        if(slides.length <= 1) return;
-        let index = 0;
-        let delay = parseInt(container.getAttribute('data-delay')) || 3000;
-        setInterval(() => {
-            index = (index + 1) % slides.length;
-            track.style.transform = `translateY(-${index * 90}px)`;
-        }, delay);
-    });
 }
 
 function generateCardHtml(p, isBestSeller) {
@@ -285,24 +245,12 @@ function generateCardHtml(p, isBestSeller) {
     `;
 }
 
-// ================= NAVIGATION & UTILS (PATHS FIXED) =================
+// ================= NAVIGATION & UTILS =================
 function openProductPage(id) { window.location.href = `/product.html?id=${id}`; }
 function goHome() { window.location.href = '/index.html'; }
-function handleProfileClick() { window.location.href = '/profile.html'; } // FIX: Slash added
+function handleProfileClick() { window.location.href = '/profile.html'; }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function redirectToProduct() { if (allProducts && allProducts.length > 0) window.location.href = `/product.html?id=${allProducts[0]._id}`; }
-
-function switchCategory(cat, el) {
-    document.querySelectorAll('.cat-menu-item').forEach(c => c.classList.remove('active'));
-    if(el) el.classList.add('active');
-    const filtered = allProducts.filter(p => p.category === cat);
-    const grid = document.getElementById('categoryGrid');
-    if(!grid) return;
-    if(filtered.length === 0) { grid.innerHTML = '<p style="grid-column: span 2; text-align:center; padding:20px;">No products found.</p>'; return; }
-    let html = '';
-    filtered.forEach((p) => { html += generateCardHtml(p, false); });
-    grid.innerHTML = html;
-}
 
 // ================= CART & AUTH =================
 function openCart() { document.getElementById('cartModal').classList.add('open'); updateCartUI(); }
@@ -320,10 +268,7 @@ function addToCart(id) {
     updateCartUI();
 }
 
-function buyNowDirect(id) {
-    addToCart(id);
-    window.location.href = '/index.html?checkout=true';
-}
+function buyNowDirect(id) { addToCart(id); window.location.href = '/index.html?checkout=true'; }
 
 function updateCartUI() {
     cart = JSON.parse(localStorage.getItem('diwali_cart')) || [];
@@ -351,49 +296,7 @@ function updateCartUI() {
     document.getElementById('cartTotal').innerText = `₹${totalPrice}`;
 }
 
-function removeFromCart(index) {
-    cart.splice(index, 1);
-    localStorage.setItem('diwali_cart', JSON.stringify(cart));
-    updateCartUI();
-}
-
-function switchAuthTab(tab) {
-    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
-    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
-    document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
-    document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
-}
-
-function handleRegister(e) {
-    e.preventDefault();
-    const name = document.getElementById('regName').value;
-    const phone = document.getElementById('regPhone').value;
-    const email = document.getElementById('regEmail').value;
-    const password = document.getElementById('regPassword').value;
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-    if(users.find(u => u.email === email)) return alert("Email already registered!");
-    users.push({ name, phone, email, password });
-    localStorage.setItem('users', JSON.stringify(users));
-    alert("✅ Registration Successful! Please login.");
-    switchAuthTab('login');
-    document.getElementById('loginEmail').value = email;
-}
-
-function handleLogin(e) {
-    e.preventDefault();
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(u => u.email === email && u.password === password);
-    if(user) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        currentUser = user;
-        alert("✅ Login Successful!");
-        window.location.href = '/profile.html';
-    } else {
-        alert("❌ Invalid email or password!");
-    }
-}
+function removeFromCart(index) { cart.splice(index, 1); localStorage.setItem('diwali_cart', JSON.stringify(cart)); updateCartUI(); }
 
 // Initialize App
 loadData();
