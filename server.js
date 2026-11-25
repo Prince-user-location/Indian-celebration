@@ -10,6 +10,7 @@ const cloudinary = require('cloudinary').v2;
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Cloudinary Config
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -23,8 +24,11 @@ app.use(compression());
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d' }));
 
+// FIXED: Static files serve ho rahi hain (MaxAge hata diya taaki local mein testing mein cache issue na aaye)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("✅ MongoDB Connected Successfully!"))
     .catch(err => console.log("❌ DB Error:", err));
@@ -50,24 +54,23 @@ const Order = mongoose.model('Order', new mongoose.Schema({
     exactTime: { type: String, default: new Date().toLocaleString('en-IN') }
 }));
 
-// App Settings Schema (Including supermoneyImg)
 const AppSettings = mongoose.model('AppSettings', new mongoose.Schema({
     offlineImg: { type: String, default: "https://cdn-icons-png.flaticon.com/512/5779/5779125.png" },
     profileBanner: { type: String, default: "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=800" },
-    supermoneyImg: { type: String, default: "" }, 
-    tabWeekly: { type: String, default: "" }, 
+    supermoneyImg: { type: String, default: "" },
+    tabWeekly: { type: String, default: "" },
     tabTravel: { type: String, default: "" },
-    tabValue365: { type: String, default: "" }, 
+    tabValue365: { type: String, default: "" },
     tabGifts: { type: String, default: "" },
-    iconAccount: { type: String, default: "" }, 
-    iconHelp: { type: String, default: "" }, 
+    iconAccount: { type: String, default: "" },
+    iconHelp: { type: String, default: "" },
     iconCart: { type: String, default: "" },
-    catGrocery: { type: String, default: "" }, 
+    catGrocery: { type: String, default: "" },
     catBoy: { type: String, default: "" },
-    catChildren: { type: String, default: "" }, 
+    catChildren: { type: String, default: "" },
     catMan: { type: String, default: "" },
-    catElectronics: { type: String, default: "" }, 
-    catFestival: { type: String, default: "" }, 
+    catElectronics: { type: String, default: "" },
+    catFestival: { type: String, default: "" },
     catDailyUses: { type: String, default: "" }
 }));
 
@@ -76,15 +79,15 @@ function uploadToCloudinary(fileBuffer, mimetype, isIcon = false) {
     return new Promise((resolve, reject) => {
         const isVideo = mimetype.startsWith('video');
         const options = { folder: 'indian-celebration', resource_type: isVideo ? 'video' : 'image' };
-        
-        if (!isVideo && !isIcon) { 
-            options.fetch_format = 'auto'; options.quality = 'auto:good'; options.width = 800; options.crop = 'limit'; 
-        } else if (isIcon) { 
-            options.fetch_format = 'auto'; options.quality = 'auto:good'; options.width = 400; options.crop = 'limit'; 
+
+        if (!isVideo && !isIcon) {
+            options.fetch_format = 'auto'; options.quality = 'auto:good'; options.width = 800; options.crop = 'limit';
+        } else if (isIcon) {
+            options.fetch_format = 'auto'; options.quality = 'auto:good'; options.width = 400; options.crop = 'limit';
         }
 
-        const stream = cloudinary.uploader.upload_stream(options, (error, result) => { 
-            if (error) reject(error); else resolve(result); 
+        const stream = cloudinary.uploader.upload_stream(options, (error, result) => {
+            if (error) reject(error); else resolve(result);
         });
         stream.end(fileBuffer);
     });
@@ -103,26 +106,26 @@ app.get('/api/settings', async (req, res) => {
 
 // Update Settings
 app.post('/api/admin/settings', upload.fields([
-    { name: 'offlineImg', maxCount: 1 }, 
-    { name: 'profileBanner', maxCount: 1 }, 
+    { name: 'offlineImg', maxCount: 1 },
+    { name: 'profileBanner', maxCount: 1 },
     { name: 'supermoneyImg', maxCount: 1 },
-    { name: 'tabWeekly', maxCount: 1 }, { name: 'tabTravel', maxCount: 1 }, 
+    { name: 'tabWeekly', maxCount: 1 }, { name: 'tabTravel', maxCount: 1 },
     { name: 'tabValue365', maxCount: 1 }, { name: 'tabGifts', maxCount: 1 },
     { name: 'iconAccount', maxCount: 1 }, { name: 'iconHelp', maxCount: 1 }, { name: 'iconCart', maxCount: 1 },
-    { name: 'catGrocery', maxCount: 1 }, { name: 'catBoy', maxCount: 1 }, { name: 'catChildren', maxCount: 1 }, 
+    { name: 'catGrocery', maxCount: 1 }, { name: 'catBoy', maxCount: 1 }, { name: 'catChildren', maxCount: 1 },
     { name: 'catMan', maxCount: 1 }, { name: 'catElectronics', maxCount: 1 }, { name: 'catFestival', maxCount: 1 }, { name: 'catDailyUses', maxCount: 1 }
 ]), async (req, res) => {
     try {
         let settings = await AppSettings.findOne();
         if (!settings) settings = new AppSettings();
-        
+
         const keys = [
-            'offlineImg', 'profileBanner', 'supermoneyImg', 
-            'tabWeekly', 'tabTravel', 'tabValue365', 'tabGifts', 
-            'iconAccount', 'iconHelp', 'iconCart', 
+            'offlineImg', 'profileBanner', 'supermoneyImg',
+            'tabWeekly', 'tabTravel', 'tabValue365', 'tabGifts',
+            'iconAccount', 'iconHelp', 'iconCart',
             'catGrocery', 'catBoy', 'catChildren', 'catMan', 'catElectronics', 'catFestival', 'catDailyUses'
         ];
-        
+
         for (let key of keys) {
             if (req.files && req.files[key]) {
                 const result = await uploadToCloudinary(req.files[key][0].buffer, req.files[key][0].mimetype, true);
@@ -137,7 +140,7 @@ app.post('/api/admin/settings', upload.fields([
 // Get Products
 app.get('/api/products', async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 30; 
+        const limit = parseInt(req.query.limit) || 30;
         res.json(await Product.find().sort({ _id: -1 }).limit(limit));
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
@@ -152,7 +155,7 @@ app.post('/api/product/view/:id', async (req, res) => {
 
 // Get Banners
 app.get('/api/banners', async (req, res) => {
-    try { res.json(await Banner.find().sort({ _id: -1 })); } 
+    try { res.json(await Banner.find().sort({ _id: -1 })); }
     catch (err) { res.status(500).json({ error: err.message }); }
 });
 
@@ -173,7 +176,7 @@ app.post('/api/order', async (req, res) => {
 
 // Get Orders
 app.get('/api/orders', async (req, res) => {
-    try { res.json(await Order.find().sort({ _id: -1 })); } 
+    try { res.json(await Order.find().sort({ _id: -1 })); }
     catch (err) { res.status(500).json({ error: err.message }); }
 });
 
@@ -201,7 +204,7 @@ app.put('/api/admin/order/:id/tracking', async (req, res) => {
 app.post('/api/admin/product', upload.array('images', 5), async (req, res) => {
     try {
         const { name, price, oldPrice, category, description, timerHours, deliveryDate, stock } = req.body;
-        let images = []; 
+        let images = [];
         let mainMediaType = 'image';
 
         if (req.files && req.files.length > 0) {
@@ -214,7 +217,7 @@ app.post('/api/admin/product', upload.array('images', 5), async (req, res) => {
         }
 
         let timerEnd = (timerHours && timerHours > 0) ? Date.now() + (timerHours * 60 * 60 * 1000) : null;
-        
+
         const newProduct = new Product({
             name, price, oldPrice, category, description, deliveryDate, stock,
             imageUrl: images[0] ? images[0].url : '',
@@ -233,14 +236,14 @@ app.post('/api/admin/banner', upload.single('image'), async (req, res) => {
     try {
         const { type } = req.body;
         if (!req.file) return res.status(400).json({ error: "No file provided" });
-        
+
         const result = await uploadToCloudinary(req.file.buffer, req.file.mimetype, false);
         const mediaType = req.file.mimetype.startsWith('video') ? 'video' : 'image';
-        
+
         const newBanner = new Banner({
-            imageUrl: result.secure_url, 
+            imageUrl: result.secure_url,
             mediaType: mediaType,
-            imagePublicId: result.public_id, 
+            imagePublicId: result.public_id,
             type: type || 'top'
         });
         await newBanner.save();
@@ -276,13 +279,21 @@ app.delete('/api/admin/banner/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// Catch-all route
-app.get(/.*/, (req, res) => {
-    if (!req.path.startsWith('/api')) {
-        res.sendFile(path.join(__dirname, 'public', 'index.html'));
-    } else {
-        res.status(404).json({ error: "API route not found" });
+// ================= CATCH-ALL ROUTE (SABSE BADA FIX) =================
+// Ye route ab /profile.html ko redirect nahi karega, balki file na milne par hi index.html bhejega
+app.use((req, res) => {
+    // Agar API route miss ho gaya
+    if (req.path.startsWith('/api')) {
+        return res.status(404).json({ error: "API route not found" });
     }
+    
+    // Agar user koi aisi file maang raha hai jo exist nahi karti (jaise /profile.html galat spelling se)
+    if (path.extname(req.path).length > 0) {
+        return res.status(404).send(`<h1>404 - File Not Found</h1><p>Bhai, ye file (${req.path}) public folder mein nahi mili.</p>`);
+    }
+    
+    // Warna Home Page (index.html) serve karo
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, () => {

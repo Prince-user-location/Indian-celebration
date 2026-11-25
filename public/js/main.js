@@ -1,7 +1,7 @@
 const API_URL = "";
 let allProducts = [];
 let allBanners = [];
-let appSettings = {}; 
+let appSettings = {};
 let cart = JSON.parse(localStorage.getItem('diwali_cart')) || [];
 let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 let wishlist = [];
@@ -15,11 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ================= OFFLINE CHECK =================
-window.addEventListener('offline', () => { window.location.href = 'offline.html'; });
+window.addEventListener('offline', () => { window.location.href = '/offline.html'; });
 
 window.addEventListener('load', () => {
     if (!navigator.onLine) {
-        window.location.href = 'offline.html';
+        window.location.href = '/offline.html';
         return;
     }
     let savedLoc = localStorage.getItem('user_location');
@@ -46,20 +46,40 @@ setTimeout(() => {
     if (splash) { splash.classList.add('fade-out'); setTimeout(() => { splash.style.display = 'none'; }, 500); }
 }, 2500);
 
-// ================= LOAD DATA =================
+// ================= LOAD DATA (BULLETPROOF) =================
 async function loadData() {
     try {
-        const [prodRes, bannerRes, settingsRes] = await Promise.all([
-            fetch(`${API_URL}/api/products?limit=30`), 
-            fetch(`${API_URL}/api/banners`),
-            fetch(`${API_URL}/api/settings`)
-        ]);
-        
-        if(!prodRes.ok || !bannerRes.ok || !settingsRes.ok) throw new Error("API Error");
+        // 1. Fetch Products
+        const prodRes = await fetch(`${API_URL}/api/products?limit=30`);
+        if(prodRes.ok) {
+            let rawProducts = await prodRes.json();
+            allProducts = rawProducts.map(p => {
+                return {
+                    ...p,
+                    _id: p._id || p.id, 
+                    imageUrl: p.imageUrl || p.imageUrl1 || p.imageUrl2 || defaultBanner 
+                };
+            });
+        }
 
-        allProducts = await prodRes.json();
-        allBanners = await bannerRes.json();
-        appSettings = await settingsRes.json();
+        // 2. Fetch Banners
+        const bannerRes = await fetch(`${API_URL}/api/banners`);
+        if(bannerRes.ok) {
+            let rawBanners = await bannerRes.json();
+            allBanners = rawBanners.map(b => {
+                return {
+                    ...b,
+                    _id: b._id || b.id,
+                    imageUrl: b.imageUrl || b.imageUrl1
+                };
+            });
+        }
+
+        // 3. Fetch Settings
+        const settingsRes = await fetch(`${API_URL}/api/settings`);
+        if(settingsRes.ok) {
+            appSettings = await settingsRes.json();
+        }
 
         // Apply Tab Icons
         const tabs = document.querySelectorAll('.tab-box');
@@ -73,24 +93,32 @@ async function loadData() {
         // Apply Header Icons
         if(appSettings) {
             const iconStyle = "width:24px; height:24px; object-fit:contain; background:transparent; display:block;";
-            if(appSettings.iconAccount) document.getElementById('headerAccountBtn').innerHTML = `<img src="${appSettings.iconAccount}" style="${iconStyle}">`;
-            if(appSettings.iconHelp) document.getElementById('headerHelpBtn').innerHTML = `<img src="${appSettings.iconHelp}" style="${iconStyle}">`;
-            if(appSettings.iconCart) document.getElementById('headerCartBtn').innerHTML = `<img src="${appSettings.iconCart}" style="${iconStyle}">`;
+            if(appSettings.iconAccount && document.getElementById('headerAccountBtn')) 
+                document.getElementById('headerAccountBtn').innerHTML = `<img src="${appSettings.iconAccount}" style="${iconStyle}">`;
+            if(appSettings.iconHelp && document.getElementById('headerHelpBtn')) 
+                document.getElementById('headerHelpBtn').innerHTML = `<img src="${appSettings.iconHelp}" style="${iconStyle}">`;
+            if(appSettings.iconCart && document.getElementById('headerCartBtn')) 
+                document.getElementById('headerCartBtn').innerHTML = `<img src="${appSettings.iconCart}" style="${iconStyle}">`;
         }
 
         if(currentUser) { wishlist = JSON.parse(localStorage.getItem('wishlist_' + currentUser.email)) || []; }
 
-        try { renderHomePage(allProducts); } catch(e) { console.error("Home Render Error:", e); }
+        // RENDER UI
+        if(allProducts.length > 0) {
+            try { renderHomePage(allProducts); } catch(e) { console.error("Home Render Error:", e); }
+        } else {
+            const dynamicContent = document.getElementById('dynamicContent');
+            if(dynamicContent) dynamicContent.innerHTML = `<div style="text-align:center; padding:40px; color:#666;">Abhi koi products available nahi hain.</div>`;
+        }
+
         try { renderTopBanners(); } catch(e) { console.error("Banner Render Error:", e); }
         
         updateCartUI();
-        startIndividualTimers();
-        startVerticalBannerSwipe(); 
+        if (typeof startIndividualTimers === 'function') startIndividualTimers();
+        if (typeof startVerticalBannerSwipe === 'function') startVerticalBannerSwipe();
 
     } catch (e) {
         console.error("❌ Data load error:", e);
-        if (!navigator.onLine) { window.location.href = 'offline.html'; return; }
-        
         const dynamicContent = document.getElementById('dynamicContent');
         if (dynamicContent) dynamicContent.innerHTML = `<div style="text-align:center; padding:40px 20px; color:red;">Server se connect nahi ho pa raha. Refresh karein.</div>`;
     }
@@ -105,12 +133,12 @@ function renderHomePage(products) {
 
     function createCategorySection(title, categoryKey) {
         const prods = products.filter(p => p.category === categoryKey);
-        if(prods.length === 0) return ''; 
+        if(prods.length === 0) return '';
         return `
             <div class="category-section" style="margin-bottom: 20px;">
                 <div class="category-header" style="display:flex; justify-content:space-between; padding: 0 15px; margin-bottom: 10px;">
                     <h3 style="font-size:18px; margin:0; font-weight:700;">${title}</h3>
-                    <span onclick="window.location.href='category.html'" style="font-size:13px; color:var(--primary-blue); font-weight:600;">View All ></span>
+                    <span onclick="window.location.href='/category.html'" style="font-size:13px; color:var(--primary-blue); font-weight:600;">View All ></span>
                 </div>
                 <div class="h-scroll" style="display:flex; overflow-x:auto; gap:10px; padding: 0 15px 10px 15px; scrollbar-width:none;">
                     ${prods.slice(0, 6).map(p => `<div style="min-width: 140px; max-width: 140px;">${generateCardHtml(p, false)}</div>`).join('')}
@@ -120,12 +148,12 @@ function renderHomePage(products) {
     }
 
     const allHalfBanners = allBanners.filter(b => b.type === 'half');
-    let bannerGroups = [[], [], []]; 
+    let bannerGroups = [[], [], []];
     allHalfBanners.forEach((b, index) => { bannerGroups[index % 3].push(b); });
 
     function createVerticalHalfBanner(groupIndex, delayTime) {
         const bannersForSlot = bannerGroups[groupIndex];
-        if(bannersForSlot.length === 0) return ''; 
+        if(bannersForSlot.length === 0) return '';
         let slidesHtml = '';
         bannersForSlot.forEach(b => {
             if(b.mediaType === 'video') {
@@ -142,27 +170,27 @@ function renderHomePage(products) {
     }
 
     const homeProducts = products.filter(p => p.category !== 'minutes' && p.category !== 'value365');
-    
+
     html += `<div class="grid">`;
     homeProducts.slice(0, 10).forEach((p, index) => { html += generateCardHtml(p, index === 1); });
     html += `</div>`;
 
     if (typeof getAmazonAutoHTML === 'function') { html += getAmazonAutoHTML(products); }
-    html += createVerticalHalfBanner(0, 3000); 
+    html += createVerticalHalfBanner(0, 3000);
 
     html += createCategorySection("Boy Fashion", "boy_fashion");
     html += createCategorySection("Children Fashion", "children_fashion");
     html += createCategorySection("Man Fashion", "man_fashion");
-    html += createCategorySection("Women's Clothes", "clothes"); 
+    html += createCategorySection("Women's Clothes", "clothes");
 
     if (typeof getAmazonAutoHTML === 'function') { html += getAmazonAutoHTML(products); }
-    html += createVerticalHalfBanner(1, 4500); 
+    html += createVerticalHalfBanner(1, 4500);
 
     html += createCategorySection("Buy for Electronics", "electronics");
     html += createCategorySection("Our Festival", "festival");
-    html += createCategorySection("Grocery Essentials", "minutes"); 
+    html += createCategorySection("Grocery Essentials", "minutes");
 
-    html += createVerticalHalfBanner(2, 6000); 
+    html += createVerticalHalfBanner(2, 6000);
     html += createCategorySection("Daily Uses", "daily_uses");
 
     if(homeProducts.length > 10) {
@@ -173,7 +201,7 @@ function renderHomePage(products) {
     }
 
     container.innerHTML = html;
-    startIndividualTimers();
+    if (typeof startIndividualTimers === 'function') startIndividualTimers();
 }
 
 // ================= CARDS & BANNERS =================
@@ -181,12 +209,12 @@ function renderTopBanners() {
     const slider = document.getElementById('slider');
     if(!slider) return;
     const topBanners = allBanners.filter(b => b.type !== 'half');
-    
-    if(!topBanners || topBanners.length === 0) { 
-        slider.innerHTML = `<img src="${defaultBanner}" alt="Banner">`; 
-        return; 
+
+    if(!topBanners || topBanners.length === 0) {
+        slider.innerHTML = `<img src="${defaultBanner}" alt="Banner">`;
+        return;
     }
-    
+
     slider.innerHTML = topBanners.map(b => {
         if (b.mediaType === 'video') {
             return `<video src="${b.imageUrl}" autoplay muted loop playsinline style="min-width:100%; height:100%; object-fit:cover;"></video>`;
@@ -207,8 +235,9 @@ function startVerticalBannerSwipe() {
     const containers = document.querySelectorAll('.vertical-slider-container');
     containers.forEach(container => {
         const track = container.querySelector('.vertical-slider-track');
+        if(!track) return;
         const slides = track.querySelectorAll('.vertical-slide');
-        if(slides.length <= 1) return; 
+        if(slides.length <= 1) return;
         let index = 0;
         let delay = parseInt(container.getAttribute('data-delay')) || 3000;
         setInterval(() => {
@@ -223,7 +252,7 @@ function generateCardHtml(p, isBestSeller) {
     const reviews = Math.floor(Math.random() * 2000) + 50;
     const oldPrice = p.oldPrice || p.price;
     const discount = Math.round(((oldPrice - p.price) / oldPrice) * 100) || 0;
-    
+
     let mediaHtml = '';
     if (p.mediaType === 'video') {
         mediaHtml = `<video src="${p.imageUrl}" class="card-video" autoplay muted loop playsinline></video>`;
@@ -256,57 +285,57 @@ function generateCardHtml(p, isBestSeller) {
     `;
 }
 
-// ================= NAVIGATION & UTILS =================
+// ================= NAVIGATION & UTILS (PATHS FIXED) =================
 function openProductPage(id) { window.location.href = `/product.html?id=${id}`; }
-function goHome() { window.location.href = 'index.html'; }
-function handleProfileClick() { window.location.href = 'profile.html'; }
+function goHome() { window.location.href = '/index.html'; }
+function handleProfileClick() { window.location.href = '/profile.html'; } // FIX: Slash added
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function redirectToProduct() { if (allProducts && allProducts.length > 0) window.location.href = `/product.html?id=${allProducts[0]._id}`; }
 
-function switchCategory(cat, el) { 
-    document.querySelectorAll('.cat-menu-item').forEach(c => c.classList.remove('active')); 
-    if(el) el.classList.add('active'); 
-    const filtered = allProducts.filter(p => p.category === cat); 
-    const grid = document.getElementById('categoryGrid'); 
+function switchCategory(cat, el) {
+    document.querySelectorAll('.cat-menu-item').forEach(c => c.classList.remove('active'));
+    if(el) el.classList.add('active');
+    const filtered = allProducts.filter(p => p.category === cat);
+    const grid = document.getElementById('categoryGrid');
     if(!grid) return;
-    if(filtered.length === 0) { grid.innerHTML = '<p style="grid-column: span 2; text-align:center; padding:20px;">No products found.</p>'; return; } 
-    let html = ''; 
-    filtered.forEach((p) => { html += generateCardHtml(p, false); }); 
-    grid.innerHTML = html; 
+    if(filtered.length === 0) { grid.innerHTML = '<p style="grid-column: span 2; text-align:center; padding:20px;">No products found.</p>'; return; }
+    let html = '';
+    filtered.forEach((p) => { html += generateCardHtml(p, false); });
+    grid.innerHTML = html;
 }
 
 // ================= CART & AUTH =================
 function openCart() { document.getElementById('cartModal').classList.add('open'); updateCartUI(); }
 function closeCart() { document.getElementById('cartModal').classList.remove('open'); }
 
-function addToCart(id) { 
-    const p = allProducts.find(x => x._id === id); 
-    if(!p) return; 
+function addToCart(id) {
+    const p = allProducts.find(x => x._id === id);
+    if(!p) return;
     if(p.stock <= 0) return alert("Out of Stock!");
-    const exist = cart.find(x => x._id === id); 
-    if(exist) exist.qty++; 
-    else cart.push({...p, qty: 1}); 
-    localStorage.setItem('diwali_cart', JSON.stringify(cart)); 
-    alert("✅ Added to Cart!"); 
-    updateCartUI(); 
+    const exist = cart.find(x => x._id === id);
+    if(exist) exist.qty++;
+    else cart.push({...p, qty: 1});
+    localStorage.setItem('diwali_cart', JSON.stringify(cart));
+    alert("✅ Added to Cart!");
+    updateCartUI();
 }
 
-function buyNowDirect(id) { 
-    addToCart(id); 
-    window.location.href = 'index.html?checkout=true'; 
+function buyNowDirect(id) {
+    addToCart(id);
+    window.location.href = '/index.html?checkout=true';
 }
 
-function updateCartUI() { 
-    cart = JSON.parse(localStorage.getItem('diwali_cart')) || []; 
-    const list = document.getElementById('cartList'); 
-    if(!list) return; 
-    let totalPrice = 0; 
-    list.innerHTML = ''; 
-    if(cart.length === 0) { 
-        list.innerHTML = '<p style="text-align:center; padding:20px; color:#777;">Your cart is empty.</p>'; 
-    } else { 
-        cart.forEach((item, index) => { 
-            totalPrice += item.price * item.qty; 
+function updateCartUI() {
+    cart = JSON.parse(localStorage.getItem('diwali_cart')) || [];
+    const list = document.getElementById('cartList');
+    if(!list) return;
+    let totalPrice = 0;
+    list.innerHTML = '';
+    if(cart.length === 0) {
+        list.innerHTML = '<p style="text-align:center; padding:20px; color:#777;">Your cart is empty.</p>';
+    } else {
+        cart.forEach((item, index) => {
+            totalPrice += item.price * item.qty;
             list.innerHTML += `
             <div class="cart-item">
                 <img src="${item.imageUrl}">
@@ -316,54 +345,54 @@ function updateCartUI() {
                     <div style="font-weight:700; margin-top:5px; color:var(--primary-blue);">₹${item.price * item.qty}</div>
                 </div>
                 <button onclick="removeFromCart(${index})" style="border:none; background:none; color:red; font-size:12px; cursor:pointer;">Remove</button>
-            </div>`; 
-        }); 
-    } 
-    document.getElementById('cartTotal').innerText = `₹${totalPrice}`; 
+            </div>`;
+        });
+    }
+    document.getElementById('cartTotal').innerText = `₹${totalPrice}`;
 }
 
-function removeFromCart(index) { 
-    cart.splice(index, 1); 
-    localStorage.setItem('diwali_cart', JSON.stringify(cart)); 
-    updateCartUI(); 
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    localStorage.setItem('diwali_cart', JSON.stringify(cart));
+    updateCartUI();
 }
 
-function switchAuthTab(tab) { 
-    document.getElementById('tab-login').classList.toggle('active', tab === 'login'); 
-    document.getElementById('tab-register').classList.toggle('active', tab === 'register'); 
-    document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none'; 
-    document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none'; 
+function switchAuthTab(tab) {
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+    document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
 }
 
-function handleRegister(e) { 
-    e.preventDefault(); 
-    const name = document.getElementById('regName').value; 
-    const phone = document.getElementById('regPhone').value; 
-    const email = document.getElementById('regEmail').value; 
-    const password = document.getElementById('regPassword').value; 
-    let users = JSON.parse(localStorage.getItem('users')) || []; 
-    if(users.find(u => u.email === email)) return alert("Email already registered!"); 
-    users.push({ name, phone, email, password }); 
-    localStorage.setItem('users', JSON.stringify(users)); 
-    alert("✅ Registration Successful! Please login."); 
-    switchAuthTab('login'); 
-    document.getElementById('loginEmail').value = email; 
+function handleRegister(e) {
+    e.preventDefault();
+    const name = document.getElementById('regName').value;
+    const phone = document.getElementById('regPhone').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    if(users.find(u => u.email === email)) return alert("Email already registered!");
+    users.push({ name, phone, email, password });
+    localStorage.setItem('users', JSON.stringify(users));
+    alert("✅ Registration Successful! Please login.");
+    switchAuthTab('login');
+    document.getElementById('loginEmail').value = email;
 }
 
-function handleLogin(e) { 
-    e.preventDefault(); 
-    const email = document.getElementById('loginEmail').value; 
-    const password = document.getElementById('loginPassword').value; 
-    let users = JSON.parse(localStorage.getItem('users')) || []; 
-    const user = users.find(u => u.email === email && u.password === password); 
-    if(user) { 
-        localStorage.setItem('currentUser', JSON.stringify(user)); 
-        currentUser = user; 
-        alert("✅ Login Successful!"); 
-        window.location.href = 'profile.html'; 
-    } else { 
-        alert("❌ Invalid email or password!"); 
-    } 
+function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.email === email && u.password === password);
+    if(user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        currentUser = user;
+        alert("✅ Login Successful!");
+        window.location.href = '/profile.html';
+    } else {
+        alert("❌ Invalid email or password!");
+    }
 }
 
 // Initialize App
