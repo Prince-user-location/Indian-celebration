@@ -20,7 +20,7 @@
     --border: #e3e6e6;
     --radius: 10px;
     --shadow: 0 1px 3px rgba(15, 17, 17, 0.08);
-    --header-glow-height: 340px;
+    --header-glow-height: 430px;
     --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --primary-blue: #131921;          /* purane inline styles ke liye fallback */
 }
@@ -47,8 +47,9 @@ body::before {
     background: linear-gradient(
         to bottom,
         color-mix(in srgb, var(--banner-color) 62%, white) 0%,
-        color-mix(in srgb, var(--banner-color) 38%, var(--bg-color)) 30%,
-        color-mix(in srgb, var(--banner-color) 16%, var(--bg-color)) 58%,
+        color-mix(in srgb, var(--banner-color) 50%, var(--bg-color)) 25%,
+        color-mix(in srgb, var(--banner-color) 30%, var(--bg-color)) 55%,
+        color-mix(in srgb, var(--banner-color) 12%, var(--bg-color)) 80%,
         var(--bg-color) 100%
     );
     z-index: -1;
@@ -95,9 +96,14 @@ body::before {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: var(--search-tint);
+    background: transparent;          /* upar gradient seedha dikhega, koi patch nahi */
     padding: 4px 0 8px;
-    transition: box-shadow 0.2s;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+/* sirf tab jab scroll karke top pe chipak jaye (JS 'is-stuck' lagata hai) */
+.sticky-search-wrapper.is-stuck {
+    background: color-mix(in srgb, var(--banner-color) 22%, #ffffff);
+    box-shadow: 0 2px 8px rgba(15, 17, 17, 0.12);
 }
 
 .amazon-search-wrapper { padding: 4px 14px; width: 100%; }

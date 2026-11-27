@@ -95,9 +95,29 @@ async function setBannerColor(source) {
     }
 }
 
+/* ==========================================================
+   STICKY SEARCH: jab tak upar gradient ke andar hai transparent,
+   top pe chipakne par hi tinted background
+   ========================================================== */
+function initStickySearch() {
+    let ticking = false;
+    const update = () => {
+        ticking = false;
+        const w = document.querySelector('.sticky-search-wrapper');
+        if (!w) return;
+        const stuck = window.scrollY > 0 && w.getBoundingClientRect().top <= 1;
+        w.classList.toggle('is-stuck', stuck);
+    };
+    window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+}
+
 /* ========================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+    initStickySearch();
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
         if (splash) { splash.classList.add('fade-out'); setTimeout(() => { splash.style.display = 'none'; }, 500); }
