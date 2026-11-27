@@ -88,6 +88,21 @@
 
             <div id="settingsArea" style="display:none;">
                 <h2 style="font-size:18px; margin-bottom:15px; color:#0b2240;">Update Website Icons & Banners</h2>
+                
+                <!-- NAYA: KEEP SHOPPING CONTROL -->
+                <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; margin-bottom: 15px; color: #0b2240;">Keep Shopping Section Settings</h3>
+                    <div class="form-group">
+                        <label>Section Title</label>
+                        <input type="text" id="input_keepShoppingTitle" placeholder="e.g. Keep shopping for you">
+                    </div>
+                    <div class="form-group">
+                        <label>Product IDs (Comma Separated)</label>
+                        <input type="text" id="input_keepShoppingProductIds" placeholder="e.g. 653a1b,653a1c">
+                        <p style="font-size: 11px; color: #666; margin-top: 5px;">Copy Product ID from the product list below.</p>
+                    </div>
+                </div>
+
                 <div class="settings-grid" id="settingsGrid"></div>
                 <button class="btn-save-settings" onclick="saveSettings()">Save All Settings</button>
             </div>
@@ -169,6 +184,10 @@
                 const res = await fetch(`${API_URL}/api/settings`);
                 appSettings = await res.json();
                 
+                // Populate Text Inputs
+                document.getElementById('input_keepShoppingTitle').value = appSettings.keepShoppingTitle || "Keep shopping for you";
+                document.getElementById('input_keepShoppingProductIds').value = appSettings.keepShoppingProductIds || "";
+
                 const iconConfigs = [
                     { key: 'supermoneyImg', name: 'Supermoney Card Img', isBanner: true }, 
                     { key: 'offlineImg', name: 'Offline Dog Image', isBanner: true }, 
@@ -223,18 +242,19 @@
 
         async function saveSettings() {
             const formData = new FormData();
+            
+            // Add Text Inputs
+            formData.append('keepShoppingTitle', document.getElementById('input_keepShoppingTitle').value);
+            formData.append('keepShoppingProductIds', document.getElementById('input_keepShoppingProductIds').value);
+
             const keys = ['supermoneyImg', 'offlineImg', 'profileBanner', 'tabWeekly', 'tabTravel', 'tabValue365', 'tabGifts', 'iconAccount', 'iconHelp', 'iconCart', 'catGrocery', 'catBoy', 'catChildren', 'catMan', 'catElectronics', 'catFestival', 'catDailyUses'];
             
-            let hasFile = false;
             keys.forEach(key => {
                 const fileInput = document.getElementById(`input_${key}`);
                 if(fileInput && fileInput.files.length > 0) {
                     formData.append(key, fileInput.files[0]);
-                    hasFile = true;
                 }
             });
-
-            if(!hasFile) return alert("Please select at least one image to update.");
 
             try {
                 const res = await fetch(`${API_URL}/api/admin/settings`, { method: 'POST', body: formData });
@@ -342,7 +362,7 @@
                         <div class="list-card">
                             <div style="display:flex; align-items:center; gap:10px;">
                                 <img src="${p.imageUrl}" style="width:50px; height:50px; object-fit:contain; border-radius:6px;">
-                                <div><div style="font-size:14px; font-weight:bold;">${p.name}</div><div style="font-size:12px; color:#666;">₹${p.price} | Stock: ${p.stock}</div></div>
+                                <div><div style="font-size:14px; font-weight:bold;">${p.name}</div><div style="font-size:12px; color:#666;">₹${p.price} | ID: ${p._id}</div></div>
                             </div>
                             <div style="display:flex; gap:5px;">
                                 <button onclick="editItem('${p._id}')" style="background:#f1f5f9; border:none; padding:6px 10px; border-radius:6px; font-weight:bold;">Edit</button>

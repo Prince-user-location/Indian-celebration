@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Indian Celebration - Luxury Shopping</title>
-
-    <!-- MAIN STYLES (FIXED PATHS) -->
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/home-extras.css">
-    <link rel="stylesheet" href="/css/india-auto.css">
-    <link rel="stylesheet" href="/css/search.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home-extras.css">
+    <link rel="stylesheet" href="css/india-auto.css">
+    <link rel="stylesheet" href="css/search.css">
 </head>
 <body class="theme-default">
 
@@ -20,11 +19,12 @@
 
     <!-- HOME PAGE -->
     <div id="home-page">
-        <!-- DYNAMIC LIQUID HEADER -->
+        
+        <!-- HEADER (Scrolls away) -->
         <div class="header">
             <!-- TOP TABS -->
             <div class="top-tabs">
-                <div class="tab-box" onclick="window.location.href='/minutes.html'">
+                <div class="tab-box" onclick="window.location.href='minutes.html'">
                     <img src="https://cdn-icons-png.flaticon.com/512/3724/3724788.png" class="dynamic-tab-icon">
                     <span>Weekly</span>
                 </div>
@@ -32,7 +32,7 @@
                     <img src="https://cdn-icons-png.flaticon.com/512/3125/3125713.png" class="dynamic-tab-icon">
                     <span>Travel</span>
                 </div>
-                <div class="tab-box" onclick="window.location.href='/value365.html'">
+                <div class="tab-box" onclick="window.location.href='value365.html'">
                     <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="dynamic-tab-icon">
                     <span>Value 365</span>
                 </div>
@@ -49,11 +49,10 @@
                 </div>
                 <!-- HEADER ICONS -->
                 <div class="header-icons">
-                    <!-- FIXED: Direct Link -->
-                    <div id="headerAccountBtn" onclick="window.location.href='/profile.html'" style="cursor:pointer; display:flex; background: transparent;">
+                    <div id="headerAccountBtn" onclick="handleProfileClick()" style="cursor:pointer; display:flex; background: transparent;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                     </div>
-                    <div id="headerHelpBtn" onclick="window.location.href='/help.html'" style="cursor:pointer; display:flex; background: transparent;">
+                    <div id="headerHelpBtn" onclick="window.location.href='help.html'" style="cursor:pointer; display:flex; background: transparent;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
                     </div>
                     <div id="headerCartBtn" onclick="openCart()" style="cursor:pointer; display:flex; background: transparent;">
@@ -66,83 +65,45 @@
                 <svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                 <span id="headerLocationText">Select delivery location ></span>
             </div>
-
-            <!-- SEARCH BAR CONTAINER -->
-            <div id="search-bar-container"></div>
         </div>
 
+        <!-- STICKY SEARCH BAR (Outside header to stick perfectly) -->
+        <div id="search-bar-container" class="sticky-search-wrapper"></div>
+
         <!-- MAIN BANNER -->
-        <div class="banner-container">
+        <div class="banner-container" style="margin-top: 10px;">
             <div class="banner-slider" id="slider"></div>
         </div>
 
         <!-- MAIN TITLE -->
         <div class="section-title">Indian celebration Shopping</div>
-
-        <!-- DYNAMIC CONTENT -->
+        
+        <!-- DYNAMIC CONTENT (Products, Keep Shopping, Deals) -->
         <div id="dynamicContent"></div>
     </div>
 
-    <!-- ================= HIDDEN PAGES & MODALS ================= -->
-
-    <!-- 1. CATEGORY PAGE -->
+    <!-- (Baki hidden pages: Category, Auth, Cart, Location, Bottom Nav same rahenge) -->
     <div id="category-page" class="full-page">
-        <div class="page-header">
-            <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span>All Categories</span>
-        </div>
-        <div class="cat-layout">
-            <div class="cat-sidebar">
-                <div class="cat-menu-item active" onclick="switchCategory('patake', this)">Patake</div>
-                <div class="cat-menu-item" onclick="switchCategory('clothes', this)">Clothes</div>
-            </div>
-            <div class="cat-content"><div class="grid" id="categoryGrid"></div></div>
-        </div>
+        <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>All Categories</span></div>
+        <div class="cat-layout"><div class="cat-sidebar"><div class="cat-menu-item active" onclick="switchCategory('patake', this)">Patake</div><div class="cat-menu-item" onclick="switchCategory('clothes', this)">Clothes</div></div><div class="cat-content"><div class="grid" id="categoryGrid"></div></div></div>
     </div>
 
-    <!-- 2. AUTHENTICATION PAGE -->
     <div id="auth-page" class="full-page">
-        <div class="page-header">
-            <svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span>Account</span>
-        </div>
+        <div class="page-header"><svg onclick="goHome()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg><span>Account</span></div>
         <div class="auth-container">
             <div class="auth-header"><h2>Welcome to Indian Celebration</h2><p style="color:#666; font-size:14px;">Login or create an account to continue</p></div>
-            <div class="auth-tabs">
-                <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</div>
-                <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Register</div>
-            </div>
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="auth-form-group"><label>Email Address</label><input type="email" id="loginEmail" required></div>
-                <div class="auth-form-group"><label>Password</label><input type="password" id="loginPassword" required></div>
-                <button type="submit" class="btn-auth">Login</button>
-            </form>
-            <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
-                <div class="auth-form-group"><label>Full Name</label><input type="text" id="regName" required></div>
-                <div class="auth-form-group"><label>Phone Number</label><input type="tel" id="regPhone" required></div>
-                <div class="auth-form-group"><label>Email Address</label><input type="email" id="regEmail" required></div>
-                <div class="auth-form-group"><label>Password</label><input type="password" id="regPassword" required></div>
-                <button type="submit" class="btn-auth">Register</button>
-            </form>
+            <div class="auth-tabs"><div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</div><div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Register</div></div>
+            <form id="loginForm" onsubmit="handleLogin(event)"><div class="auth-form-group"><label>Email Address</label><input type="email" id="loginEmail" required></div><div class="auth-form-group"><label>Password</label><input type="password" id="loginPassword" required></div><button type="submit" class="btn-auth">Login</button></form>
+            <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;"><div class="auth-form-group"><label>Full Name</label><input type="text" id="regName" required></div><div class="auth-form-group"><label>Phone Number</label><input type="tel" id="regPhone" required></div><div class="auth-form-group"><label>Email Address</label><input type="email" id="regEmail" required></div><div class="auth-form-group"><label>Password</label><input type="password" id="regPassword" required></div><button type="submit" class="btn-auth">Register</button></form>
         </div>
     </div>
 
-    <!-- 3. CART MODAL -->
     <div class="cart-modal" id="cartModal">
-        <div class="cart-header">
-            <svg onclick="closeCart()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            My Cart
-        </div>
-        <div class="cart-scroll-area">
-            <div class="cart-items-container" id="cartList"></div>
-            <div class="cart-price-details">
-                <div class="price-row total"><span>Total Amount</span><span id="cartTotal">₹0</span></div>
-            </div>
-        </div>
+        <div class="cart-header"><svg onclick="closeCart()" width="24" height="24" viewBox="0 0 24 24" fill="#333" style="cursor:pointer;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> My Cart</div>
+        <div class="cart-scroll-area"><div class="cart-items-container" id="cartList"></div><div class="cart-price-details"><div class="price-row total"><span>Total Amount</span><span id="cartTotal">₹0</span></div></div></div>
         <div class="cart-footer"><button class="btn-pay" onclick="initiateCartCheckout()">Pay Now</button></div>
     </div>
 
-    <!-- 4. LOCATION MODAL -->
     <div class="overlay-modal" id="locationModal">
         <div class="modal-content" style="text-align: left;">
             <div class="modal-title" style="text-align: center;">Choose your location</div>
@@ -153,22 +114,17 @@
         </div>
     </div>
 
-    <!-- FLOATING BOTTOM NAVIGATION (FIXED PATHS) -->
     <div class="bottom-nav">
-        <div class="nav-item active" id="nav-home" onclick="window.location.href='/index.html'"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</div>
-        
-        <div class="nav-item" id="nav-cat" onclick="window.location.href='/category.html'"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories</div>
-        
-        <div class="nav-item" id="nav-acc" onclick="window.location.href='/profile.html'"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Account</div>
-        
+        <div class="nav-item active" id="nav-home" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</div>
+        <div class="nav-item" id="nav-cat" onclick="window.location.href='category.html'"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories</div>
+        <div class="nav-item" id="nav-acc" onclick="window.location.href='profile.html'"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Account</div>
         <div class="nav-item" onclick="openCart()"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart</div>
     </div>
 
-    <!-- SCRIPTS (FIXED PATHS) -->
-    <script src="/js/search.js"></script>
-    <script src="/js/india-auto.js"></script>
-    <script src="/js/home-extras.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="/js/theme-color.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/india-auto.js"></script>
+    <script src="js/home-extras.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/theme-color.js"></script>
 </body>
 </html>
