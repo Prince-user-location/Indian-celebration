@@ -114,10 +114,56 @@ function initStickySearch() {
     update();
 }
 
+/* ==========================================================
+   HEADER: Amazon style delivery pill + PS Prime button
+   ========================================================== */
+const PRIME_PAGE = ''; // jab PS Prime ka page ban jaye to yahan link daalo, jaise 'prime.html'
+
+function formatDeliverTo(saved) {
+    if (!saved) return 'Select delivery location';
+    const parts = String(saved).split(' - ');
+    const city = (parts[0] || '').trim();
+    const pin = (parts[1] || '').trim();
+    return pin ? `Deliver to ${city} ${pin}` : `Deliver to ${city}`;
+}
+
+function handlePrimeClick(e) {
+    if (e) e.stopPropagation();
+    if (PRIME_PAGE) window.location.href = PRIME_PAGE;
+    else alert('PS Prime jald aa raha hai!');
+}
+
+function initHeaderUI() {
+    const bar = document.querySelector('.location-bar');
+    if (!bar || bar.dataset.upgraded === '1') return;
+    bar.dataset.upgraded = '1';
+
+    // location bar ka andar ka HTML: pin + text + chevron (id same rakhi hai)
+    bar.innerHTML = `
+        <svg class="pin-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+        <span id="headerLocationText">${formatDeliverTo(localStorage.getItem('user_location'))}</span>
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    `;
+
+    // row banao: [location pill] [PS Prime]
+    const row = document.createElement('div');
+    row.className = 'location-row';
+    bar.parentNode.insertBefore(row, bar);
+    row.appendChild(bar);
+
+    const prime = document.createElement('button');
+    prime.type = 'button';
+    prime.className = 'prime-btn';
+    prime.textContent = 'PS Prime';
+    prime.addEventListener('click', handlePrimeClick);
+    row.appendChild(prime);
+}
+
 /* ========================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
     initStickySearch();
+    initHeaderUI();
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
         if (splash) { splash.classList.add('fade-out'); setTimeout(() => { splash.style.display = 'none'; }, 500); }
@@ -128,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!navigator.onLine) { window.location.href = 'offline.html'; return; }
     const savedLoc = localStorage.getItem('user_location');
     const locEl = document.getElementById('headerLocationText');
-    if (savedLoc && locEl) locEl.innerText = savedLoc + ' >';
+    if (savedLoc && locEl) locEl.innerText = formatDeliverTo(savedLoc);
     loadData(0);
 });
 
@@ -145,7 +191,7 @@ function saveLocation() {
     if (!pin || !city) return alert("Please enter Pincode and City");
     localStorage.setItem('user_location', `${city} - ${pin}`);
     const locEl = document.getElementById('headerLocationText');
-    if (locEl) locEl.innerText = `${city} - ${pin} >`;
+    if (locEl) locEl.innerText = formatDeliverTo(`${city} - ${pin}`);
     closeModal('locationModal');
 }
 

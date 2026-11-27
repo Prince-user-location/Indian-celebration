@@ -74,11 +74,25 @@ body::before {
 /* purane blur/mask layers hata diye */
 .header::before, .header::after { content: none; }
 
-.top-tabs { display: flex; justify-content: space-around; padding: 0 8px 8px; gap: 4px; overflow-x: auto; scrollbar-width: none; width: 100%; }
-.top-tabs::-webkit-scrollbar { display: none; }
-.tab-box { display: flex; flex-direction: column; align-items: center; cursor: pointer; min-width: 66px; }
-.tab-box img { width: 40px; height: 40px; object-fit: contain; margin-bottom: 4px; background: #fff; border-radius: 50%; padding: 7px; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
-.tab-box span { font-size: 11px; font-weight: 600; color: var(--text-dark); }
+/* ===== TOP SHORTCUT CARDS (Amazon: Pay / Bazaar / Video / Pharmacy jaisa) ===== */
+.top-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 0 12px 10px; width: 100%; }
+.tab-box {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 5px; min-width: 0; cursor: pointer;
+    padding: 10px 4px 8px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 0 1px 3px rgba(15, 17, 17, 0.10);
+    background: #fff;
+    transition: transform 0.15s;
+}
+.tab-box:active { transform: scale(0.96); }
+.tab-box:nth-child(1) { background: #fdf3d6; }   /* cream */
+.tab-box:nth-child(2) { background: #fde6e6; }   /* light pink */
+.tab-box:nth-child(3) { background: #def0fc; }   /* light blue */
+.tab-box:nth-child(4) { background: #e3f4e2; }   /* light green */
+.tab-box img { width: 38px; height: 38px; object-fit: contain; margin: 0; padding: 0; background: transparent; border-radius: 0; box-shadow: none; }
+.tab-box span { font-size: 12px; font-weight: 700; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 
 .header-top { display: flex; justify-content: space-between; align-items: center; padding: 2px 14px 0; width: 100%; }
 .logo-text { font-size: 20px; font-weight: 800; font-style: italic; color: #131921; letter-spacing: -0.4px; line-height: 1.1; }
@@ -86,9 +100,29 @@ body::before {
 .header-icons { display: flex; gap: 18px; cursor: pointer; color: #131921; align-items: center; }
 .header-icons svg { fill: currentColor; }
 
-.location-bar { display: flex; align-items: center; color: var(--text-dark); font-size: 12px; gap: 5px; font-weight: 500; cursor: pointer; padding: 6px 14px 8px; width: 100%; }
-.location-bar span { color: var(--text-dark); margin-left: 2px; font-weight: 600; }
-.location-bar svg { fill: #131921; width: 16px; height: 16px; }
+/* ===== DELIVERY PILL + PS PRIME (Amazon: "Deliver to 813105 v" + Join Prime) ===== */
+.location-row { display: flex; align-items: center; gap: 8px; padding: 2px 12px 10px; width: 100%; }
+.location-bar {
+    flex: 1; min-width: 0; width: auto;
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 30px;
+    padding: 9px 14px;
+    color: var(--text-dark); font-size: 14px; font-weight: 500; cursor: pointer;
+}
+.location-bar span { flex: 1; min-width: 0; margin: 0; color: var(--text-dark); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.location-bar svg { flex: none; fill: none; stroke: #131921; stroke-width: 2; width: 18px; height: 18px; }
+.location-bar svg.pin-icon { fill: none; }
+.prime-btn {
+    flex: none; border: none; cursor: pointer;
+    background: #0b63ce; color: #fff;
+    padding: 10px 16px; border-radius: 30px;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.1px;
+    box-shadow: 0 1px 3px rgba(11, 99, 206, 0.35);
+    white-space: nowrap;
+}
+.prime-btn:active { filter: brightness(0.92); }
 
 /* ===== STICKY SEARCH BAR ===== */
 .sticky-search-wrapper {
