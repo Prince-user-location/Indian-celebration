@@ -1,0 +1,278 @@
+/* ========================================= */
+/* CATEGORY PAGE PREMIUM & COMPACT STYLES    */
+/* ========================================= */
+
+/* Body Reset for Split Scroll */
+body {
+    background-color: #f1f3f6;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden; /* Pura page scroll nahi hoga */
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER - NO WHITE BORDER (Clean Look) */
+.category-header-bar {
+    background: #ffffff;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+    flex-shrink: 0; 
+    z-index: 100;
+}
+
+.category-header-bar span {
+    font-size: 18px;
+    font-weight: 700;
+    color: #212121;
+}
+
+.category-header-bar svg {
+    width: 24px;
+    height: 24px;
+    fill: #333;
+    cursor: pointer;
+}
+
+/* SPLIT LAYOUT (Sidebar + Content) */
+.category-split-layout {
+    display: flex;
+    height: calc(100vh - 60px); 
+    width: 100%;
+    overflow: hidden; 
+}
+
+/* ========================================= */
+/* 1. SIDEBAR (Compact & Clean)              */
+/* ========================================= */
+.category-sidebar {
+    width: 85px;
+    background: #f8f9fa;
+    border-right: 1px solid #e0e0e0;
+    overflow-y: auto; 
+    scrollbar-width: none; 
+    flex-shrink: 0;
+}
+
+.category-sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 5px; /* Padding aur kam ki */
+    text-align: center;
+    font-size: 11px;
+    color: #555;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-item img {
+    width: 26px; /* Icon size chota kiya */
+    height: 26px;
+    object-fit: contain;
+    margin-bottom: 5px;
+}
+
+.sidebar-item.active {
+    background: #ffffff;
+    color: #2874f0;
+    border-left: 3px solid #2874f0;
+}
+
+/* ========================================= */
+/* 2. MAIN CONTENT (Independent Scroll)      */
+/* ========================================= */
+.category-main-content {
+    flex: 1;
+    background: #f1f3f6;
+    overflow-y: auto; 
+    padding: 10px; /* Padding kam ki */
+    box-sizing: border-box;
+}
+
+/* Section Headings */
+.section-title-premium {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f1111;
+    margin-bottom: 8px;
+    margin-top: 5px;
+}
+
+/* ========================================= */
+/* "FOR YOU" TAB (Premium Compact Sections)  */
+/* ========================================= */
+
+/* Popular Store Grid */
+.popular-store-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.store-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 8px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.store-card img {
+    width: 32px; /* Chota kiya */
+    height: 32px;
+    object-fit: contain;
+    margin-bottom: 5px;
+}
+
+.store-card span {
+    font-size: 10px;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.2;
+}
+
+/* New Launches Grid (Compact 2 Columns) */
+.new-launches-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+/* Premium Product Card (Chota aur Compact) */
+.premium-product-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.premium-product-card .img-box {
+    width: 100%;
+    height: 100px; /* Height 130px se kam karke 100px ki */
+    background: #f9f9f9;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+}
+
+.premium-product-card .img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4px;
+}
+
+.premium-product-card .prod-name {
+    font-size: 12px; /* Font chota kiya */
+    font-weight: 600;
+    color: #212121;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.premium-product-card .price-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: auto;
+}
+
+.premium-product-card .price {
+    font-size: 13px; /* Font chota kiya */
+    font-weight: 700;
+    color: #212121;
+}
+
+/* ========================================= */
+/* DYNAMIC PRODUCTS TAB (Grocery, Boy etc)   */
+/* ========================================= */
+.dynamic-products-wrapper {
+    display: none; 
+}
+
+.product-grid-dynamic {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.dynamic-card {
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    border: none;
+}
+
+.dynamic-card .img-box {
+    background: #ffffff;
+    border-radius: 8px;
+    height: 100px; /* Height kam ki */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.dynamic-card .img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4px;
+}
+
+.dynamic-card .prod-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dynamic-card .prod-price {
+    font-size: 13px;
+    font-weight: 700;
+    color: #212121;
+    margin-bottom: 6px;
+}
+
+.dynamic-card .add-btn {
+    background: #ffd814;
+    color: #0f1111;
+    border: none;
+    padding: 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 11px;
+    width: 100%;
+    cursor: pointer;
+}

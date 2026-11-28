@@ -70,14 +70,15 @@
 
         <div class="tabs-container">
             <div class="tab-item active" onclick="switchTab('orders')">Orders</div>
-            <div class="tab-item" onclick="switchTab('banner')">Banners</div>
+            <div class="tab-item" onclick="switchTab('banner')">Top Banners</div>
+            <div class="tab-item" onclick="switchTab('halfbanner')">Half Banner</div> <!-- FIXED: Added Half Banner -->
             <div class="tab-item" onclick="switchTab('settings')">⚙️ App Settings</div>
             <div class="tab-item" onclick="switchTab('boy_fashion')">Boy Fashion</div>
             <div class="tab-item" onclick="switchTab('children_fashion')">Children</div>
             <div class="tab-item" onclick="switchTab('man_fashion')">Man Fashion</div>
-            <div class="tab-item" onclick="switchTab('electronics')">Electronics</div>
-            <div class="tab-item" onclick="switchTab('festival')">Festival</div>
-            <div class="tab-item" onclick="switchTab('daily_uses')">Daily Uses</div>
+            <div class="tab-item" onclick="switchTab('electronics')">Electronics</div> <!-- FIXED -->
+            <div class="tab-item" onclick="switchTab('festival')">Festival</div> <!-- FIXED -->
+            <div class="tab-item" onclick="switchTab('daily_uses')">Daily Uses</div> <!-- FIXED -->
         </div>
 
         <div class="content-area">
@@ -87,19 +88,28 @@
             </div>
 
             <div id="settingsArea" style="display:none;">
-                <h2 style="font-size:18px; margin-bottom:15px; color:#0b2240;">Update Website Icons & Banners</h2>
+                <h2 style="font-size:18px; margin-bottom:15px; color:#0b2240;">Update Website Settings</h2>
                 
-                <!-- NAYA: KEEP SHOPPING CONTROL -->
+                <!-- DEAL BANNER & KEEP SHOPPING SETTINGS -->
                 <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
-                    <h3 style="font-size: 16px; margin-bottom: 15px; color: #0b2240;">Keep Shopping Section Settings</h3>
+                    <h3 style="font-size: 16px; margin-bottom: 15px; color: #0b2240;">Custom Sections (Text & IDs)</h3>
+                    
                     <div class="form-group">
-                        <label>Section Title</label>
+                        <label>Deal Banner Title (Black Friday text)</label>
+                        <input type="text" id="input_dealBannerTitle" placeholder="e.g. Black Friday Shopping">
+                    </div>
+                    <div class="form-group">
+                        <label>Deal Banner Product IDs (Comma Separated)</label>
+                        <input type="text" id="input_dealBannerProductIds" placeholder="e.g. 653a1b,653a1c">
+                    </div>
+                    <hr style="margin: 15px 0; border-top: 1px dashed #ccc;">
+                    <div class="form-group">
+                        <label>Keep Shopping Title</label>
                         <input type="text" id="input_keepShoppingTitle" placeholder="e.g. Keep shopping for you">
                     </div>
                     <div class="form-group">
-                        <label>Product IDs (Comma Separated)</label>
-                        <input type="text" id="input_keepShoppingProductIds" placeholder="e.g. 653a1b,653a1c">
-                        <p style="font-size: 11px; color: #666; margin-top: 5px;">Copy Product ID from the product list below.</p>
+                        <label>Keep Shopping Product IDs</label>
+                        <input type="text" id="input_keepShoppingProductIds" placeholder="e.g. id1,id2,id3">
                     </div>
                 </div>
 
@@ -185,6 +195,8 @@
                 appSettings = await res.json();
                 
                 // Populate Text Inputs
+                document.getElementById('input_dealBannerTitle').value = appSettings.dealBannerTitle || "Black Friday Shopping";
+                document.getElementById('input_dealBannerProductIds').value = appSettings.dealBannerProductIds || "";
                 document.getElementById('input_keepShoppingTitle').value = appSettings.keepShoppingTitle || "Keep shopping for you";
                 document.getElementById('input_keepShoppingProductIds').value = appSettings.keepShoppingProductIds || "";
 
@@ -192,20 +204,12 @@
                     { key: 'supermoneyImg', name: 'Supermoney Card Img', isBanner: true }, 
                     { key: 'offlineImg', name: 'Offline Dog Image', isBanner: true }, 
                     { key: 'profileBanner', name: 'Profile Banner', isBanner: true },
-                    { key: 'tabWeekly', name: 'Weekly Tab' },
-                    { key: 'tabTravel', name: 'Travel Tab' },
-                    { key: 'tabValue365', name: 'Value 365 Tab' },
-                    { key: 'tabGifts', name: 'Gifts Tab' },
-                    { key: 'iconAccount', name: 'Header Account' },
-                    { key: 'iconHelp', name: 'Header Help' },
-                    { key: 'iconCart', name: 'Header Cart' },
-                    { key: 'catGrocery', name: 'Grocery Category' },
-                    { key: 'catBoy', name: 'Boy Category' },
-                    { key: 'catChildren', name: 'Children Category' },
-                    { key: 'catMan', name: 'Man Category' },
-                    { key: 'catElectronics', name: 'Electronics Category' },
-                    { key: 'catFestival', name: 'Festival Category' },
-                    { key: 'catDailyUses', name: 'Daily Uses Category' }
+                    { key: 'tabWeekly', name: 'Weekly Tab' }, { key: 'tabTravel', name: 'Travel Tab' },
+                    { key: 'tabValue365', name: 'Value 365 Tab' }, { key: 'tabGifts', name: 'Gifts Tab' },
+                    { key: 'iconAccount', name: 'Header Account' }, { key: 'iconHelp', name: 'Header Help' }, { key: 'iconCart', name: 'Header Cart' },
+                    { key: 'catGrocery', name: 'Grocery Category' }, { key: 'catBoy', name: 'Boy Category' },
+                    { key: 'catChildren', name: 'Children Category' }, { key: 'catMan', name: 'Man Category' },
+                    { key: 'catElectronics', name: 'Electronics Category' }, { key: 'catFestival', name: 'Festival Category' }, { key: 'catDailyUses', name: 'Daily Uses Category' }
                 ];
 
                 let html = '';
@@ -230,11 +234,7 @@
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const img = document.getElementById(`preview_${key}`);
-                    img.src = e.target.result;
-                    if(key === 'supermoneyImg' || key === 'profileBanner' || key === 'offlineImg') {
-                        img.style.objectFit = 'cover';
-                    }
+                    document.getElementById(`preview_${key}`).src = e.target.result;
                 }
                 reader.readAsDataURL(input.files[0]);
             }
@@ -244,6 +244,8 @@
             const formData = new FormData();
             
             // Add Text Inputs
+            formData.append('dealBannerTitle', document.getElementById('input_dealBannerTitle').value);
+            formData.append('dealBannerProductIds', document.getElementById('input_dealBannerProductIds').value);
             formData.append('keepShoppingTitle', document.getElementById('input_keepShoppingTitle').value);
             formData.append('keepShoppingProductIds', document.getElementById('input_keepShoppingProductIds').value);
 

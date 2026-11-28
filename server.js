@@ -25,12 +25,6 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d' }));
 
-// Request Logger
-app.use((req, res, next) => {
-    console.log(`[${new Date().toLocaleTimeString()}] ${req.method} ${req.url}`);
-    next();
-});
-
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("✅ MongoDB Connected Successfully!"))
     .catch(err => console.log("❌ DB Error:", err));
@@ -56,14 +50,18 @@ const Order = mongoose.model('Order', new mongoose.Schema({
     exactTime: { type: String, default: new Date().toLocaleString('en-IN') }
 }));
 
+// App Settings Schema (Deal Banner fields added)
 const AppSettings = mongoose.model('AppSettings', new mongoose.Schema({
     offlineImg: { type: String, default: "https://cdn-icons-png.flaticon.com/512/5779/5779125.png" },
     profileBanner: { type: String, default: "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=800" },
     supermoneyImg: { type: String, default: "" },
     
-    // Keep Shopping Settings
+    // NAYA: Black Friday Deal Banner Settings
+    dealBannerTitle: { type: String, default: "Black Friday Shopping" },
+    dealBannerProductIds: { type: String, default: "" }, // Comma separated IDs
+    
     keepShoppingTitle: { type: String, default: "Keep shopping for you" },
-    keepShoppingProductIds: { type: String, default: "" }, // Comma separated
+    keepShoppingProductIds: { type: String, default: "" },
     
     tabWeekly: { type: String, default: "" }, tabTravel: { type: String, default: "" },
     tabValue365: { type: String, default: "" }, tabGifts: { type: String, default: "" },
@@ -77,16 +75,9 @@ function uploadToCloudinary(fileBuffer, mimetype, isIcon = false) {
     return new Promise((resolve, reject) => {
         const isVideo = mimetype.startsWith('video');
         const options = { folder: 'indian-celebration', resource_type: isVideo ? 'video' : 'image' };
-        
-        if (!isVideo && !isIcon) { 
-            options.fetch_format = 'auto'; options.quality = 'auto:good'; options.width = 800; options.crop = 'limit'; 
-        } else if (isIcon) { 
-            options.fetch_format = 'auto'; options.quality = 'auto:good'; options.width = 400; options.crop = 'limit'; 
-        }
-
-        const stream = cloudinary.uploader.upload_stream(options, (error, result) => { 
-            if (error) reject(error); else resolve(result); 
-        });
+        if (!isVideo && !isIcon) { options.fetch_format = 'auto'; options.quality = 'auto:good'; options.width = 800; options.crop = 'limit'; } 
+        else if (isIcon) { options.fetch_format = 'auto'; options.quality = 'auto:good'; options.width = 400; options.crop = 'limit'; }
+        const stream = cloudinary.uploader.upload_stream(options, (error, result) => { if (error) reject(error); else resolve(result); });
         stream.end(fileBuffer);
     });
 }
@@ -111,7 +102,9 @@ app.post('/api/admin/settings', upload.fields([
         let settings = await AppSettings.findOne();
         if (!settings) settings = new AppSettings();
         
-        // Text Fields for Keep Shopping
+        // Text Fields for Banners
+        if(req.body.dealBannerTitle) settings.dealBannerTitle = req.body.dealBannerTitle;
+        if(req.body.dealBannerProductIds !== undefined) settings.dealBannerProductIds = req.body.dealBannerProductIds;
         if(req.body.keepShoppingTitle) settings.keepShoppingTitle = req.body.keepShoppingTitle;
         if(req.body.keepShoppingProductIds !== undefined) settings.keepShoppingProductIds = req.body.keepShoppingProductIds;
 
@@ -129,7 +122,7 @@ app.post('/api/admin/settings', upload.fields([
 });
 
 app.get('/api/products', async (req, res) => {
-    try { const limit = parseInt(req.query.limit) || 30; res.json(await Product.find().sort({ _id: -1 }).limit(limit)); } 
+    try { const limit = parseInt(req.query.limit) || 50; res.json(await Product.find().sort({ _id: -1 }).limit(limit)); } 
     catch (err) { res.status(500).json({ error: err.message }); }
 });
 

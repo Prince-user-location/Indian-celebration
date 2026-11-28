@@ -321,6 +321,44 @@ function renderHomePage(products) {
     homeProducts.slice(0, 10).forEach((p, index) => { html += generateCardHtml(p, index === 1); });
     html += `</div>`;
 
+    // BLACK FRIDAY DEAL SECTION (style: blackfriday.css)
+    const dealTitle = appSettings.dealBannerTitle || "Black Friday Shopping";
+    const dealIds = appSettings.dealBannerProductIds
+        ? String(appSettings.dealBannerProductIds).split(',').map(id => id.trim()).filter(Boolean)
+        : [];
+    const dealProducts = dealIds.length > 0
+        ? products.filter(p => dealIds.includes(p._id))
+        : products.slice(0, 6);
+
+    if (dealProducts.length > 0) {
+        html += `
+            <div class="bf2-section">
+                <div class="bf2-header">
+                    <div class="bf2-title">${dealTitle}</div>
+                    <div class="bf2-badge" aria-hidden="true"><span>BLACK</span><span>FRIDAY</span><span>SALE</span></div>
+                </div>
+                <div class="bf2-scroll">
+                    ${dealProducts.map(p => {
+                        const oldP = p.oldPrice || p.price;
+                        const off = Math.max(0, Math.round(((oldP - p.price) / oldP) * 100) || 0);
+                        const label = off > 0 ? `Min. ${off}% Off` : `Just ₹${p.price}`;
+                        return `
+                            <div class="bf2-item" onclick="openProductPage('${p._id}')">
+                                <div class="bf2-card">
+                                    <div class="bf2-img-wrap">
+                                        <img src="${p.imageUrl}" loading="lazy" onerror="this.src='${defaultBanner}'">
+                                    </div>
+                                    <div class="bf2-strip">${label}</div>
+                                </div>
+                                <div class="bf2-name">${p.name}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+    }
+
     // KEEP SHOPPING SECTION (AMAZON STYLE)
     const keepShoppingIds = appSettings.keepShoppingProductIds ? String(appSettings.keepShoppingProductIds).split(',').map(id => id.trim()) : [];
     let keepProducts = [];

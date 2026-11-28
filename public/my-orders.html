@@ -3,78 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>My Orders</title>
+    <title>My Orders - Indian Celebration</title>
+    <!-- Main CSS (Variables, fonts ke liye) -->
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        body { background: #f1f3f6; font-family: 'Poppins', sans-serif; padding-bottom: 50px; }
-        .header { background: #fff; padding: 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); position: sticky; top:0; z-index: 10; }
-        .header h2 { margin:0; font-size:18px; }
-        
-        /* SEARCH & FILTERS */
-        .search-filter-area { background: #fff; padding: 10px 15px; display: flex; gap: 10px; margin-bottom: 10px; }
-        .search-box { flex:1; display: flex; align-items: center; background: #f1f3f6; padding: 8px 12px; border-radius: 6px; border: 1px solid #e0e0e0; }
-        .search-box input { border:none; background:transparent; outline:none; width:100%; font-size:14px; margin-left:8px; }
-        .filter-btn { background: #fff; border: 1px solid #e0e0e0; padding: 8px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
-        
-        .filter-chips { display: flex; gap: 10px; padding: 0 15px 10px 15px; overflow-x: auto; scrollbar-width: none; background: #fff; margin-bottom: 10px; }
-        .filter-chips::-webkit-scrollbar { display: none; }
-        .chip { padding: 6px 15px; border: 1px solid #e0e0e0; border-radius: 20px; font-size: 13px; font-weight: 500; white-space: nowrap; background: #fff; }
-        .chip.active { background: #212121; color: #fff; border-color: #212121; }
-
-        /* EMPTY STATE */
-        .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 50px 20px; background: #fff; margin: 15px; border-radius: 8px; text-align: center; }
-        .empty-state svg { width: 150px; height: 150px; margin-bottom: 20px; fill: #e0e0e0; }
-        .empty-state h3 { font-size: 18px; color: #212121; margin-bottom: 10px; font-weight: 600; }
-        .empty-state p { font-size: 14px; color: #878787; margin-bottom: 20px; }
-        .btn-shop { background: #2874f0; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; }
-
-        /* ORDER CARD (If populated) */
-        .order-card { background: white; border-radius: 12px; padding: 15px; margin: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; font-size: 13px; color: #555; }
-        .order-status { color: #388e3c; font-weight: bold; }
-        .order-item { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
-        .order-item img { width: 60px; height: 60px; object-fit: contain; border: 1px solid #eee; border-radius: 6px; }
-        .order-total { text-align: right; font-weight: 700; color: #2874f0; margin-top: 10px; }
-    </style>
+    <!-- Alag CSS file teri demand ke hisaab se -->
+    <link rel="stylesheet" href="css/my-orders.css">
 </head>
 <body>
 
-    <div class="header">
-        <div onclick="window.location.href='profile.html'" style="cursor:pointer;"><svg width="24" height="24" viewBox="0 0 24 24" fill="#333"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></div>
+    <!-- HEADER (Back Button Left, Title Right/Center, Search Icon Right) -->
+    <div class="orders-header">
+        <div onclick="window.location.href='profile.html'" style="cursor:pointer;">
+            <svg class="header-icon" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </div>
         <h2>My Orders</h2>
+        <div onclick="alert('Search feature coming soon!')" style="cursor:pointer;">
+            <svg class="header-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        </div>
     </div>
 
-    <!-- SEARCH & FILTERS -->
+    <!-- SEARCH & FILTER AREA -->
     <div class="search-filter-area">
         <div class="search-box">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="#878787"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <input type="text" placeholder="Search your order...">
+            <input type="text" id="orderSearchInput" placeholder="Search your order..." oninput="searchOrders()">
         </div>
-        <div class="filter-btn">
+        <div class="filter-btn" onclick="alert('Filters coming soon!')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg> Filters
         </div>
     </div>
 
-    <div class="filter-chips">
-        <div class="chip active">All</div>
-        <div class="chip">Fashion</div>
-        <div class="chip">Grocery</div>
-        <div class="chip">Electronics</div>
+    <!-- FILTER CHIPS -->
+    <div class="filter-chips-scroll">
+        <div class="chip active" onclick="filterOrders('all', this)">All</div>
+        <div class="chip" onclick="filterOrders('fashion', this)">Fashion</div>
+        <div class="chip" onclick="filterOrders('grocery', this)">Grocery</div>
+        <div class="chip" onclick="filterOrders('electronics', this)">Electronics</div>
     </div>
 
-    <!-- DYNAMIC CONTENT -->
-    <div id="ordersContainer"></div>
+    <!-- MAIN CONTENT (Orders or Empty State) -->
+    <div class="orders-container" id="ordersContainer">
+        <!-- JS load karega -->
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="window.location.href='index.html'">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
+        </div>
+        <div class="nav-item" onclick="window.location.href='category.html'">
+            <svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>Categories
+        </div>
+        <div class="nav-item active" onclick="window.location.href='profile.html'">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Account
+        </div>
+        <div class="nav-item" onclick="window.location.href='index.html?cart=true'">
+            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>Cart
+        </div>
+    </div>
 
     <script>
+        let allUserOrders = [];
+        let displayedOrders = [];
+
         document.addEventListener('DOMContentLoaded', () => {
             const user = JSON.parse(localStorage.getItem('currentUser'));
-            if(!user) return window.location.href = 'index.html';
+            if(!user) { window.location.href = 'index.html?login=true'; return; }
 
-            const orders = JSON.parse(localStorage.getItem('orders_' + user.email)) || [];
+            // Get orders from local storage
+            allUserOrders = JSON.parse(localStorage.getItem('orders_' + user.email)) || [];
+            
+            // Render initially
+            renderOrders(allUserOrders);
+        });
+
+        // Render Orders or Empty State
+        function renderOrders(orders) {
             const container = document.getElementById('ordersContainer');
 
-            if(orders.length === 0) {
-                // PREMIUM EMPTY STATE WITH SVG
+            if (orders.length === 0) {
+                // Empty State UI
                 container.innerHTML = `
                     <div class="empty-state">
                         <svg viewBox="0 0 24 24">
@@ -82,32 +90,61 @@
                         </svg>
                         <h3>No orders here!</h3>
                         <p>Looks like you haven't placed any orders yet.</p>
-                        <a href="index.html" class="btn-shop">Explore Products</a>
+                        <button class="btn-explore" onclick="window.location.href='index.html'">Explore Products</button>
                     </div>
                 `;
                 return;
             }
 
-            // RENDER ORDERS (If Any)
+            // Orders UI
             container.innerHTML = orders.map(order => `
-                <div class="order-card">
-                    <div class="order-header">
-                        <span>Order ID: ${order.id}</span>
+                <div class="order-card" onclick="alert('Order details coming soon!')">
+                    <div class="order-header-row">
+                        <span class="order-id">Order ID: ${order.id}</span>
                         <span class="order-status">${order.status}</span>
                     </div>
                     ${order.items.map(item => `
-                        <div class="order-item">
-                            <img src="${item.imageUrl}">
+                        <div class="order-item-row">
+                            <img src="${item.imageUrl}" class="order-item-img" onerror="this.src='https://via.placeholder.com/60'">
                             <div>
-                                <div style="font-size:14px; font-weight:600;">${item.name}</div>
-                                <div style="font-size:12px; color:#777;">Qty: ${item.qty} | Size: ${item.size}</div>
+                                <div class="order-item-name">${item.name}</div>
+                                <div class="order-item-qty">Qty: ${item.qty} | Size: ${item.size || 'N/A'}</div>
                             </div>
                         </div>
                     `).join('')}
-                    <div class="order-total">Total: ₹${order.total}</div>
+                    <div class="order-total-row">
+                        <span>Total Amount:</span>
+                        <span>₹${order.total}</span>
+                    </div>
                 </div>
             `).join('');
-        });
+        }
+
+        // Search Functionality
+        function searchOrders() {
+            const query = document.getElementById('orderSearchInput').value.toLowerCase();
+            const filtered = allUserOrders.filter(order => 
+                order.id.toLowerCase().includes(query) || 
+                order.items.some(item => item.name.toLowerCase().includes(query))
+            );
+            renderOrders(filtered);
+        }
+
+        // Filter Functionality (Just a demo filter for now)
+        function filterOrders(type, el) {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+
+            if(type === 'all') {
+                renderOrders(allUserOrders);
+            } else {
+                // Dummy filtering logic based on order items (you can improve this)
+                const filtered = allUserOrders.filter(order => 
+                    order.items.some(item => item.name.toLowerCase().includes(type))
+                );
+                renderOrders(filtered);
+            }
+        }
     </script>
 </body>
 </html>
